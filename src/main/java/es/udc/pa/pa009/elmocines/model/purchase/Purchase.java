@@ -3,6 +3,8 @@ package es.udc.pa.pa009.elmocines.model.purchase;
 import java.util.Calendar;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,11 +17,23 @@ import javax.persistence.TemporalType;
 
 import es.udc.pa.pa009.elmocines.model.session.Session;
 
+// TODO: Auto-generated Javadoc
 /**
  * La clase Purchase para modelar una compra.
  */
 @Entity
 public class Purchase {
+
+	/**
+	 * The Enum PurchaseState.
+	 */
+	private enum PurchaseState {
+
+		/** The pending. */
+		PENDING,
+		/** The delivered. */
+		DELIVERED
+	};
 
 	/** The purchase id. */
 	@SequenceGenerator(name = "PurchaseIdGenerator", sequenceName = "purchaseSeq")
@@ -33,9 +47,9 @@ public class Purchase {
 	/** The location count. */
 	private int locationCount;
 
-	// FIXME: sería esto un boolean o un int?
 	/** The purchase state. */
-	private int purchaseState;
+	@Enumerated(EnumType.STRING)
+	private PurchaseState purchaseState;
 
 	/** The credit card expiration date. */
 	@Temporal(TemporalType.DATE)
@@ -46,7 +60,6 @@ public class Purchase {
 	private Calendar date;
 
 	/** The session. */
-	// FIXME: Esto podría también ser EAGER
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	@JoinColumn(name = "sessionId")
 	private Session session;
@@ -74,8 +87,8 @@ public class Purchase {
 	 * @param session
 	 *            the session
 	 */
-	public Purchase(int creditCardNumber, Calendar creditCardExpirationDate, int locationCount, int purchaseState,
-			Calendar date, Session session) {
+	public Purchase(int creditCardNumber, Calendar creditCardExpirationDate, int locationCount,
+			PurchaseState purchaseState, Calendar date, Session session) {
 		this.creditCardNumber = creditCardNumber;
 		this.creditCardExpirationDate = creditCardExpirationDate;
 		this.locationCount = locationCount;
@@ -151,25 +164,6 @@ public class Purchase {
 	}
 
 	/**
-	 * Gets the purchase state.
-	 *
-	 * @return the purchase state
-	 */
-	public int getPurchaseState() {
-		return purchaseState;
-	}
-
-	/**
-	 * Sets the purchase state.
-	 *
-	 * @param purchaseState
-	 *            the new purchase state
-	 */
-	public void setPurchaseState(int purchaseState) {
-		this.purchaseState = purchaseState;
-	}
-
-	/**
 	 * Gets the date.
 	 *
 	 * @return the date
@@ -205,6 +199,14 @@ public class Purchase {
 	 */
 	public void setSession(Session session) {
 		this.session = session;
+	}
+
+	public PurchaseState getPurchaseState() {
+		return purchaseState;
+	}
+
+	public void setPurchaseState(PurchaseState purchaseState) {
+		this.purchaseState = purchaseState;
 	}
 
 }
