@@ -14,6 +14,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Version;
 
 import es.udc.pa.pa009.elmocines.model.movie.Movie;
 import es.udc.pa.pa009.elmocines.model.room.Room;
@@ -32,6 +33,7 @@ public class Session {
 	private long sessionId;
 
 	/** The free locations count. */
+	@Version
 	private int freeLocationsCount;
 
 	/** The hour. */
