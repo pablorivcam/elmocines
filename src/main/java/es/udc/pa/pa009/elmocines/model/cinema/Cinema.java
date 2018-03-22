@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 import es.udc.pa.pa009.elmocines.model.province.Province;
 import es.udc.pa.pa009.elmocines.model.room.Room;
@@ -17,6 +18,7 @@ import es.udc.pa.pa009.elmocines.model.room.Room;
  * La clase Cinema para modelar un cine.
  */
 @Entity
+@Table(name = "Cinemas")
 public class Cinema {
 
 	/** The cinema id. */

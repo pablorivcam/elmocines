@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 import es.udc.pa.pa009.elmocines.model.cinema.Cinema;
 
@@ -14,6 +15,7 @@ import es.udc.pa.pa009.elmocines.model.cinema.Cinema;
  * La clase Province que modela una provincia.
  */
 @Entity
+@Table(name = "Provinces")
 public class Province {
 
 	/** The province id. */

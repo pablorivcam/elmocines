@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 import es.udc.pa.pa009.elmocines.model.cinema.Cinema;
 
@@ -15,6 +16,7 @@ import es.udc.pa.pa009.elmocines.model.cinema.Cinema;
  * La clase Room que modela la entidad Room.
  */
 @Entity
+@Table(name = "Rooms")
 public class Room {
 
 	/** The room id. */

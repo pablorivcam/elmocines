@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -21,6 +22,7 @@ import es.udc.pa.pa009.elmocines.model.room.Room;
  * La clase Session que modela la entidad Session.
  */
 @Entity
+@Table(name = "SessionMovies")
 public class Session {
 
 	/** The session id. */
