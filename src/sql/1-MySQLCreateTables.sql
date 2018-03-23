@@ -13,12 +13,12 @@ DROP TABLE Provinces;
 CREATE TABLE UserProfile (
     usrId BIGINT NOT NULL AUTO_INCREMENT,
     loginName VARCHAR(30) COLLATE latin1_bin NOT NULL,
-    enPassword VARCHAR(13) NOT NULL, 
+    enPassword VARCHAR(13) NOT NULL,
     firstName VARCHAR(30) NOT NULL,
-    role VARCHAR (20) NOT NULL 
+    role VARCHAR (20) NOT NULL
     lastName VARCHAR(40) NOT NULL, email VARCHAR(60) NOT NULL,
     CONSTRAINT UserProfile_PK PRIMARY KEY (usrId),
-    CONSTRAINT LoginNameUniqueKey UNIQUE (loginName)) 
+    CONSTRAINT LoginNameUniqueKey UNIQUE (loginName))
     ENGINE = InnoDB;
 
 CREATE INDEX UserProfileIndexByLoginName ON UserProfile (loginName);
@@ -37,7 +37,7 @@ CREATE TABLE Cinemas
 			REFERENCES Provinces(provinceId));
 
 
-CREATE TABLE Rooms	
+CREATE TABLE Rooms
        (roomId		BIGINT NOT NULL AUTO_INCREMENT,
 		cinemaId	BIGINT NOT NULL,
         name		VARCHAR(20) NOT NULL ,
@@ -47,22 +47,22 @@ CREATE TABLE Rooms
 			REFERENCES Cinemas(cinemaId));
 
 
-CREATE TABLE Movies	
+CREATE TABLE Movies
        (movieId		BIGINT NOT NULL AUTO_INCREMENT,
         title		VARCHAR(20) NOT NULL ,
         review		VARCHAR(100) NOT NULL,
-		duration 	VARCHAR(10)  NOT NULL,
+		length 	    TIME  NOT NULL,
 		initDate 	DATETIME  NOT NULL,
 		finalDate	DATETIME  NOT NULL,
 		CONSTRAINT MoviesPK PRIMARY KEY(movieId),
 	    CONSTRAINT ValidDate CHECK ( finalDate > initDate));
 
 
-CREATE TABLE SessionMovies	
+CREATE TABLE SessionMovies
        (sessionId	BIGINT NOT NULL AUTO_INCREMENT,
 		roomId		BIGINT NOT NULL,
 		movieId		BIGINT NOT NULL,
-        hour		SMALLINT NOT NULL ,
+        hour		TIME NOT NULL ,
         price		FLOAT NOT NULL,
 		freeLocationsCount SMALLINT NOT NULL,
 		CONSTRAINT	SessionMoviesPK PRIMARY KEY(sessionId),
@@ -72,7 +72,7 @@ CREATE TABLE SessionMovies
 			REFERENCES Movies(movieId),
 		CONSTRAINT	ValidHour CHECK ( hour >= 0 AND hour <= 23));
 
-CREATE TABLE Purchases	
+CREATE TABLE Purchases
        (purchaseId				BIGINT NOT NULL AUTO_INCREMENT,
 		usrId					BIGINT NOT NULL,
 		sessionId				BIGINT NOT NULL,
@@ -87,8 +87,3 @@ CREATE TABLE Purchases
 		CONSTRAINT PurchasesSessionIdFK FOREIGN KEY(sessionId)
 			REFERENCES SessionMovies(sessionId)),
 		CONSTRAINT ValidLocationCount CHECK (locationCount<=10);
-
-
-
-
-
