@@ -22,7 +22,7 @@ public class Movie {
 	@Id
 	@SequenceGenerator(name = "movieIdGenerator", sequenceName = "movieSeq")
 	@GeneratedValue(generator = "movieIdGenerator", strategy = GenerationType.AUTO)
-	private long movieId;
+	private Long movieId;
 
 	/** The title. */
 	private String title;
@@ -31,7 +31,7 @@ public class Movie {
 	private String review;
 
 	/** The lenght. */
-	private int lenght;
+	private Integer lenght;
 
 	/** The init date. */
 	// Nota: usamos date porque solo queremos almacenar la fecha.
@@ -49,7 +49,21 @@ public class Movie {
 
 	}
 
-	public Movie(String title, String review, int lenght, Calendar initDate, Calendar finalDate) {
+	/**
+	 * Instantiates a new movie.
+	 *
+	 * @param title
+	 *            the title
+	 * @param review
+	 *            the review
+	 * @param lenght
+	 *            the lenght
+	 * @param initDate
+	 *            the init date
+	 * @param finalDate
+	 *            the final date
+	 */
+	public Movie(String title, String review, Integer lenght, Calendar initDate, Calendar finalDate) {
 		this.title = title;
 		this.review = review;
 		this.lenght = lenght;
@@ -57,46 +71,106 @@ public class Movie {
 		this.finalDate = finalDate;
 	}
 
-	public long getMovieId() {
+	/**
+	 * Gets the movie id.
+	 *
+	 * @return the movie id
+	 */
+	public Long getMovieId() {
 		return movieId;
 	}
 
+	/**
+	 * Gets the title.
+	 *
+	 * @return the title
+	 */
 	public String getTitle() {
 		return title;
 	}
 
+	/**
+	 * Sets the title.
+	 *
+	 * @param title
+	 *            the new title
+	 */
 	public void setTitle(String title) {
 		this.title = title;
 	}
 
+	/**
+	 * Gets the review.
+	 *
+	 * @return the review
+	 */
 	public String getReview() {
 		return review;
 	}
 
+	/**
+	 * Sets the review.
+	 *
+	 * @param review
+	 *            the new review
+	 */
 	public void setReview(String review) {
 		this.review = review;
 	}
 
-	public int getLenght() {
+	/**
+	 * Gets the lenght.
+	 *
+	 * @return the lenght
+	 */
+	public Integer getLenght() {
 		return lenght;
 	}
 
-	public void setLenght(int lenght) {
+	/**
+	 * Sets the lenght.
+	 *
+	 * @param lenght
+	 *            the new lenght
+	 */
+	public void setLenght(Integer lenght) {
 		this.lenght = lenght;
 	}
 
+	/**
+	 * Gets the inits the date.
+	 *
+	 * @return the inits the date
+	 */
 	public Calendar getInitDate() {
 		return initDate;
 	}
 
+	/**
+	 * Sets the inits the date.
+	 *
+	 * @param initDate
+	 *            the new inits the date
+	 */
 	public void setInitDate(Calendar initDate) {
 		this.initDate = initDate;
 	}
 
+	/**
+	 * Gets the final date.
+	 *
+	 * @return the final date
+	 */
 	public Calendar getFinalDate() {
 		return finalDate;
 	}
 
+	/**
+	 * Sets the final date.
+	 *
+	 * @param finalDate
+	 *            the new final date
+	 */
 	public void setFinalDate(Calendar finalDate) {
 		this.finalDate = finalDate;
 	}

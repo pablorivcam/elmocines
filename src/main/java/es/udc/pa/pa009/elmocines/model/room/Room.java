@@ -23,13 +23,13 @@ public class Room {
 	@Id
 	@SequenceGenerator(name = "roomIdGenerator", sequenceName = "roomSeq")
 	@GeneratedValue(generator = "roomIdGenerator", strategy = GenerationType.AUTO)
-	private long roomId;
+	private Long roomId;
 
 	/** The name. */
 	private String name;
 
 	/** The capacity. */
-	private int capacity;
+	private Integer capacity;
 
 	/** The cinema. */
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -53,7 +53,7 @@ public class Room {
 	 * @param cinema
 	 *            the cinema
 	 */
-	public Room(String name, int capacity, Cinema cinema) {
+	public Room(String name, Integer capacity, Cinema cinema) {
 		this.name = name;
 		this.capacity = capacity;
 		this.cinema = cinema;
@@ -64,7 +64,7 @@ public class Room {
 	 *
 	 * @return the room id
 	 */
-	public long getRoomId() {
+	public Long getRoomId() {
 		return roomId;
 	}
 
@@ -92,7 +92,7 @@ public class Room {
 	 *
 	 * @return the capacity
 	 */
-	public int getCapacity() {
+	public Integer getCapacity() {
 		return capacity;
 	}
 
@@ -102,7 +102,7 @@ public class Room {
 	 * @param capacity
 	 *            the new capacity
 	 */
-	public void setCapacity(int capacity) {
+	public void setCapacity(Integer capacity) {
 		this.capacity = capacity;
 	}
 

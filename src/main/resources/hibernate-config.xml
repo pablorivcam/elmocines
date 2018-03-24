@@ -15,5 +15,14 @@
 		<property name="hibernate.id.new_generator_mappings">false</property>
 
         <mapping class="es.udc.pa.pa009.elmocines.model.userprofile.UserProfile" />
+        
+        <!-- Importante añadir los mappins de las entidades aquí para que hibernate funcione -->
+        <mapping class="es.udc.pa.pa009.elmocines.model.cinema.Cinema" />
+        <mapping class="es.udc.pa.pa009.elmocines.model.movie.Movie" />
+        <mapping class="es.udc.pa.pa009.elmocines.model.province.Province" />
+        <mapping class="es.udc.pa.pa009.elmocines.model.purchase.Purchase" />
+        <mapping class="es.udc.pa.pa009.elmocines.model.room.Room" />
+        <mapping class="es.udc.pa.pa009.elmocines.model.session.Session" />
+        
     </session-factory>
 </hibernate-configuration>

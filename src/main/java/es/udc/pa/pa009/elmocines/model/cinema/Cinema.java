@@ -1,5 +1,7 @@
 package es.udc.pa.pa009.elmocines.model.cinema;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -25,7 +27,7 @@ public class Cinema {
 	@Id
 	@SequenceGenerator(name = "cinemaSeqGenerator", sequenceName = "cinemaSeq")
 	@GeneratedValue(generator = "cinemaSeqGenerator", strategy = GenerationType.AUTO)
-	private long cinemaId;
+	private Long cinemaId;
 
 	/** The name. */
 	private String name;
@@ -37,7 +39,7 @@ public class Cinema {
 
 	/** The room. */
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cinema")
-	private Room room;
+	private List<Room> rooms;
 
 	/**
 	 * Constructor vacío necesario para hibernate.
@@ -53,13 +55,13 @@ public class Cinema {
 	 *            the name
 	 * @param province
 	 *            the province
-	 * @param room
-	 *            the room
+	 * @param rooms
+	 *            the rooms
 	 */
-	public Cinema(String name, Province province, Room room) {
+	public Cinema(String name, Province province, List<Room> rooms) {
 		this.name = name;
 		this.province = province;
-		this.room = room;
+		this.rooms = rooms;
 	}
 
 	/**
@@ -67,7 +69,7 @@ public class Cinema {
 	 *
 	 * @return the cinema id
 	 */
-	public long getCinemaId() {
+	public Long getCinemaId() {
 		return cinemaId;
 	}
 
@@ -110,22 +112,22 @@ public class Cinema {
 	}
 
 	/**
-	 * Gets the room.
+	 * Gets the rooms.
 	 *
-	 * @return the room
+	 * @return the rooms
 	 */
-	public Room getRoom() {
-		return room;
+	public List<Room> getRooms() {
+		return rooms;
 	}
 
 	/**
-	 * Sets the room.
+	 * Sets the rooms.
 	 *
-	 * @param room
-	 *            the new room
+	 * @param rooms
+	 *            the new rooms
 	 */
-	public void setRoom(Room room) {
-		this.room = room;
+	public void setRooms(List<Room> rooms) {
+		this.rooms = rooms;
 	}
 
 }

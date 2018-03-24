@@ -1,5 +1,7 @@
 package es.udc.pa.pa009.elmocines.model.province;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -22,26 +24,26 @@ public class Province {
 	@Id
 	@SequenceGenerator(name = "provinceIdGenerator", sequenceName = "provinceSeq")
 	@GeneratedValue(generator = "provinceIdGenerator", strategy = GenerationType.AUTO)
-	private long provinceId;
+	private Long provinceId;
 
 	/** The name. */
 	private String name;
 
 	/** The cinema. */
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "province")
-	private Cinema cinema;
+	private List<Cinema> cinemas;
 
 	/**
 	 * Instantiates a new province.
 	 *
 	 * @param name
 	 *            the name
-	 * @param cinema
-	 *            the cinema
+	 * @param cinemas
+	 *            the cinemas
 	 */
-	public Province(String name, Cinema cinema) {
+	public Province(String name, List<Cinema> cinemas) {
 		this.name = name;
-		this.cinema = cinema;
+		this.cinemas = cinemas;
 	}
 
 	/**
@@ -56,7 +58,7 @@ public class Province {
 	 *
 	 * @return the province id
 	 */
-	public long getProvinceId() {
+	public Long getProvinceId() {
 		return provinceId;
 	}
 
@@ -80,22 +82,22 @@ public class Province {
 	}
 
 	/**
-	 * Gets the cinema.
+	 * Gets the cinemas.
 	 *
-	 * @return the cinema
+	 * @return the cinemas
 	 */
-	public Cinema getCinema() {
-		return cinema;
+	public List<Cinema> getCinemas() {
+		return cinemas;
 	}
 
 	/**
-	 * Sets the cinema.
+	 * Sets the cinemas.
 	 *
-	 * @param cinema
-	 *            the new cinema
+	 * @param cinemas
+	 *            the new cinemas
 	 */
-	public void setCinema(Cinema cinema) {
-		this.cinema = cinema;
+	public void setCinemas(List<Cinema> cinemas) {
+		this.cinemas = cinemas;
 	}
 
 }

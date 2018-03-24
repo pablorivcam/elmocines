@@ -41,13 +41,13 @@ public class Purchase {
 	@SequenceGenerator(name = "PurchaseIdGenerator", sequenceName = "purchaseSeq")
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "PurchaseIdGenerator")
-	private long purchaseId;
+	private Long purchaseId;
 
 	/** The credit card number. */
-	private int creditCardNumber;
+	private Integer creditCardNumber;
 
 	/** The location count. */
-	private int locationCount;
+	private Integer locationCount;
 
 	/** The purchase state. */
 	@Enumerated(EnumType.STRING)
@@ -89,7 +89,7 @@ public class Purchase {
 	 * @param session
 	 *            the session
 	 */
-	public Purchase(int creditCardNumber, Calendar creditCardExpirationDate, int locationCount,
+	public Purchase(Integer creditCardNumber, Calendar creditCardExpirationDate, Integer locationCount,
 			PurchaseState purchaseState, Calendar date, Session session) {
 		this.creditCardNumber = creditCardNumber;
 		this.creditCardExpirationDate = creditCardExpirationDate;
@@ -104,7 +104,7 @@ public class Purchase {
 	 *
 	 * @return the purchase id
 	 */
-	public long getPurchaseId() {
+	public Long getPurchaseId() {
 		return purchaseId;
 	}
 
@@ -113,7 +113,7 @@ public class Purchase {
 	 *
 	 * @return the credit card number
 	 */
-	public int getCreditCardNumber() {
+	public Integer getCreditCardNumber() {
 		return creditCardNumber;
 	}
 
@@ -123,7 +123,7 @@ public class Purchase {
 	 * @param creditCardNumber
 	 *            the new credit card number
 	 */
-	public void setCreditCardNumber(int creditCardNumber) {
+	public void setCreditCardNumber(Integer creditCardNumber) {
 		this.creditCardNumber = creditCardNumber;
 	}
 
@@ -151,7 +151,7 @@ public class Purchase {
 	 *
 	 * @return the location count
 	 */
-	public int getLocationCount() {
+	public Integer getLocationCount() {
 		return locationCount;
 	}
 
@@ -161,7 +161,7 @@ public class Purchase {
 	 * @param locationCount
 	 *            the new location count
 	 */
-	public void setLocationCount(int locationCount) {
+	public void setLocationCount(Integer locationCount) {
 		this.locationCount = locationCount;
 	}
 

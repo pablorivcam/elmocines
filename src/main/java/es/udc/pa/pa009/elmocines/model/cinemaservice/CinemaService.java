@@ -8,6 +8,7 @@ import es.udc.pa.pa009.elmocines.model.province.Province;
 import es.udc.pa.pa009.elmocines.model.purchase.Purchase;
 import es.udc.pa.pa009.elmocines.model.session.Session;
 import es.udc.pojo.modelutil.data.Block;
+import es.udc.pojo.modelutil.exceptions.InstanceNotFoundException;
 
 /**
  * The Interface CinemaService.
@@ -29,7 +30,7 @@ public interface CinemaService {
 	 *            the province id
 	 * @return the list
 	 */
-	public List<Cinema> findCinemasByProvinceId(long provinceId);
+	public List<Cinema> findCinemasByProvinceId(Long provinceId);
 
 	/**
 	 * Gets the sessions on a cinema.
@@ -42,7 +43,8 @@ public interface CinemaService {
 	 *            the number of sessions that we want to get.
 	 * @return the sessions
 	 */
-	public Block<Session> getSessions(long cinemaId, int startIndex, int count);
+	public Block<Session> getSessions(Long cinemaId, int startIndex, int count)
+			throws InputValidationException, InstanceNotFoundException;
 
 	/**
 	 * Find movie by id.
@@ -60,7 +62,7 @@ public interface CinemaService {
 	 *            the session id
 	 * @return the session
 	 */
-	public Session findSessionBySessionId(long sessionId);
+	public Session findSessionBySessionId(Long sessionId);
 
 	/**
 	 * Purchase tickets.
@@ -70,7 +72,7 @@ public interface CinemaService {
 	 * @param locationsAmmount
 	 *            the locations ammount
 	 */
-	public void purchaseTickets(long sessionId, int locationsAmmount);
+	public void purchaseTickets(Long sessionId, int locationsAmmount);
 
 	/**
 	 * Gets the purchases.
@@ -83,7 +85,7 @@ public interface CinemaService {
 	 *            the number of purchases that we want to get.
 	 * @return the purchases
 	 */
-	public Block<Purchase> getPurchases(long userId, int startIndex, int count);
+	public Block<Purchase> getPurchases(Long userId, int startIndex, int count);
 
 	/**
 	 * Gets the purchase.
@@ -92,7 +94,7 @@ public interface CinemaService {
 	 *            the purchase id
 	 * @return the purchase
 	 */
-	public Purchase getPurchase(long purchaseId);
+	public Purchase getPurchase(Long purchaseId);
 
 	/**
 	 * Collect tickets.
@@ -101,6 +103,6 @@ public interface CinemaService {
 	 *            the purchase id
 	 * @return the purchase
 	 */
-	public Purchase collectTickets(long purchaseId);
+	public Purchase collectTickets(Long purchaseId);
 
 }

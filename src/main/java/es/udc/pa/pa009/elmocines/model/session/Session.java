@@ -1,7 +1,7 @@
 package es.udc.pa.pa009.elmocines.model.session;
 
 import java.math.BigDecimal;
-import java.util.Calendar;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -39,7 +39,7 @@ public class Session {
 	/** The hour. */
 	// Nota: usamos time porque solo queremos almacenar la hora.
 	@Temporal(TemporalType.TIME)
-	private Calendar hour;
+	private Date hour;
 
 	/** The price. */
 	private BigDecimal price;
@@ -75,7 +75,7 @@ public class Session {
 	 * @param room
 	 *            the room
 	 */
-	public Session(int freeLocationsCount, Calendar hour, BigDecimal price, Movie movie, Room room) {
+	public Session(int freeLocationsCount, Date hour, BigDecimal price, Movie movie, Room room) {
 		this.freeLocationsCount = freeLocationsCount;
 		this.hour = hour;
 		this.price = price;
@@ -109,25 +109,6 @@ public class Session {
 	 */
 	public void setFreeLocationsCount(int freeLocationsCount) {
 		this.freeLocationsCount = freeLocationsCount;
-	}
-
-	/**
-	 * Gets the hour.
-	 *
-	 * @return the hour
-	 */
-	public Calendar getHour() {
-		return hour;
-	}
-
-	/**
-	 * Sets the hour.
-	 *
-	 * @param hour
-	 *            the new hour
-	 */
-	public void setHour(Calendar hour) {
-		this.hour = hour;
 	}
 
 	/**
@@ -185,6 +166,25 @@ public class Session {
 	 */
 	public void setRoom(Room room) {
 		this.room = room;
+	}
+
+	/**
+	 * Gets the hour.
+	 *
+	 * @return the hour
+	 */
+	public Date getHour() {
+		return hour;
+	}
+
+	/**
+	 * Sets the hour.
+	 *
+	 * @param hour
+	 *            the new hour
+	 */
+	public void setHour(Date hour) {
+		this.hour = hour;
 	}
 
 }
