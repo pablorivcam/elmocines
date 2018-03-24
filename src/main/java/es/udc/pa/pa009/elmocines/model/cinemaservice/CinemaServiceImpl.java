@@ -80,21 +80,20 @@ public class CinemaServiceImpl implements CinemaService {
 	}
 
 	@Override
-	public Movie findMovieById(Movie movie) {
+	public Movie findMovieById(Long movieId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Session findSessionBySessionId(Long sessionId) {
-		// TODO Auto-generated method stub
-		return null;
+	public Session findSessionBySessionId(Long sessionId) throws InstanceNotFoundException {
+		return sessionDao.find(sessionId);
 	}
 
 	@Override
-	public void purchaseTickets(Long sessionId, int locationsAmmount) {
+	public Purchase purchaseTickets(Long sessionId, int locationsAmmount) {
 		// TODO Auto-generated method stub
-
+		return null;
 	}
 
 	@Override

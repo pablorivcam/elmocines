@@ -49,11 +49,11 @@ public interface CinemaService {
 	/**
 	 * Find movie by id.
 	 *
-	 * @param movie
-	 *            the movie
+	 * @param movieId
+	 *            the movie id
 	 * @return the movie
 	 */
-	public Movie findMovieById(Movie movie);
+	public Movie findMovieById(Long movieId);
 
 	/**
 	 * Find session by session id.
@@ -62,7 +62,7 @@ public interface CinemaService {
 	 *            the session id
 	 * @return the session
 	 */
-	public Session findSessionBySessionId(Long sessionId);
+	public Session findSessionBySessionId(Long sessionId) throws InstanceNotFoundException;
 
 	/**
 	 * Purchase tickets.
@@ -71,8 +71,9 @@ public interface CinemaService {
 	 *            the session id
 	 * @param locationsAmmount
 	 *            the locations ammount
+	 * @return the purchase
 	 */
-	public void purchaseTickets(Long sessionId, int locationsAmmount);
+	public Purchase purchaseTickets(Long sessionId, int locationsAmmount);
 
 	/**
 	 * Gets the purchases.

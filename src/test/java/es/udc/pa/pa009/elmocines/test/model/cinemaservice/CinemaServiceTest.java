@@ -36,6 +36,9 @@ import es.udc.pojo.modelutil.exceptions.InstanceNotFoundException;
 @Transactional
 public class CinemaServiceTest {
 
+	private final long NON_EXISTENT_CINEMA_ID = -1;
+	private final long NON_EXISTENT_SESSION_ID = -1;
+
 	public static final String PROVINCE_TEST_NAME = "TEST_PROVINCE";
 	public static final String CINEMA_TEST_NAME = "TEST_CINEMA";
 	public static final String ROOM_TEST_NAME = "TEST_ROOM";
@@ -128,6 +131,66 @@ public class CinemaServiceTest {
 		assertEquals(sessions.getItems().get(0).getPrice(), session.getPrice());
 		assertEquals(sessions.getItems().get(1).getRoom(), session2.getRoom());
 		assertEquals(sessions.getItems().get(1).getPrice(), session2.getPrice());
+	}
+
+	@Test(expected = InstanceNotFoundException.class)
+	public void findNonExistentCinemaTest() throws InstanceNotFoundException {
+
+		try {
+			cinemaService.getSessionsByCinemaId(NON_EXISTENT_CINEMA_ID, 0, 10);
+		} catch (InputValidationException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@Test(expected = InputValidationException.class)
+	public void getSessionsByCinemaIdTestWithInvalidCountParameter() throws InputValidationException {
+		Province province = createProvince(PROVINCE_TEST_NAME);
+		Cinema cinema = createCinema(CINEMA_TEST_NAME, province);
+		try {
+			cinemaService.getSessionsByCinemaId(cinema.getCinemaId(), -2, 10);
+		} catch (InstanceNotFoundException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@Test(expected = InputValidationException.class)
+	public void getSessionsByCinemaIdTestWithInvalidStartIndexParameter() throws InputValidationException {
+		Province province = createProvince(PROVINCE_TEST_NAME);
+		Cinema cinema = createCinema(CINEMA_TEST_NAME, province);
+		try {
+			cinemaService.getSessionsByCinemaId(cinema.getCinemaId(), 0, -10);
+		} catch (InstanceNotFoundException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@Test
+	public void findSessionBySessionIdTest() {
+		Province province = createProvince(PROVINCE_TEST_NAME);
+		Cinema cinema = createCinema(CINEMA_TEST_NAME, province);
+		Room room = createRoom(ROOM_TEST_NAME, 10, cinema);
+		Movie movie = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(), Calendar.getInstance());
+
+		Session expected = createSession(100, new Date(), new BigDecimal(10.4), movie, room);
+		Session session = null;
+		try {
+			session = cinemaService.findSessionBySessionId(expected.getSessionId());
+		} catch (InstanceNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		assertEquals(expected, session);
+
+	}
+
+	@Test(expected = InstanceNotFoundException.class)
+	public void findSessionsByInvalidSessionIdTest() throws InstanceNotFoundException {
+		cinemaService.findSessionBySessionId(NON_EXISTENT_SESSION_ID);
 	}
 
 }
