@@ -80,7 +80,7 @@ CREATE TABLE Purchases
        (purchaseId				BIGINT NOT NULL AUTO_INCREMENT,
 		usrId					BIGINT NOT NULL,
 		sessionId				BIGINT NOT NULL,
-		creditCard 				BIGINT NOT NULL,
+		creditCardNumber 		BIGINT NOT NULL,
 		creditCardExpiration 	DATE NOT NULL,
 		locationCount			SMALLINT NOT NULL,
 		purchaseState			VARCHAR(20) NOT NULL,

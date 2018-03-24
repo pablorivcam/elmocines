@@ -42,6 +42,10 @@ public interface CinemaService {
 	 * @param count
 	 *            the number of sessions that we want to get.
 	 * @return the sessions
+	 * @throws InputValidationException
+	 *             the input validation exception
+	 * @throws InstanceNotFoundException
+	 *             the instance not found exception
 	 */
 	public Block<Session> getSessionsByCinemaId(Long cinemaId, int startIndex, int count)
 			throws InputValidationException, InstanceNotFoundException;
@@ -61,6 +65,8 @@ public interface CinemaService {
 	 * @param sessionId
 	 *            the session id
 	 * @return the session
+	 * @throws InstanceNotFoundException
+	 *             the instance not found exception
 	 */
 	public Session findSessionBySessionId(Long sessionId) throws InstanceNotFoundException;
 
@@ -103,7 +109,11 @@ public interface CinemaService {
 	 * @param purchaseId
 	 *            the purchase id
 	 * @return the purchase
+	 * @throws InstanceNotFoundException
+	 *             the instance not found exception
+	 * @throws TicketsAlreadyCollectedException
+	 *             the tickets already collected exception
 	 */
-	public Purchase collectTickets(Long purchaseId);
+	public Purchase collectTickets(Long purchaseId) throws InstanceNotFoundException, TicketsAlreadyCollectedException;
 
 }

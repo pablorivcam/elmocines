@@ -12,6 +12,7 @@ import es.udc.pa.pa009.elmocines.model.cinema.CinemaDao;
 import es.udc.pa.pa009.elmocines.model.movie.Movie;
 import es.udc.pa.pa009.elmocines.model.province.Province;
 import es.udc.pa.pa009.elmocines.model.purchase.Purchase;
+import es.udc.pa.pa009.elmocines.model.purchase.PurchaseDao;
 import es.udc.pa.pa009.elmocines.model.room.Room;
 import es.udc.pa.pa009.elmocines.model.room.RoomDao;
 import es.udc.pa.pa009.elmocines.model.session.Session;
@@ -31,6 +32,9 @@ public class CinemaServiceImpl implements CinemaService {
 
 	@Autowired
 	RoomDao roomDao;
+
+	@Autowired
+	PurchaseDao purchaseDao;
 
 	@Override
 	public List<Province> getProvinces() {
@@ -90,6 +94,8 @@ public class CinemaServiceImpl implements CinemaService {
 		return sessionDao.find(sessionId);
 	}
 
+	// FIXME: Acordarse de poner aqui una excepción que sea
+	// TooManyLocationsException
 	@Override
 	public Purchase purchaseTickets(Long sessionId, int locationsAmmount) {
 		// TODO Auto-generated method stub
@@ -109,9 +115,15 @@ public class CinemaServiceImpl implements CinemaService {
 	}
 
 	@Override
-	public Purchase collectTickets(Long purchaseId) {
-		// TODO Auto-generated method stub
-		return null;
+	public Purchase collectTickets(Long purchaseId) throws InstanceNotFoundException, TicketsAlreadyCollectedException {
+		Purchase purchase = purchaseDao.find(purchaseId);
+
+		if (purchase.getPurchaseState().equals(Purchase.PurchaseState.DELIVERED))
+			throw new TicketsAlreadyCollectedException();
+
+		purchase.setPurchaseState(Purchase.PurchaseState.DELIVERED); // No hace falta llamar al save, hibernate lo hace
+																		// automáticamente.
+		return purchase;
 	}
 
 }

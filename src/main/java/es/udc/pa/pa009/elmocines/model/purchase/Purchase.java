@@ -1,7 +1,9 @@
 package es.udc.pa.pa009.elmocines.model.purchase;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -17,6 +19,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import es.udc.pa.pa009.elmocines.model.session.Session;
+import es.udc.pa.pa009.elmocines.model.userprofile.UserProfile;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -29,7 +32,7 @@ public class Purchase {
 	/**
 	 * The Enum PurchaseState.
 	 */
-	private enum PurchaseState {
+	public static enum PurchaseState {
 
 		/** The pending. */
 		PENDING,
@@ -44,7 +47,7 @@ public class Purchase {
 	private Long purchaseId;
 
 	/** The credit card number. */
-	private Integer creditCardNumber;
+	private BigDecimal creditCardNumber;
 
 	/** The location count. */
 	private Integer locationCount;
@@ -55,6 +58,7 @@ public class Purchase {
 
 	/** The credit card expiration date. */
 	@Temporal(TemporalType.DATE)
+	@Column(name = "creditCardExpiration")
 	private Calendar creditCardExpirationDate;
 
 	/** The date. */
@@ -65,6 +69,10 @@ public class Purchase {
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	@JoinColumn(name = "sessionId")
 	private Session session;
+
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "usrId")
+	private UserProfile user;
 
 	/**
 	 * Constructor sin parámetros necesario para hibernate.
@@ -89,14 +97,15 @@ public class Purchase {
 	 * @param session
 	 *            the session
 	 */
-	public Purchase(Integer creditCardNumber, Calendar creditCardExpirationDate, Integer locationCount,
-			PurchaseState purchaseState, Calendar date, Session session) {
+	public Purchase(BigDecimal creditCardNumber, Calendar creditCardExpirationDate, Integer locationCount,
+			PurchaseState purchaseState, Calendar date, Session session, UserProfile user) {
 		this.creditCardNumber = creditCardNumber;
 		this.creditCardExpirationDate = creditCardExpirationDate;
 		this.locationCount = locationCount;
 		this.purchaseState = purchaseState;
 		this.date = date;
 		this.session = session;
+		this.user = user;
 	}
 
 	/**
@@ -113,7 +122,7 @@ public class Purchase {
 	 *
 	 * @return the credit card number
 	 */
-	public Integer getCreditCardNumber() {
+	public BigDecimal getCreditCardNumber() {
 		return creditCardNumber;
 	}
 
@@ -123,7 +132,7 @@ public class Purchase {
 	 * @param creditCardNumber
 	 *            the new credit card number
 	 */
-	public void setCreditCardNumber(Integer creditCardNumber) {
+	public void setCreditCardNumber(BigDecimal creditCardNumber) {
 		this.creditCardNumber = creditCardNumber;
 	}
 
@@ -209,6 +218,14 @@ public class Purchase {
 
 	public void setPurchaseState(PurchaseState purchaseState) {
 		this.purchaseState = purchaseState;
+	}
+
+	public UserProfile getUser() {
+		return user;
+	}
+
+	public void setUser(UserProfile user) {
+		this.user = user;
 	}
 
 }

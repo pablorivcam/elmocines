@@ -20,15 +20,23 @@ import es.udc.pa.pa009.elmocines.model.cinema.Cinema;
 import es.udc.pa.pa009.elmocines.model.cinema.CinemaDao;
 import es.udc.pa.pa009.elmocines.model.cinemaservice.CinemaService;
 import es.udc.pa.pa009.elmocines.model.cinemaservice.InputValidationException;
+import es.udc.pa.pa009.elmocines.model.cinemaservice.TicketsAlreadyCollectedException;
 import es.udc.pa.pa009.elmocines.model.movie.Movie;
 import es.udc.pa.pa009.elmocines.model.movie.MovieDao;
 import es.udc.pa.pa009.elmocines.model.province.Province;
 import es.udc.pa.pa009.elmocines.model.province.ProvinceDao;
+import es.udc.pa.pa009.elmocines.model.purchase.Purchase;
+import es.udc.pa.pa009.elmocines.model.purchase.PurchaseDao;
 import es.udc.pa.pa009.elmocines.model.room.Room;
 import es.udc.pa.pa009.elmocines.model.room.RoomDao;
 import es.udc.pa.pa009.elmocines.model.session.Session;
 import es.udc.pa.pa009.elmocines.model.session.SessionDao;
+import es.udc.pa.pa009.elmocines.model.userprofile.UserProfile;
+import es.udc.pa.pa009.elmocines.model.userprofile.UserProfile.Role;
+import es.udc.pa.pa009.elmocines.model.userservice.UserProfileDetails;
+import es.udc.pa.pa009.elmocines.model.userservice.UserService;
 import es.udc.pojo.modelutil.data.Block;
+import es.udc.pojo.modelutil.exceptions.DuplicateInstanceException;
 import es.udc.pojo.modelutil.exceptions.InstanceNotFoundException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -38,6 +46,7 @@ public class CinemaServiceTest {
 
 	private final long NON_EXISTENT_CINEMA_ID = -1;
 	private final long NON_EXISTENT_SESSION_ID = -1;
+	private final long NON_EXISTENT_PURCHASE_ID = -1;
 
 	public static final String PROVINCE_TEST_NAME = "TEST_PROVINCE";
 	public static final String CINEMA_TEST_NAME = "TEST_CINEMA";
@@ -47,6 +56,9 @@ public class CinemaServiceTest {
 
 	@Autowired
 	private CinemaService cinemaService;
+
+	@Autowired
+	private UserService userService;
 
 	@Autowired
 	private CinemaDao cinemaDao;
@@ -63,6 +75,9 @@ public class CinemaServiceTest {
 	@Autowired
 	private MovieDao movieDao;
 
+	@Autowired
+	private PurchaseDao purchaseDao;
+
 	public Province createProvince(String name) {
 
 		Province province = new Province(name, new ArrayList<>());
@@ -71,36 +86,54 @@ public class CinemaServiceTest {
 
 	}
 
-	public Cinema createCinema(String name, Province province) {
+	private UserProfile registerUser(String loginName, String clearPassword) {
+
+		UserProfileDetails userProfileDetails = new UserProfileDetails("name", "lastName", "user@udc.es");
+
+		try {
+
+			return userService.registerUser(loginName, clearPassword, userProfileDetails, Role.CLIENT);
+
+		} catch (DuplicateInstanceException e) {
+			throw new RuntimeException(e);
+		}
+
+	}
+
+	private Cinema createCinema(String name, Province province) {
 		ArrayList<Room> rooms = new ArrayList<>();
 		Cinema cinema = new Cinema(name, province, rooms);
 		cinemaDao.save(cinema);
-		province.getCinemas().add(cinema);
-		provinceDao.save(province);
 		return cinema;
 	}
 
-	public Room createRoom(String name, int capacity, Cinema cinema) {
+	private Room createRoom(String name, int capacity, Cinema cinema) {
 		Room room = new Room(name, capacity, cinema);
-		roomDao.save(room);
-
-		cinema.getRooms().add(room);
-		cinemaDao.save(cinema);
-
+		roomDao.save(room); // FIXME: creo que no hace falta actualizar la entidad cinema con la nueva room
+							// y que hibernate lo hace automáticamente.
 		return room;
 	}
 
-	public Movie createMovie(String title, String review, int lenght, Calendar initDate, Calendar finalDate) {
+	private Movie createMovie(String title, String review, int lenght, Calendar initDate, Calendar finalDate) {
 		Movie movie = new Movie(title, review, lenght, initDate, finalDate);
 		movieDao.save(movie);
 		return movie;
 	}
 
-	public Session createSession(int freeLocationsCount, Date hour, BigDecimal price, Movie movie, Room room) {
+	private Session createSession(int freeLocationsCount, Date hour, BigDecimal price, Movie movie, Room room) {
 		Session session = new Session(freeLocationsCount, hour, price, movie, room);
 		sessionDao.save(session);
-
 		return session;
+	}
+
+	private Purchase createPurchase(BigDecimal creditCardNumber, Calendar creditCardExpirationDate, int locationCount,
+			Calendar date, Session session, UserProfile user) {
+		Purchase purchase = new Purchase(creditCardNumber, creditCardExpirationDate, locationCount,
+				Purchase.PurchaseState.PENDING, date, session, user);
+
+		purchaseDao.save(purchase);
+
+		return purchase;
 	}
 
 	@Test
@@ -191,6 +224,70 @@ public class CinemaServiceTest {
 	@Test(expected = InstanceNotFoundException.class)
 	public void findSessionsByInvalidSessionIdTest() throws InstanceNotFoundException {
 		cinemaService.findSessionBySessionId(NON_EXISTENT_SESSION_ID);
+	}
+
+	@Test
+	public void collectTicketsTest() {
+		Province province = createProvince(PROVINCE_TEST_NAME);
+		Cinema cinema = createCinema(CINEMA_TEST_NAME, province);
+		Room room = createRoom(ROOM_TEST_NAME, 10, cinema);
+		Movie movie = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(), Calendar.getInstance());
+
+		Session session = createSession(100, new Date(), new BigDecimal(10.4), movie, room);
+
+		UserProfile user = registerUser("Miguel", "Miguel");
+
+		Purchase purchase = createPurchase(new BigDecimal(12345), Calendar.getInstance(), 10, Calendar.getInstance(),
+				session, user);
+
+		assertEquals(purchase.getPurchaseState(), Purchase.PurchaseState.PENDING);
+
+		try {
+			cinemaService.collectTickets(purchase.getPurchaseId());
+		} catch (InstanceNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TicketsAlreadyCollectedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		assertEquals(purchase.getPurchaseState(), Purchase.PurchaseState.DELIVERED);
+	}
+
+	@Test(expected = InstanceNotFoundException.class)
+	public void collectInvalidTicketsTest() throws InstanceNotFoundException {
+		try {
+			cinemaService.collectTickets(NON_EXISTENT_PURCHASE_ID);
+		} catch (TicketsAlreadyCollectedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test(expected = TicketsAlreadyCollectedException.class)
+	public void collectCollectedTicketsTest() throws TicketsAlreadyCollectedException {
+		Province province = createProvince(PROVINCE_TEST_NAME);
+		Cinema cinema = createCinema(CINEMA_TEST_NAME, province);
+		Room room = createRoom(ROOM_TEST_NAME, 10, cinema);
+		Movie movie = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(), Calendar.getInstance());
+
+		Session session = createSession(100, new Date(), new BigDecimal(10.4), movie, room);
+
+		UserProfile user = registerUser("Miguel", "Miguel");
+
+		Purchase purchase = createPurchase(new BigDecimal(12345), Calendar.getInstance(), 10, Calendar.getInstance(),
+				session, user);
+
+		assertEquals(purchase.getPurchaseState(), Purchase.PurchaseState.PENDING);
+
+		try {
+			cinemaService.collectTickets(purchase.getPurchaseId());
+			assertEquals(purchase.getPurchaseState(), Purchase.PurchaseState.DELIVERED);
+			cinemaService.collectTickets(purchase.getPurchaseId());
+		} catch (InstanceNotFoundException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 }
