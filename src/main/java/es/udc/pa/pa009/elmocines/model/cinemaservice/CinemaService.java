@@ -43,7 +43,7 @@ public interface CinemaService {
 	 *            the number of sessions that we want to get.
 	 * @return the sessions
 	 */
-	public Block<Session> getSessions(Long cinemaId, int startIndex, int count)
+	public Block<Session> getSessionsByCinemaId(Long cinemaId, int startIndex, int count)
 			throws InputValidationException, InstanceNotFoundException;
 
 	/**

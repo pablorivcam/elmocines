@@ -75,6 +75,7 @@ public class Session {
 	 * @param room
 	 *            the room
 	 */
+	// FIXME: seguro que freeLocationsCount es un int y price un bigd?
 	public Session(int freeLocationsCount, Date hour, BigDecimal price, Movie movie, Room room) {
 		this.freeLocationsCount = freeLocationsCount;
 		this.hour = hour;

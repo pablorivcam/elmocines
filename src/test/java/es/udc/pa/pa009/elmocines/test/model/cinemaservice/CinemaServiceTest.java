@@ -39,6 +39,8 @@ public class CinemaServiceTest {
 	public static final String PROVINCE_TEST_NAME = "TEST_PROVINCE";
 	public static final String CINEMA_TEST_NAME = "TEST_CINEMA";
 	public static final String ROOM_TEST_NAME = "TEST_ROOM";
+	public static final String SESSION_TEST_NAME = "TEST_SESSION";
+	public static final String MOVIE_TEST_NAME = "TEST_MOVIE";
 
 	@Autowired
 	private CinemaService cinemaService;
@@ -58,53 +60,62 @@ public class CinemaServiceTest {
 	@Autowired
 	private MovieDao movieDao;
 
-	public Cinema createCinema() {
-		Province province = new Province(PROVINCE_TEST_NAME, null);
+	public Province createProvince(String name) {
 
-		Cinema c = new Cinema(CINEMA_TEST_NAME, province, null);
-		Cinema c2 = new Cinema(CINEMA_TEST_NAME + 2, province, null);
-		ArrayList<Cinema> cinemas = new ArrayList<>();
-		cinemas.add(c);
-		cinemas.add(c2);
-
-		province.setCinemas(cinemas);
-
-		Room r = new Room(ROOM_TEST_NAME, 10, c);
-		Room r2 = new Room(ROOM_TEST_NAME + 2, 20, c);
-		ArrayList<Room> rooms = new ArrayList<>();
-		rooms.add(r);
-		rooms.add(r2);
-
-		c.setRooms(rooms);
+		Province province = new Province(name, new ArrayList<>());
 		provinceDao.save(province);
-		cinemaDao.save(c);
-		cinemaDao.save(c2);
-		roomDao.save(r);
-		roomDao.save(r2);
-
-		return c;
+		return province;
 
 	}
 
-	public Session createSession(Cinema c) {
+	public Cinema createCinema(String name, Province province) {
+		ArrayList<Room> rooms = new ArrayList<>();
+		Cinema cinema = new Cinema(name, province, rooms);
+		cinemaDao.save(cinema);
+		province.getCinemas().add(cinema);
+		provinceDao.save(province);
+		return cinema;
+	}
 
-		Movie m = new Movie("no", "no", 20, Calendar.getInstance(), Calendar.getInstance());
-		movieDao.save(m);
+	public Room createRoom(String name, int capacity, Cinema cinema) {
+		Room room = new Room(name, capacity, cinema);
+		roomDao.save(room);
 
-		Session s = new Session(20, new Date(), new BigDecimal(10), m, c.getRooms().get(0));
-		sessionDao.save(s);
-		return s;
+		cinema.getRooms().add(room);
+		cinemaDao.save(cinema);
+
+		return room;
+	}
+
+	public Movie createMovie(String title, String review, int lenght, Calendar initDate, Calendar finalDate) {
+		Movie movie = new Movie(title, review, lenght, initDate, finalDate);
+		movieDao.save(movie);
+		return movie;
+	}
+
+	public Session createSession(int freeLocationsCount, Date hour, BigDecimal price, Movie movie, Room room) {
+		Session session = new Session(freeLocationsCount, hour, price, movie, room);
+		sessionDao.save(session);
+
+		return session;
 	}
 
 	@Test
-	public void getSessionsTest() {
+	public void getSessionsByCinemaIdTest() {
 
-		Session s = createSession(createCinema());
+		Province province = createProvince(PROVINCE_TEST_NAME);
+		Cinema cinema = createCinema(CINEMA_TEST_NAME, province);
+		Room room = createRoom(ROOM_TEST_NAME, 10, cinema);
+		Room room2 = createRoom(ROOM_TEST_NAME + 2, 10, cinema);
+		Movie movie = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(), Calendar.getInstance());
+
+		Session session = createSession(100, new Date(), new BigDecimal(10.4), movie, room);
+		Session session2 = createSession(100, new Date(), new BigDecimal(11.4), movie, room2);
 
 		Block<Session> sessions = null;
 
 		try {
-			sessions = cinemaService.getSessions(3L, 0, 10);
+			sessions = cinemaService.getSessionsByCinemaId(cinema.getCinemaId(), 0, 10);
 
 		} catch (InstanceNotFoundException e) {
 			e.printStackTrace();
@@ -112,9 +123,11 @@ public class CinemaServiceTest {
 			e.printStackTrace();
 		}
 
-		assertEquals(sessions.getItems().size(), 1);
-		assertEquals(sessions.getItems().get(0).getRoom(), s.getRoom());
-		assertEquals(sessions.getItems().get(0).getPrice(), s.getPrice());
+		assertEquals(sessions.getItems().size(), 2);
+		assertEquals(sessions.getItems().get(0).getRoom(), session.getRoom());
+		assertEquals(sessions.getItems().get(0).getPrice(), session.getPrice());
+		assertEquals(sessions.getItems().get(1).getRoom(), session2.getRoom());
+		assertEquals(sessions.getItems().get(1).getPrice(), session2.getPrice());
 	}
 
 }

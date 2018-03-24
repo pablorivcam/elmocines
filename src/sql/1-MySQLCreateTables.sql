@@ -54,7 +54,7 @@ CREATE TABLE Movies
        (movieId		BIGINT NOT NULL AUTO_INCREMENT,
         title		VARCHAR(50) NOT NULL ,
         review		VARCHAR(200) NOT NULL,
-		duration 	SMALLINT  NOT NULL,
+		lenght	 	SMALLINT  NOT NULL,
 		initDate 	DATE  NOT NULL,
 		finalDate	DATE  NOT NULL,
 		CONSTRAINT MoviesPK PRIMARY KEY(movieId),

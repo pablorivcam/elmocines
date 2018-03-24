@@ -46,7 +46,7 @@ public class CinemaServiceImpl implements CinemaService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Block<Session> getSessions(Long cinemaId, int startIndex, int count)
+	public Block<Session> getSessionsByCinemaId(Long cinemaId, int startIndex, int count)
 			throws InputValidationException, InstanceNotFoundException
 
 	{

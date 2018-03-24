@@ -15,7 +15,7 @@ public class RoomDaoHibernate extends GenericDaoHibernate<Room, Long> implements
 
 		List<Room> rooms = null;
 
-		rooms = getSession().createQuery("SELECT r FROM Room r WHERE r.cinemaId = :cinemaId ORDER BY s.name")
+		rooms = getSession().createQuery("SELECT r FROM Room r WHERE r.cinema.cinemaId = :cinemaId ORDER BY r.name")
 				.setParameter("cinemaId", cinemaId).getResultList();
 
 		return rooms;

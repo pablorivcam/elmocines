@@ -24,7 +24,7 @@ public class SessionDaoHibernate extends GenericDaoHibernate<Session, Long> impl
 				if (i != 0) {
 					queryString += "OR ";
 				}
-				queryString += "s.roomId= :roomId" + i + " ";
+				queryString += "s.room.roomId= :roomId" + i + " ";
 			}
 		}
 		queryString += "ORDER BY s.hour DESC";
