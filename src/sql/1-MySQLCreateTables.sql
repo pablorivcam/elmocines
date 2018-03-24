@@ -81,7 +81,7 @@ CREATE TABLE Purchases
 		usrId					BIGINT NOT NULL,
 		sessionId				BIGINT NOT NULL,
 		creditCard 				BIGINT NOT NULL,
-		creditCardExpiration 	DATETIME NOT NULL,
+		creditCardExpiration 	DATE NOT NULL,
 		locationCount			SMALLINT NOT NULL,
 		purchaseState			VARCHAR(20) NOT NULL,
 		date					DATETIME NOT NULL,

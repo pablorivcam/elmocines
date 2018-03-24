@@ -31,8 +31,7 @@ public class Movie {
 	private String review;
 
 	/** The lenght. */
-	@Temporal(TemporalType.TIME)
-	private Calendar lenght;
+	private int lenght;
 
 	/** The init date. */
 	// Nota: usamos date porque solo queremos almacenar la fecha.
@@ -50,7 +49,7 @@ public class Movie {
 
 	}
 
-	public Movie(String title, String review, Calendar lenght, Calendar initDate, Calendar finalDate) {
+	public Movie(String title, String review, int lenght, Calendar initDate, Calendar finalDate) {
 		this.title = title;
 		this.review = review;
 		this.lenght = lenght;
@@ -78,11 +77,11 @@ public class Movie {
 		this.review = review;
 	}
 
-	public Calendar getLenght() {
+	public int getLenght() {
 		return lenght;
 	}
 
-	public void setLenght(Calendar lenght) {
+	public void setLenght(int lenght) {
 		this.lenght = lenght;
 	}
 
