@@ -11,6 +11,7 @@ import es.udc.pa.pa009.elmocines.model.cinema.Cinema;
 import es.udc.pa.pa009.elmocines.model.cinema.CinemaDao;
 import es.udc.pa.pa009.elmocines.model.movie.Movie;
 import es.udc.pa.pa009.elmocines.model.province.Province;
+import es.udc.pa.pa009.elmocines.model.province.ProvinceDao;
 import es.udc.pa.pa009.elmocines.model.purchase.Purchase;
 import es.udc.pa.pa009.elmocines.model.purchase.PurchaseDao;
 import es.udc.pa.pa009.elmocines.model.room.Room;
@@ -35,11 +36,13 @@ public class CinemaServiceImpl implements CinemaService {
 
 	@Autowired
 	PurchaseDao purchaseDao;
+	
+	@Autowired
+	ProvinceDao provinceDao;
 
 	@Override
 	public List<Province> getProvinces() {
-		// TODO Auto-generated method stub
-		return null;
+		return provinceDao.getProvinces();
 	}
 
 	@Override

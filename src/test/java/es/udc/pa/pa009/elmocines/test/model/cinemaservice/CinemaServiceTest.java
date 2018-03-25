@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -134,6 +135,32 @@ public class CinemaServiceTest {
 		purchaseDao.save(purchase);
 
 		return purchase;
+	}
+	
+	@Test
+	public void getProvincesTest() {
+		
+		List<Province> province_test = new ArrayList<>();		
+		List<Province> province_service = cinemaService.getProvinces();
+		assertEquals(province_test,province_service);
+		
+		Province province1 = createProvince("Madrid");
+		Province province2 = createProvince("Barcelona");
+		Province province3 = createProvince("Sevilla");
+		Province province4 = createProvince("Valencia");
+		Province province5 = createProvince("Coruña");
+		Province province6 = createProvince("Zaragoza");
+		
+		province_test.add(province2);
+		province_test.add(province5);
+		province_test.add(province1);
+		province_test.add(province3);
+		province_test.add(province4);
+		province_test.add(province6);		
+		province_service = cinemaService.getProvinces();
+		assertEquals(province_test,province_service);
+		
+		
 	}
 
 	@Test
