@@ -48,7 +48,10 @@ public class CinemaServiceTest {
 	private final long NON_EXISTENT_CINEMA_ID = -1;
 	private final long NON_EXISTENT_SESSION_ID = -1;
 	private final long NON_EXISTENT_PURCHASE_ID = -1;
+	private final long NON_EXISTENT_USER_ID = -1;
 
+	public static final String USER_TEST_NAME = "TEST_USER";
+	public static final String PASSWORD_TEST = "TEST_PASSWORD";
 	public static final String PROVINCE_TEST_NAME = "TEST_PROVINCE";
 	public static final String CINEMA_TEST_NAME = "TEST_CINEMA";
 	public static final String ROOM_TEST_NAME = "TEST_ROOM";
@@ -276,6 +279,99 @@ public class CinemaServiceTest {
 	public void findSessionsByInvalidSessionIdTest() throws InstanceNotFoundException {
 		cinemaService.findSessionBySessionId(NON_EXISTENT_SESSION_ID);
 	}
+	
+	@Test
+	public void getPurchasesTest() {
+		
+		Province province = createProvince(PROVINCE_TEST_NAME);
+		Cinema cinema = createCinema(CINEMA_TEST_NAME, province);
+		Room room1 = createRoom(ROOM_TEST_NAME, 10, cinema);
+		Room room2 = createRoom(ROOM_TEST_NAME, 10, cinema);
+		Room room3 = createRoom(ROOM_TEST_NAME, 10, cinema);
+		
+		Movie movie1 = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(), Calendar.getInstance());
+		Movie movie2 = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(), Calendar.getInstance());
+		Movie movie3 = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(), Calendar.getInstance());
+		
+		Session session1 = createSession(100, new Date(), new BigDecimal(10.4), movie1, room2);
+		Session session2 = createSession(100, new Date(), new BigDecimal(10.4), movie2, room3);
+		Session session3 = createSession(100, new Date(), new BigDecimal(10.4), movie3, room1);
+
+		UserProfile user1 = registerUser(USER_TEST_NAME, PASSWORD_TEST);
+		UserProfile user2 = registerUser("USER2", PASSWORD_TEST);
+
+		Purchase purchase1 = createPurchase(new BigDecimal(12345), Calendar.getInstance(), 10, Calendar.getInstance(),
+				session1, user1);
+		createPurchase(new BigDecimal(12345), Calendar.getInstance(), 10, Calendar.getInstance(),
+				session2, user2);
+		Purchase purchase3 = createPurchase(new BigDecimal(12345), Calendar.getInstance(), 10, Calendar.getInstance(),
+				session3, user1);
+		Purchase purchase4 = createPurchase(new BigDecimal(12345), Calendar.getInstance(), 10, Calendar.getInstance(),
+				session2, user1);
+		
+		Block<Purchase> purchases = null;
+
+		try {
+			purchases = cinemaService.getPurchases(user1.getUserProfileId(), 0, 10);
+
+		} catch (InstanceNotFoundException e) {
+			e.printStackTrace();
+		} catch (InputValidationException e) {
+			e.printStackTrace();
+		}
+
+		assertEquals(purchases.getItems().size(), 3);
+		
+		assertEquals(purchases.getItems().get(0).getPurchaseId(), purchase1.getPurchaseId());
+		assertEquals(purchases.getItems().get(0).getUser(),purchase1.getUser());
+		assertEquals(purchases.getItems().get(0).getSession(),purchase1.getSession());
+		
+		assertEquals(purchases.getItems().get(1).getPurchaseId(), purchase3.getPurchaseId());
+		assertEquals(purchases.getItems().get(1).getUser(),purchase3.getUser());
+		assertEquals(purchases.getItems().get(1).getSession(),purchase3.getSession());
+		
+		assertEquals(purchases.getItems().get(2).getPurchaseId(), purchase4.getPurchaseId());
+		assertEquals(purchases.getItems().get(2).getUser(),purchase4.getUser());
+		assertEquals(purchases.getItems().get(2).getSession(),purchase4.getSession());
+		
+		
+		
+	}
+	
+	
+	@Test(expected = InstanceNotFoundException.class)
+	public void findNonExistentUserPurchaseTest() throws InstanceNotFoundException {
+
+		try {
+			cinemaService.getPurchases(NON_EXISTENT_USER_ID, 0, 10);
+		} catch (InputValidationException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@Test(expected = InputValidationException.class)
+	public void getPurchasesTestWithInvalidCountParameter() throws InputValidationException {
+		
+		UserProfile user = registerUser(USER_TEST_NAME, PASSWORD_TEST);
+		try {
+			cinemaService.getPurchases(user.getUserProfileId(), -2, 10);
+		} catch (InstanceNotFoundException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@Test(expected = InputValidationException.class)
+	public void getPurchasesTestWithInvalidStartIndexParameter() throws InputValidationException {
+		UserProfile user = registerUser(USER_TEST_NAME, PASSWORD_TEST);
+		try {
+			cinemaService.getSessionsByCinemaId(user.getUserProfileId(), 0, -10);
+		} catch (InstanceNotFoundException e) {
+			e.printStackTrace();
+		}
+
+	}
 
 	@Test
 	public void collectTicketsTest() {
@@ -286,7 +382,7 @@ public class CinemaServiceTest {
 
 		Session session = createSession(100, new Date(), new BigDecimal(10.4), movie, room);
 
-		UserProfile user = registerUser("Miguel", "Miguel");
+		UserProfile user = registerUser(USER_TEST_NAME, PASSWORD_TEST);
 
 		Purchase purchase = createPurchase(new BigDecimal(12345), Calendar.getInstance(), 10, Calendar.getInstance(),
 				session, user);
@@ -324,7 +420,7 @@ public class CinemaServiceTest {
 
 		Session session = createSession(100, new Date(), new BigDecimal(10.4), movie, room);
 
-		UserProfile user = registerUser("Miguel", "Miguel");
+		UserProfile user = registerUser(USER_TEST_NAME, PASSWORD_TEST);
 
 		Purchase purchase = createPurchase(new BigDecimal(12345), Calendar.getInstance(), 10, Calendar.getInstance(),
 				session, user);

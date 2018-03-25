@@ -92,7 +92,8 @@ public interface CinemaService {
 	 *            the number of purchases that we want to get.
 	 * @return the purchases
 	 */
-	public Block<Purchase> getPurchases(Long userId, int startIndex, int count);
+	public Block<Purchase> getPurchases(Long userId, int startIndex, int count)
+			throws InputValidationException, InstanceNotFoundException;
 
 	/**
 	 * Gets the purchase.

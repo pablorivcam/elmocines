@@ -4,21 +4,22 @@ import java.util.List;
 
 import es.udc.pojo.modelutil.dao.GenericDao;
 
+
 /**
  * The Interface SessionDao.
  */
 public interface SessionDao extends GenericDao<Session, Long> {
 
+	
 	/**
-	 * Find sessions by rooms id.
+	 * Gets the sessions on a rooms.
 	 *
 	 * @param rooms
-	 *            the rooms
+	 *            room
 	 * @param startIndex
-	 *            the start index
+	 *            the start index of the sessions that we want to get.
 	 * @param count
-	 *            the count
-	 * @return the list
+	 *            the number of sessions that we want to get.
 	 */
 	public List<Session> findSessionsByRoomsId(List<Long> rooms, int startIndex, int count);
 

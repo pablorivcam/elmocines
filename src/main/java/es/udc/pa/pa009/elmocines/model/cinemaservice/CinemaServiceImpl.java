@@ -18,12 +18,16 @@ import es.udc.pa.pa009.elmocines.model.room.Room;
 import es.udc.pa.pa009.elmocines.model.room.RoomDao;
 import es.udc.pa.pa009.elmocines.model.session.Session;
 import es.udc.pa.pa009.elmocines.model.session.SessionDao;
+import es.udc.pa.pa009.elmocines.model.userprofile.UserProfileDao;
 import es.udc.pojo.modelutil.data.Block;
 import es.udc.pojo.modelutil.exceptions.InstanceNotFoundException;
 
 @Service("cinemaService")
 @Transactional
 public class CinemaServiceImpl implements CinemaService {
+	
+	@Autowired
+	UserProfileDao userDao;
 
 	@Autowired
 	SessionDao sessionDao;
@@ -105,9 +109,26 @@ public class CinemaServiceImpl implements CinemaService {
 	}
 
 	@Override
-	public Block<Purchase> getPurchases(Long userId, int startIndex, int count) {
-		// TODO Auto-generated method stub
-		return null;
+	public Block<Purchase> getPurchases(Long userId, int startIndex, int count)
+			throws InputValidationException, InstanceNotFoundException
+	{
+		
+		if (startIndex < 0 || count < 0) {
+			throw new InputValidationException();
+		}
+
+		if (userId != null) {
+			userDao.find(userId);
+		}
+
+		List<Purchase> purchases = purchaseDao.findPurchasesByUserId(userId);
+		boolean existMoreItems = purchases.size() > count;
+
+		if (existMoreItems) {
+			purchases.remove(purchases.size() - 1);
+		}
+
+		return new Block<>(purchases, existMoreItems);
 	}
 
 	@Override
