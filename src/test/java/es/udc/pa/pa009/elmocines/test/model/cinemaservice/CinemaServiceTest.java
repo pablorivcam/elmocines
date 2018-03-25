@@ -162,6 +162,30 @@ public class CinemaServiceTest {
 		
 		
 	}
+	
+	@Test
+	public void findCinemasByProvinceIdTest() {
+		
+		Province province_test = createProvince(PROVINCE_TEST_NAME);
+		Long provinceId = province_test.getProvinceId();
+	
+		List<Cinema> cinema_test = new ArrayList<>();		
+		List<Cinema> cinema_service = cinemaService.findCinemasByProvinceId(provinceId);
+		assertEquals(cinema_test,cinema_service);
+		
+		Cinema cinema1 = createCinema("YelmoCines",province_test);
+		Cinema cinema2 = createCinema("GaliCines",province_test);
+		Cinema cinema3 = createCinema("MultiCines",province_test);
+		
+		cinema_test.add(cinema2);
+		cinema_test.add(cinema3);
+		cinema_test.add(cinema1);
+		
+		cinema_service = cinemaService.findCinemasByProvinceId(provinceId);
+		assertEquals(cinema_test,cinema_service);
+		
+		
+	}
 
 	@Test
 	public void getSessionsByCinemaIdTest() {

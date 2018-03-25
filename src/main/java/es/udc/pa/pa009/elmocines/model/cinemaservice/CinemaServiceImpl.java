@@ -47,8 +47,7 @@ public class CinemaServiceImpl implements CinemaService {
 
 	@Override
 	public List<Cinema> findCinemasByProvinceId(Long provinceId) {
-		// TODO Auto-generated method stub
-		return null;
+		return cinemaDao.findCinemasByProvinceId(provinceId);
 	}
 
 	@Override
