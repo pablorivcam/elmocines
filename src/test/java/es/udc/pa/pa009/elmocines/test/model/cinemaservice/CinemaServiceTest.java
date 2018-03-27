@@ -394,6 +394,31 @@ public class CinemaServiceTest {
 	}
 
 	@Test
+	public void getPurchaseTest() {
+		Province province = createProvince(PROVINCE_TEST_NAME);
+		Cinema cinema = createCinema(CINEMA_TEST_NAME, province);
+		Room room = createRoom(ROOM_TEST_NAME, 10, cinema);
+		Movie movie = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(), Calendar.getInstance());
+		Session session = createSession(100, new Date(), new BigDecimal(10.4), movie, room);
+		UserProfile user = registerUser(USER_TEST_NAME, PASSWORD_TEST);
+
+		Purchase purchaseExpected =  createPurchase(new BigDecimal(12345), Calendar.getInstance(), 10, Calendar.getInstance(),
+				session, user);
+		Purchase purchase = null;
+		try {
+			purchase = cinemaService.getPurchase(purchaseExpected.getPurchaseId());
+		} catch (InstanceNotFoundException e) {
+			e.printStackTrace();
+		}
+		assertEquals(purchaseExpected, purchase);
+	}
+
+	@Test(expected = InstanceNotFoundException.class)
+	public void getNonExistentPurchaseTest() throws InstanceNotFoundException {
+		cinemaService.getPurchase(NON_EXISTENT_PURCHASE_ID);
+	}
+	
+	@Test
 	public void collectTicketsTest() {
 		Province province = createProvince(PROVINCE_TEST_NAME);
 		Cinema cinema = createCinema(CINEMA_TEST_NAME, province);

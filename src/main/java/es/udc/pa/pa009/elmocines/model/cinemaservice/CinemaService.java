@@ -102,8 +102,9 @@ public interface CinemaService {
 	 * @param purchaseId
 	 *            the purchase id
 	 * @return the purchase
+	 * @throws InstanceNotFoundException 
 	 */
-	public Purchase getPurchase(Long purchaseId);
+	public Purchase getPurchase(Long purchaseId) throws InstanceNotFoundException;
 
 	/**
 	 * Collect tickets.

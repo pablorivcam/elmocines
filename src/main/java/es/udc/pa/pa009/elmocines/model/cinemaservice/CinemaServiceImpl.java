@@ -135,9 +135,8 @@ public class CinemaServiceImpl implements CinemaService {
 	}
 
 	@Override
-	public Purchase getPurchase(Long purchaseId) {
-		// TODO Auto-generated method stub
-		return null;
+	public Purchase getPurchase(Long purchaseId) throws InstanceNotFoundException {
+		return purchaseDao.find(purchaseId);
 	}
 
 	@Override
