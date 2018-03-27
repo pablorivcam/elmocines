@@ -56,8 +56,9 @@ public interface CinemaService {
 	 * @param movieId
 	 *            the movie id
 	 * @return the movie
+	 * @throws InstanceNotFoundException 
 	 */
-	public Movie findMovieById(Long movieId);
+	public Movie findMovieById(Long movieId) throws InstanceNotFoundException;
 
 	/**
 	 * Find session by session id.

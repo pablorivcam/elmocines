@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import es.udc.pa.pa009.elmocines.model.cinema.Cinema;
 import es.udc.pa.pa009.elmocines.model.cinema.CinemaDao;
 import es.udc.pa.pa009.elmocines.model.movie.Movie;
+import es.udc.pa.pa009.elmocines.model.movie.MovieDao;
 import es.udc.pa.pa009.elmocines.model.province.Province;
 import es.udc.pa.pa009.elmocines.model.province.ProvinceDao;
 import es.udc.pa.pa009.elmocines.model.purchase.Purchase;
@@ -43,6 +44,9 @@ public class CinemaServiceImpl implements CinemaService {
 	
 	@Autowired
 	ProvinceDao provinceDao;
+	
+	@Autowired
+	MovieDao movieDao;
 
 	@Override
 	public List<Province> getProvinces() {
@@ -90,9 +94,8 @@ public class CinemaServiceImpl implements CinemaService {
 	}
 
 	@Override
-	public Movie findMovieById(Long movieId) {
-		// TODO Auto-generated method stub
-		return null;
+	public Movie findMovieById(Long movieId) throws InstanceNotFoundException {
+		return movieDao.find(movieId); 
 	}
 
 	@Override

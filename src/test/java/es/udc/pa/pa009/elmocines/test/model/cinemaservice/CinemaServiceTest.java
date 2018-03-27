@@ -48,7 +48,8 @@ public class CinemaServiceTest {
 	private final long NON_EXISTENT_CINEMA_ID = -1;
 	private final long NON_EXISTENT_SESSION_ID = -1;
 	private final long NON_EXISTENT_PURCHASE_ID = -1;
-	private final long NON_EXISTENT_USER_ID = -1;
+	private final long NON_EXISTENT_USER_ID = -1;	
+	private final long NON_EXISTENT_MOVIE_ID = -1;
 
 	public static final String USER_TEST_NAME = "TEST_USER";
 	public static final String PASSWORD_TEST = "TEST_PASSWORD";
@@ -254,6 +255,25 @@ public class CinemaServiceTest {
 		}
 
 	}
+	
+	@Test
+	public void findMovieByIdTest() {
+		Movie movieExpected = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(), Calendar.getInstance());
+		Movie movie = null;
+		try {
+			movie = cinemaService.findMovieById(movieExpected.getMovieId());
+		} catch (InstanceNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		assertEquals(movieExpected, movie);
+	}
+
+	@Test(expected = InstanceNotFoundException.class)
+	public void findMovieByInvalidIdTest() throws InstanceNotFoundException {
+		cinemaService.findMovieById(NON_EXISTENT_MOVIE_ID);
+	}
+	
 
 	@Test
 	public void findSessionBySessionIdTest() {
