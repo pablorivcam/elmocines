@@ -1,6 +1,8 @@
 package es.udc.pa.pa009.elmocines.model.cinemaservice;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import es.udc.pa.pa009.elmocines.model.room.Room;
 import es.udc.pa.pa009.elmocines.model.room.RoomDao;
 import es.udc.pa.pa009.elmocines.model.session.Session;
 import es.udc.pa.pa009.elmocines.model.session.SessionDao;
+import es.udc.pa.pa009.elmocines.model.userprofile.UserProfile;
 import es.udc.pa.pa009.elmocines.model.userprofile.UserProfileDao;
 import es.udc.pojo.modelutil.data.Block;
 import es.udc.pojo.modelutil.exceptions.InstanceNotFoundException;
@@ -103,12 +106,40 @@ public class CinemaServiceImpl implements CinemaService {
 		return sessionDao.find(sessionId);
 	}
 
-	// FIXME: Acordarse de poner aqui una excepción que sea
-	// TooManyLocationsException
 	@Override
-	public Purchase purchaseTickets(Long sessionId, int locationsAmmount) {
-		// TODO Auto-generated method stub
-		return null;
+	public Purchase purchaseTickets(Long userId,BigDecimal creditCardNumber, Calendar creditCardExpirationDate,
+			Calendar date,Long sessionId, int locationsAmount) throws InstanceNotFoundException,InputValidationException,TooManyLocationsException{
+		
+		UserProfile user=new UserProfile();
+		Session session=new Session();
+		int sessionFreeLocations;
+		
+		if (locationsAmount>10){
+			throw new InputValidationException();
+		}
+		
+		if(sessionId != null){
+			session =sessionDao.find(sessionId);
+		}
+		
+		sessionFreeLocations=session.getFreeLocationsCount();
+		
+		if (locationsAmount>sessionFreeLocations){
+			throw new TooManyLocationsException(sessionFreeLocations);
+		}
+		
+		if (userId != null) {
+			user = userDao.find(userId);
+		}
+		
+		Purchase purchase = new Purchase(creditCardNumber,creditCardExpirationDate,locationsAmount,
+				Purchase.PurchaseState.PENDING, date, session, user);
+		
+		purchaseDao.save(purchase);
+		
+		session.setFreeLocationsCount(sessionFreeLocations-locationsAmount);
+		
+		return purchase;
 	}
 
 	@Override

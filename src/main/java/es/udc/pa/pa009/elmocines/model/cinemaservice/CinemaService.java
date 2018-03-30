@@ -1,5 +1,7 @@
 package es.udc.pa.pa009.elmocines.model.cinemaservice;
 
+import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.List;
 
 import es.udc.pa.pa009.elmocines.model.cinema.Cinema;
@@ -56,7 +58,8 @@ public interface CinemaService {
 	 * @param movieId
 	 *            the movie id
 	 * @return the movie
-	 * @throws InstanceNotFoundException 
+	 * @throws InstanceNotFoundException
+	 *             the instance not found exception 
 	 */
 	public Movie findMovieById(Long movieId) throws InstanceNotFoundException;
 
@@ -76,11 +79,17 @@ public interface CinemaService {
 	 *
 	 * @param sessionId
 	 *            the session id
-	 * @param locationsAmmount
-	 *            the locations ammount
+	 * @param locationsAmount
+	 *            the locations amount
+	 * @throws InstanceNotFoundException
+	 *             the instance not found exception
+	 * @throws TooManyLocationsException
+	 *             locationsAmmount more than max locations allowed to buy
 	 * @return the purchase
 	 */
-	public Purchase purchaseTickets(Long sessionId, int locationsAmmount);
+	public Purchase purchaseTickets(Long userId,BigDecimal creditCardNumber, Calendar creditCardExpirationDate,
+			Calendar date,Long sessionId, int locationsAmount)
+			throws InstanceNotFoundException,InputValidationException,TooManyLocationsException;
 
 	/**
 	 * Gets the purchases.
@@ -91,6 +100,10 @@ public interface CinemaService {
 	 *            the start index of the purchases that we want to get.
 	 * @param count
 	 *            the number of purchases that we want to get.
+	 * @throws InputValidationException
+	 *             the input validation exception
+	 * @throws InstanceNotFoundException
+	 *             the instance not found exception
 	 * @return the purchases
 	 */
 	public Block<Purchase> getPurchases(Long userId, int startIndex, int count)
@@ -102,7 +115,8 @@ public interface CinemaService {
 	 * @param purchaseId
 	 *            the purchase id
 	 * @return the purchase
-	 * @throws InstanceNotFoundException 
+	 * @throws InstanceNotFoundException
+	 *             the instance not found exception
 	 */
 	public Purchase getPurchase(Long purchaseId) throws InstanceNotFoundException;
 

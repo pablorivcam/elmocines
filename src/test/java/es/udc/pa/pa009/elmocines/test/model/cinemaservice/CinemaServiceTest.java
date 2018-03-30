@@ -22,6 +22,7 @@ import es.udc.pa.pa009.elmocines.model.cinema.CinemaDao;
 import es.udc.pa.pa009.elmocines.model.cinemaservice.CinemaService;
 import es.udc.pa.pa009.elmocines.model.cinemaservice.InputValidationException;
 import es.udc.pa.pa009.elmocines.model.cinemaservice.TicketsAlreadyCollectedException;
+import es.udc.pa.pa009.elmocines.model.cinemaservice.TooManyLocationsException;
 import es.udc.pa.pa009.elmocines.model.movie.Movie;
 import es.udc.pa.pa009.elmocines.model.movie.MovieDao;
 import es.udc.pa.pa009.elmocines.model.province.Province;
@@ -299,6 +300,113 @@ public class CinemaServiceTest {
 	public void findSessionsByInvalidSessionIdTest() throws InstanceNotFoundException {
 		cinemaService.findSessionBySessionId(NON_EXISTENT_SESSION_ID);
 	}
+	
+	@Test
+	public void purchaseTicketsTest() {
+		Province province = createProvince(PROVINCE_TEST_NAME);
+		Cinema cinema = createCinema(CINEMA_TEST_NAME, province);
+		Room room = createRoom(ROOM_TEST_NAME, 10, cinema);
+		Movie movie = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(), Calendar.getInstance());
+
+		Session session = createSession(100, new Date(), new BigDecimal(10.4), movie, room);
+		UserProfile user = registerUser(USER_TEST_NAME, PASSWORD_TEST);
+		Purchase expected = new Purchase();
+		Purchase purchase = new Purchase();
+		
+		try {
+			expected = cinemaService.purchaseTickets(user.getUserProfileId(),new BigDecimal(12345), Calendar.getInstance(),
+					Calendar.getInstance(),session.getSessionId(),20);
+			purchase=purchaseDao.find(expected.getPurchaseId());
+			
+		} catch (TooManyLocationsException e) {
+			e.printStackTrace();
+		} catch (InstanceNotFoundException e) {
+			e.printStackTrace();
+		} catch (InputValidationException e) {
+			e.printStackTrace();
+		}
+		
+		assertEquals(purchase.getPurchaseId(), expected.getPurchaseId());
+		assertEquals(purchase.getUser(), expected.getUser());
+		assertEquals(purchase.getSession(), expected.getSession());
+		assertEquals(purchase.getCreditCardNumber(), expected.getCreditCardNumber());
+		assertEquals(purchase.getDate(), expected.getDate());
+		
+	}
+	
+	@Test(expected = InputValidationException.class)
+	public void purchaseTicketsInvalidLocationsAmoutTest() throws InputValidationException{
+		Province province = createProvince(PROVINCE_TEST_NAME);
+		Cinema cinema = createCinema(CINEMA_TEST_NAME, province);
+		Room room = createRoom(ROOM_TEST_NAME, 10, cinema);
+		Movie movie = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(), Calendar.getInstance());
+
+		Session session = createSession(100, new Date(), new BigDecimal(10.4), movie, room);
+		UserProfile user = registerUser(USER_TEST_NAME, PASSWORD_TEST);
+		
+		try {
+			cinemaService.purchaseTickets(user.getUserProfileId(),new BigDecimal(12345), Calendar.getInstance(),
+					Calendar.getInstance(),session.getSessionId(),20);
+		} catch (TooManyLocationsException e) {
+			e.printStackTrace();
+		} catch (InstanceNotFoundException e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	@Test(expected = InstanceNotFoundException.class)
+	public void  purchaseTicketsInvalidSessionIdTest() throws InstanceNotFoundException {
+		UserProfile user = registerUser(USER_TEST_NAME, PASSWORD_TEST);
+		try {
+			cinemaService.purchaseTickets(user.getUserProfileId(),new BigDecimal(12345), Calendar.getInstance(),
+					Calendar.getInstance(),NON_EXISTENT_SESSION_ID,6);
+		} catch (TooManyLocationsException e) {
+			e.printStackTrace();
+		} catch (InputValidationException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test(expected = InstanceNotFoundException.class)
+	public void purchaseTicketsInvalidUserIdTest() throws InstanceNotFoundException {
+		Province province = createProvince(PROVINCE_TEST_NAME);
+		Cinema cinema = createCinema(CINEMA_TEST_NAME, province);
+		Room room = createRoom(ROOM_TEST_NAME, 10, cinema);
+		Movie movie = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(), Calendar.getInstance());
+
+		Session session = createSession(100, new Date(), new BigDecimal(10.4), movie, room);
+		
+		try {
+			cinemaService.purchaseTickets(NON_EXISTENT_USER_ID,new BigDecimal(12345), Calendar.getInstance(),
+					Calendar.getInstance(),session.getSessionId(),6);
+		} catch (TooManyLocationsException e) {
+			e.printStackTrace();
+		} catch (InputValidationException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test(expected = TooManyLocationsException.class)
+	public void purchaseTicketsInvalidLocationsFreeest() throws TooManyLocationsException {
+		Province province = createProvince(PROVINCE_TEST_NAME);
+		Cinema cinema = createCinema(CINEMA_TEST_NAME, province);
+		Room room = createRoom(ROOM_TEST_NAME, 10, cinema);
+		Movie movie = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(), Calendar.getInstance());
+
+		Session session = createSession(5, new Date(), new BigDecimal(10.4), movie, room);
+		UserProfile user = registerUser(USER_TEST_NAME, PASSWORD_TEST);
+		
+		try {
+			cinemaService.purchaseTickets(user.getUserProfileId(),new BigDecimal(12345), Calendar.getInstance(),
+					Calendar.getInstance(),session.getSessionId(),7);
+		} catch (InstanceNotFoundException e) {
+			e.printStackTrace();
+		} catch (InputValidationException e) {
+			e.printStackTrace();
+		}
+	}
+
 	
 	@Test
 	public void getPurchasesTest() {
