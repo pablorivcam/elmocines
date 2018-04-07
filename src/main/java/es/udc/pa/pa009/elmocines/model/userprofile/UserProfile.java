@@ -2,6 +2,8 @@ package es.udc.pa.pa009.elmocines.model.userprofile;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -10,6 +12,10 @@ import javax.persistence.SequenceGenerator;
 @Entity
 public class UserProfile {
 
+	public enum Role {
+		CLIENT, WORKER
+	};
+
 	private Long userProfileId;
 	private String loginName;
 	private String encryptedPassword;
@@ -17,11 +23,14 @@ public class UserProfile {
 	private String lastName;
 	private String email;
 
+	@Enumerated(EnumType.STRING)
+	private Role role;
+
 	public UserProfile() {
 	}
 
-	public UserProfile(String loginName, String encryptedPassword,
-			String firstName, String lastName, String email) {
+	public UserProfile(String loginName, String encryptedPassword, String firstName, String lastName, String email,
+			Role role) {
 
 		/**
 		 * NOTE: "userProfileId" *must* be left as "null" since its value is
@@ -33,12 +42,13 @@ public class UserProfile {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
+		this.role = role;
 	}
 
 	@Column(name = "usrId")
 	@SequenceGenerator( // It only takes effect for
-	name = "UserProfileIdGenerator", // databases providing identifier
-	sequenceName = "UserProfileSeq")
+			name = "UserProfileIdGenerator", // databases providing identifier
+			sequenceName = "UserProfileSeq")
 	// generators.
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "UserProfileIdGenerator")
@@ -93,10 +103,16 @@ public class UserProfile {
 
 	@Override
 	public String toString() {
-		return "UserProfile [userProfileId=" + userProfileId + ", loginName="
-				+ loginName + ", encryptedPassword=" + encryptedPassword
-				+ ", firstName=" + firstName + ", lastName=" + lastName
-				+ ", email=" + email + "]";
+		return "UserProfile [userProfileId=" + userProfileId + ", loginName=" + loginName + ", encryptedPassword="
+				+ encryptedPassword + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + "]";
+	}
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
 	}
 
 }
