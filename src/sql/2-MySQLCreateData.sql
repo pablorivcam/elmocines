@@ -36,7 +36,7 @@ INSERT INTO Movies VALUES (6,'El Recolector de Basura','-','150','2018-06-07','2
 
 
 -- SessionId,roomId,movieId,hour,price,freeLocationsCount
-INSERT INTO SessionMovies VALUES (1,3,1,'18:00',7.5,100);
-INSERT INTO SessionMovies VALUES (2,2,1,'19:00',7.5,100);
-INSERT INTO SessionMovies VALUES (3,1,2,'18:00',7.0,50);
-INSERT INTO SessionMovies VALUES (4,2,3,'22:00',8.0,100);
+INSERT INTO SessionMovies VALUES (1,3,1,'2018-03-20 10:00:00',7.5,100);
+INSERT INTO SessionMovies VALUES (2,2,1,'2018-07-19 10:00:00',7.5,100);
+INSERT INTO SessionMovies VALUES (3,1,2,'2018-07-21 16:00:00',7.0,50);
+INSERT INTO SessionMovies VALUES (4,2,3,'2018-07-22 17:30:00',8.0,100);

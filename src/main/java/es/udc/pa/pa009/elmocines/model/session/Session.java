@@ -1,7 +1,7 @@
 package es.udc.pa.pa009.elmocines.model.session;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.util.Calendar;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -27,32 +27,25 @@ import es.udc.pa.pa009.elmocines.model.room.Room;
 public class Session {
 
 	/** The session id. */
-	@Id
-	@SequenceGenerator(name = "sessionIdGenerator", sequenceName = "sessionSeq")
-	@GeneratedValue(generator = "sessionIdGenerator", strategy = GenerationType.AUTO)
+
 	private long sessionId;
 
 	/** The free locations count. */
-	@Version
 	private int freeLocationsCount;
 
-	/** The hour. */
-	// Nota: usamos time porque solo queremos almacenar la hora.
-	@Temporal(TemporalType.TIME)
-	private Date hour;
+	/** The date. */
+	private Calendar date;
 
 	/** The price. */
 	private BigDecimal price;
 
 	/** The movie. */
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "movieId")
 	private Movie movie;
 
 	/** The room. */
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "roomId")
 	private Room room;
+
+	private Integer version;
 
 	/**
 	 * Constructor vacío necesario para hibernate.
@@ -66,8 +59,8 @@ public class Session {
 	 *
 	 * @param freeLocationsCount
 	 *            the free locations count
-	 * @param hour
-	 *            the hour
+	 * @param date
+	 *            the date
 	 * @param price
 	 *            the price
 	 * @param movie
@@ -75,13 +68,16 @@ public class Session {
 	 * @param room
 	 *            the room
 	 */
-	// FIXME: seguro que freeLocationsCount es un int y price un bigd?
-	public Session(int freeLocationsCount, Date hour, BigDecimal price, Movie movie, Room room) {
+	public Session(int freeLocationsCount, Calendar date, BigDecimal price, Movie movie, Room room) {
 		this.freeLocationsCount = freeLocationsCount;
-		this.hour = hour;
+		this.date = date;
 		this.price = price;
 		this.movie = movie;
 		this.room = room;
+
+		date.set(Calendar.MILLISECOND, 0);
+		date.set(Calendar.SECOND, 0);
+
 	}
 
 	/**
@@ -89,8 +85,24 @@ public class Session {
 	 *
 	 * @return the session id
 	 */
+	@Id
+	@SequenceGenerator(name = "sessionIdGenerator", sequenceName = "sessionSeq")
+	@GeneratedValue(generator = "sessionIdGenerator", strategy = GenerationType.AUTO)
 	public long getSessionId() {
 		return sessionId;
+	}
+
+	public void setSessionId(long sessionId) {
+		this.sessionId = sessionId;
+	}
+
+	@Version
+	public Integer getVersion() {
+		return version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
 	}
 
 	/**
@@ -136,6 +148,8 @@ public class Session {
 	 *
 	 * @return the movie
 	 */
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "movieId")
 	public Movie getMovie() {
 		return movie;
 	}
@@ -155,6 +169,8 @@ public class Session {
 	 *
 	 * @return the room
 	 */
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "roomId")
 	public Room getRoom() {
 		return room;
 	}
@@ -170,22 +186,25 @@ public class Session {
 	}
 
 	/**
-	 * Gets the hour.
+	 * Gets the date.
 	 *
-	 * @return the hour
+	 * @return the date
 	 */
-	public Date getHour() {
-		return hour;
+	@Temporal(TemporalType.TIMESTAMP)
+	public Calendar getDate() {
+		return date;
 	}
 
 	/**
-	 * Sets the hour.
+	 * Sets the date.
 	 *
-	 * @param hour
-	 *            the new hour
+	 * @param date
+	 *            the new date
 	 */
-	public void setHour(Date hour) {
-		this.hour = hour;
+	public void setDate(Calendar date) {
+		this.date = date;
+		date.set(Calendar.MILLISECOND, 0);
+		date.set(Calendar.SECOND, 0);
 	}
 
 }

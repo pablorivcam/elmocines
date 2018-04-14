@@ -7,7 +7,6 @@ import static org.junit.Assert.assertEquals;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
@@ -49,7 +48,7 @@ public class CinemaServiceTest {
 	private final long NON_EXISTENT_CINEMA_ID = -1;
 	private final long NON_EXISTENT_SESSION_ID = -1;
 	private final long NON_EXISTENT_PURCHASE_ID = -1;
-	private final long NON_EXISTENT_USER_ID = -1;	
+	private final long NON_EXISTENT_USER_ID = -1;
 	private final long NON_EXISTENT_MOVIE_ID = -1;
 
 	public static final String USER_TEST_NAME = "TEST_USER";
@@ -59,6 +58,8 @@ public class CinemaServiceTest {
 	public static final String ROOM_TEST_NAME = "TEST_ROOM";
 	public static final String SESSION_TEST_NAME = "TEST_SESSION";
 	public static final String MOVIE_TEST_NAME = "TEST_MOVIE";
+
+	public static final String CREDIT_CARD_TEST_NUMBER = "1234567AB";
 
 	@Autowired
 	private CinemaService cinemaService;
@@ -90,6 +91,12 @@ public class CinemaServiceTest {
 		provinceDao.save(province);
 		return province;
 
+	}
+
+	private Calendar getTomorrow() {
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.DAY_OF_YEAR, 1);
+		return c;
 	}
 
 	private UserProfile registerUser(String loginName, String clearPassword) {
@@ -126,13 +133,13 @@ public class CinemaServiceTest {
 		return movie;
 	}
 
-	private Session createSession(int freeLocationsCount, Date hour, BigDecimal price, Movie movie, Room room) {
-		Session session = new Session(freeLocationsCount, hour, price, movie, room);
+	private Session createSession(int freeLocationsCount, Calendar date, BigDecimal price, Movie movie, Room room) {
+		Session session = new Session(freeLocationsCount, date, price, movie, room);
 		sessionDao.save(session);
 		return session;
 	}
 
-	private Purchase createPurchase(BigDecimal creditCardNumber, Calendar creditCardExpirationDate, int locationCount,
+	private Purchase createPurchase(String creditCardNumber, Calendar creditCardExpirationDate, int locationCount,
 			Calendar date, Session session, UserProfile user) {
 		Purchase purchase = new Purchase(creditCardNumber, creditCardExpirationDate, locationCount,
 				Purchase.PurchaseState.PENDING, date, session, user);
@@ -141,55 +148,53 @@ public class CinemaServiceTest {
 
 		return purchase;
 	}
-	
+
 	@Test
 	public void getProvincesTest() {
-		
-		List<Province> province_test = new ArrayList<>();		
+
+		List<Province> province_test = new ArrayList<>();
 		List<Province> province_service = cinemaService.getProvinces();
-		assertEquals(province_test,province_service);
-		
+		assertEquals(province_test, province_service);
+
 		Province province1 = createProvince("Madrid");
 		Province province2 = createProvince("Barcelona");
 		Province province3 = createProvince("Sevilla");
 		Province province4 = createProvince("Valencia");
 		Province province5 = createProvince("Coruña");
 		Province province6 = createProvince("Zaragoza");
-		
+
 		province_test.add(province2);
 		province_test.add(province5);
 		province_test.add(province1);
 		province_test.add(province3);
 		province_test.add(province4);
-		province_test.add(province6);		
+		province_test.add(province6);
 		province_service = cinemaService.getProvinces();
-		assertEquals(province_test,province_service);
-		
-		
+		assertEquals(province_test, province_service);
+
 	}
-	
+
 	@Test
 	public void findCinemasByProvinceIdTest() {
-		
+
 		Province province_test = createProvince(PROVINCE_TEST_NAME);
 		Long provinceId = province_test.getProvinceId();
-	
-		List<Cinema> cinema_test = new ArrayList<>();		
+
+		List<Cinema> cinema_test = new ArrayList<>();
 		List<Cinema> cinema_service = cinemaService.findCinemasByProvinceId(provinceId);
-		assertEquals(cinema_test,cinema_service);
-		
-		Cinema cinema1 = createCinema("YelmoCines",province_test);
-		Cinema cinema2 = createCinema("GaliCines",province_test);
-		Cinema cinema3 = createCinema("MultiCines",province_test);
-		
+		assertEquals(cinema_test, cinema_service);
+
+		Cinema cinema1 = createCinema("YelmoCines", province_test);
+		Cinema cinema2 = createCinema("GaliCines", province_test);
+		Cinema cinema3 = createCinema("MultiCines", province_test);
+
 		cinema_test.add(cinema2);
 		cinema_test.add(cinema3);
 		cinema_test.add(cinema1);
-		
+
 		cinema_service = cinemaService.findCinemasByProvinceId(provinceId);
-		assertEquals(cinema_test,cinema_service);
-		
-		
+		assertEquals(cinema_test, cinema_service);
+
 	}
 
 	@Test
@@ -201,8 +206,8 @@ public class CinemaServiceTest {
 		Room room2 = createRoom(ROOM_TEST_NAME + 2, 10, cinema);
 		Movie movie = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(), Calendar.getInstance());
 
-		Session session = createSession(100, new Date(), new BigDecimal(10.4), movie, room);
-		Session session2 = createSession(100, new Date(), new BigDecimal(11.4), movie, room2);
+		Session session = createSession(100, getTomorrow(), new BigDecimal(10.4), movie, room);
+		Session session2 = createSession(100, getTomorrow(), new BigDecimal(11.4), movie, room2);
 
 		Block<Session> sessions = null;
 
@@ -256,10 +261,11 @@ public class CinemaServiceTest {
 		}
 
 	}
-	
+
 	@Test
 	public void findMovieByIdTest() {
-		Movie movieExpected = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(), Calendar.getInstance());
+		Movie movieExpected = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(),
+				Calendar.getInstance());
 		Movie movie = null;
 		try {
 			movie = cinemaService.findMovieById(movieExpected.getMovieId());
@@ -274,7 +280,6 @@ public class CinemaServiceTest {
 	public void findMovieByInvalidIdTest() throws InstanceNotFoundException {
 		cinemaService.findMovieById(NON_EXISTENT_MOVIE_ID);
 	}
-	
 
 	@Test
 	public void findSessionBySessionIdTest() {
@@ -283,7 +288,7 @@ public class CinemaServiceTest {
 		Room room = createRoom(ROOM_TEST_NAME, 10, cinema);
 		Movie movie = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(), Calendar.getInstance());
 
-		Session expected = createSession(100, new Date(), new BigDecimal(10.4), movie, room);
+		Session expected = createSession(100, getTomorrow(), new BigDecimal(10.4), movie, room);
 		Session session = null;
 		try {
 			session = cinemaService.findSessionBySessionId(expected.getSessionId());
@@ -300,7 +305,7 @@ public class CinemaServiceTest {
 	public void findSessionsByInvalidSessionIdTest() throws InstanceNotFoundException {
 		cinemaService.findSessionBySessionId(NON_EXISTENT_SESSION_ID);
 	}
-	
+
 	@Test
 	public void purchaseTicketsTest() {
 		Province province = createProvince(PROVINCE_TEST_NAME);
@@ -308,16 +313,16 @@ public class CinemaServiceTest {
 		Room room = createRoom(ROOM_TEST_NAME, 10, cinema);
 		Movie movie = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(), Calendar.getInstance());
 
-		Session session = createSession(100, new Date(), new BigDecimal(10.4), movie, room);
+		Session session = createSession(100, getTomorrow(), new BigDecimal(10.4), movie, room);
 		UserProfile user = registerUser(USER_TEST_NAME, PASSWORD_TEST);
 		Purchase expected = new Purchase();
 		Purchase purchase = new Purchase();
-		
+
 		try {
-			expected = cinemaService.purchaseTickets(user.getUserProfileId(),new BigDecimal(12345), Calendar.getInstance(),
-					Calendar.getInstance(),session.getSessionId(),20);
-			purchase=purchaseDao.find(expected.getPurchaseId());
-			
+			expected = cinemaService.purchaseTickets(user.getUserProfileId(), CREDIT_CARD_TEST_NUMBER,
+					Calendar.getInstance(), session.getSessionId(), 20);
+			purchase = purchaseDao.find(expected.getPurchaseId());
+
 		} catch (TooManyLocationsException e) {
 			e.printStackTrace();
 		} catch (InstanceNotFoundException e) {
@@ -325,28 +330,28 @@ public class CinemaServiceTest {
 		} catch (InputValidationException e) {
 			e.printStackTrace();
 		}
-		
+
 		assertEquals(purchase.getPurchaseId(), expected.getPurchaseId());
 		assertEquals(purchase.getUser(), expected.getUser());
 		assertEquals(purchase.getSession(), expected.getSession());
 		assertEquals(purchase.getCreditCardNumber(), expected.getCreditCardNumber());
 		assertEquals(purchase.getDate(), expected.getDate());
-		
+
 	}
-	
+
 	@Test(expected = InputValidationException.class)
-	public void purchaseTicketsInvalidLocationsAmoutTest() throws InputValidationException{
+	public void purchaseTicketsInvalidLocationsAmoutTest() throws InputValidationException {
 		Province province = createProvince(PROVINCE_TEST_NAME);
 		Cinema cinema = createCinema(CINEMA_TEST_NAME, province);
 		Room room = createRoom(ROOM_TEST_NAME, 10, cinema);
 		Movie movie = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(), Calendar.getInstance());
 
-		Session session = createSession(100, new Date(), new BigDecimal(10.4), movie, room);
+		Session session = createSession(100, getTomorrow(), new BigDecimal(10.3), movie, room);
 		UserProfile user = registerUser(USER_TEST_NAME, PASSWORD_TEST);
-		
+
 		try {
-			cinemaService.purchaseTickets(user.getUserProfileId(),new BigDecimal(12345), Calendar.getInstance(),
-					Calendar.getInstance(),session.getSessionId(),20);
+			cinemaService.purchaseTickets(user.getUserProfileId(), CREDIT_CARD_TEST_NUMBER, Calendar.getInstance(),
+					session.getSessionId(), 20);
 		} catch (TooManyLocationsException e) {
 			e.printStackTrace();
 		} catch (InstanceNotFoundException e) {
@@ -354,20 +359,20 @@ public class CinemaServiceTest {
 		}
 
 	}
-	
+
 	@Test(expected = InstanceNotFoundException.class)
-	public void  purchaseTicketsInvalidSessionIdTest() throws InstanceNotFoundException {
+	public void purchaseTicketsInvalidSessionIdTest() throws InstanceNotFoundException {
 		UserProfile user = registerUser(USER_TEST_NAME, PASSWORD_TEST);
 		try {
-			cinemaService.purchaseTickets(user.getUserProfileId(),new BigDecimal(12345), Calendar.getInstance(),
-					Calendar.getInstance(),NON_EXISTENT_SESSION_ID,6);
+			cinemaService.purchaseTickets(user.getUserProfileId(), CREDIT_CARD_TEST_NUMBER, Calendar.getInstance(),
+					NON_EXISTENT_SESSION_ID, 6);
 		} catch (TooManyLocationsException e) {
 			e.printStackTrace();
 		} catch (InputValidationException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Test(expected = InstanceNotFoundException.class)
 	public void purchaseTicketsInvalidUserIdTest() throws InstanceNotFoundException {
 		Province province = createProvince(PROVINCE_TEST_NAME);
@@ -375,18 +380,18 @@ public class CinemaServiceTest {
 		Room room = createRoom(ROOM_TEST_NAME, 10, cinema);
 		Movie movie = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(), Calendar.getInstance());
 
-		Session session = createSession(100, new Date(), new BigDecimal(10.4), movie, room);
-		
+		Session session = createSession(100, getTomorrow(), new BigDecimal(10.4), movie, room);
+
 		try {
-			cinemaService.purchaseTickets(NON_EXISTENT_USER_ID,new BigDecimal(12345), Calendar.getInstance(),
-					Calendar.getInstance(),session.getSessionId(),6);
+			cinemaService.purchaseTickets(NON_EXISTENT_USER_ID, CREDIT_CARD_TEST_NUMBER, Calendar.getInstance(),
+					session.getSessionId(), 6);
 		} catch (TooManyLocationsException e) {
 			e.printStackTrace();
 		} catch (InputValidationException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Test(expected = TooManyLocationsException.class)
 	public void purchaseTicketsInvalidLocationsFreeest() throws TooManyLocationsException {
 		Province province = createProvince(PROVINCE_TEST_NAME);
@@ -394,12 +399,12 @@ public class CinemaServiceTest {
 		Room room = createRoom(ROOM_TEST_NAME, 10, cinema);
 		Movie movie = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(), Calendar.getInstance());
 
-		Session session = createSession(5, new Date(), new BigDecimal(10.4), movie, room);
+		Session session = createSession(5, getTomorrow(), new BigDecimal(10.4), movie, room);
 		UserProfile user = registerUser(USER_TEST_NAME, PASSWORD_TEST);
-		
+
 		try {
-			cinemaService.purchaseTickets(user.getUserProfileId(),new BigDecimal(12345), Calendar.getInstance(),
-					Calendar.getInstance(),session.getSessionId(),7);
+			cinemaService.purchaseTickets(user.getUserProfileId(), CREDIT_CARD_TEST_NUMBER, Calendar.getInstance(),
+					session.getSessionId(), 7);
 		} catch (InstanceNotFoundException e) {
 			e.printStackTrace();
 		} catch (InputValidationException e) {
@@ -407,36 +412,37 @@ public class CinemaServiceTest {
 		}
 	}
 
-	
 	@Test
 	public void getPurchasesTest() {
-		
+
 		Province province = createProvince(PROVINCE_TEST_NAME);
 		Cinema cinema = createCinema(CINEMA_TEST_NAME, province);
 		Room room1 = createRoom(ROOM_TEST_NAME, 10, cinema);
 		Room room2 = createRoom(ROOM_TEST_NAME, 10, cinema);
 		Room room3 = createRoom(ROOM_TEST_NAME, 10, cinema);
-		
-		Movie movie1 = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(), Calendar.getInstance());
-		Movie movie2 = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(), Calendar.getInstance());
-		Movie movie3 = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(), Calendar.getInstance());
-		
-		Session session1 = createSession(100, new Date(), new BigDecimal(10.4), movie1, room2);
-		Session session2 = createSession(100, new Date(), new BigDecimal(10.4), movie2, room3);
-		Session session3 = createSession(100, new Date(), new BigDecimal(10.4), movie3, room1);
+
+		Movie movie1 = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(),
+				Calendar.getInstance());
+		Movie movie2 = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(),
+				Calendar.getInstance());
+		Movie movie3 = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(),
+				Calendar.getInstance());
+
+		Session session1 = createSession(100, getTomorrow(), new BigDecimal(10.4), movie1, room2);
+		Session session2 = createSession(100, getTomorrow(), new BigDecimal(10.4), movie2, room3);
+		Session session3 = createSession(100, getTomorrow(), new BigDecimal(10.4), movie3, room1);
 
 		UserProfile user1 = registerUser(USER_TEST_NAME, PASSWORD_TEST);
 		UserProfile user2 = registerUser("USER2", PASSWORD_TEST);
 
-		Purchase purchase1 = createPurchase(new BigDecimal(12345), Calendar.getInstance(), 10, Calendar.getInstance(),
+		Purchase purchase1 = createPurchase(CREDIT_CARD_TEST_NUMBER, Calendar.getInstance(), 10, Calendar.getInstance(),
 				session1, user1);
-		createPurchase(new BigDecimal(12345), Calendar.getInstance(), 10, Calendar.getInstance(),
-				session2, user2);
-		Purchase purchase3 = createPurchase(new BigDecimal(12345), Calendar.getInstance(), 10, Calendar.getInstance(),
+		createPurchase(CREDIT_CARD_TEST_NUMBER, Calendar.getInstance(), 10, Calendar.getInstance(), session2, user2);
+		Purchase purchase3 = createPurchase(CREDIT_CARD_TEST_NUMBER, Calendar.getInstance(), 10, Calendar.getInstance(),
 				session3, user1);
-		Purchase purchase4 = createPurchase(new BigDecimal(12345), Calendar.getInstance(), 10, Calendar.getInstance(),
+		Purchase purchase4 = createPurchase(CREDIT_CARD_TEST_NUMBER, Calendar.getInstance(), 10, Calendar.getInstance(),
 				session2, user1);
-		
+
 		Block<Purchase> purchases = null;
 
 		try {
@@ -449,24 +455,21 @@ public class CinemaServiceTest {
 		}
 
 		assertEquals(purchases.getItems().size(), 3);
-		
+
 		assertEquals(purchases.getItems().get(0).getPurchaseId(), purchase1.getPurchaseId());
-		assertEquals(purchases.getItems().get(0).getUser(),purchase1.getUser());
-		assertEquals(purchases.getItems().get(0).getSession(),purchase1.getSession());
-		
+		assertEquals(purchases.getItems().get(0).getUser(), purchase1.getUser());
+		assertEquals(purchases.getItems().get(0).getSession(), purchase1.getSession());
+
 		assertEquals(purchases.getItems().get(1).getPurchaseId(), purchase3.getPurchaseId());
-		assertEquals(purchases.getItems().get(1).getUser(),purchase3.getUser());
-		assertEquals(purchases.getItems().get(1).getSession(),purchase3.getSession());
-		
+		assertEquals(purchases.getItems().get(1).getUser(), purchase3.getUser());
+		assertEquals(purchases.getItems().get(1).getSession(), purchase3.getSession());
+
 		assertEquals(purchases.getItems().get(2).getPurchaseId(), purchase4.getPurchaseId());
-		assertEquals(purchases.getItems().get(2).getUser(),purchase4.getUser());
-		assertEquals(purchases.getItems().get(2).getSession(),purchase4.getSession());
-		
-		
-		
+		assertEquals(purchases.getItems().get(2).getUser(), purchase4.getUser());
+		assertEquals(purchases.getItems().get(2).getSession(), purchase4.getSession());
+
 	}
-	
-	
+
 	@Test(expected = InstanceNotFoundException.class)
 	public void findNonExistentUserPurchaseTest() throws InstanceNotFoundException {
 
@@ -480,7 +483,7 @@ public class CinemaServiceTest {
 
 	@Test(expected = InputValidationException.class)
 	public void getPurchasesTestWithInvalidCountParameter() throws InputValidationException {
-		
+
 		UserProfile user = registerUser(USER_TEST_NAME, PASSWORD_TEST);
 		try {
 			cinemaService.getPurchases(user.getUserProfileId(), -2, 10);
@@ -507,11 +510,11 @@ public class CinemaServiceTest {
 		Cinema cinema = createCinema(CINEMA_TEST_NAME, province);
 		Room room = createRoom(ROOM_TEST_NAME, 10, cinema);
 		Movie movie = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(), Calendar.getInstance());
-		Session session = createSession(100, new Date(), new BigDecimal(10.4), movie, room);
+		Session session = createSession(100, getTomorrow(), new BigDecimal(10.4), movie, room);
 		UserProfile user = registerUser(USER_TEST_NAME, PASSWORD_TEST);
 
-		Purchase purchaseExpected =  createPurchase(new BigDecimal(12345), Calendar.getInstance(), 10, Calendar.getInstance(),
-				session, user);
+		Purchase purchaseExpected = createPurchase(CREDIT_CARD_TEST_NUMBER, Calendar.getInstance(), 10,
+				Calendar.getInstance(), session, user);
 		Purchase purchase = null;
 		try {
 			purchase = cinemaService.getPurchase(purchaseExpected.getPurchaseId());
@@ -525,7 +528,7 @@ public class CinemaServiceTest {
 	public void getNonExistentPurchaseTest() throws InstanceNotFoundException {
 		cinemaService.getPurchase(NON_EXISTENT_PURCHASE_ID);
 	}
-	
+
 	@Test
 	public void collectTicketsTest() {
 		Province province = createProvince(PROVINCE_TEST_NAME);
@@ -533,11 +536,11 @@ public class CinemaServiceTest {
 		Room room = createRoom(ROOM_TEST_NAME, 10, cinema);
 		Movie movie = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(), Calendar.getInstance());
 
-		Session session = createSession(100, new Date(), new BigDecimal(10.4), movie, room);
+		Session session = createSession(100, getTomorrow(), new BigDecimal(10.4), movie, room);
 
 		UserProfile user = registerUser(USER_TEST_NAME, PASSWORD_TEST);
 
-		Purchase purchase = createPurchase(new BigDecimal(12345), Calendar.getInstance(), 10, Calendar.getInstance(),
+		Purchase purchase = createPurchase(CREDIT_CARD_TEST_NUMBER, Calendar.getInstance(), 10, Calendar.getInstance(),
 				session, user);
 
 		assertEquals(purchase.getPurchaseState(), Purchase.PurchaseState.PENDING);
@@ -571,11 +574,11 @@ public class CinemaServiceTest {
 		Room room = createRoom(ROOM_TEST_NAME, 10, cinema);
 		Movie movie = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(), Calendar.getInstance());
 
-		Session session = createSession(100, new Date(), new BigDecimal(10.4), movie, room);
+		Session session = createSession(100, getTomorrow(), new BigDecimal(10.4), movie, room);
 
 		UserProfile user = registerUser(USER_TEST_NAME, PASSWORD_TEST);
 
-		Purchase purchase = createPurchase(new BigDecimal(12345), Calendar.getInstance(), 10, Calendar.getInstance(),
+		Purchase purchase = createPurchase(CREDIT_CARD_TEST_NUMBER, Calendar.getInstance(), 10, Calendar.getInstance(),
 				session, user);
 
 		assertEquals(purchase.getPurchaseState(), Purchase.PurchaseState.PENDING);

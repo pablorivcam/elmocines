@@ -1,6 +1,5 @@
 package es.udc.pa.pa009.elmocines.model.cinemaservice;
 
-import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.List;
 
@@ -59,7 +58,7 @@ public interface CinemaService {
 	 *            the movie id
 	 * @return the movie
 	 * @throws InstanceNotFoundException
-	 *             the instance not found exception 
+	 *             the instance not found exception
 	 */
 	public Movie findMovieById(Long movieId) throws InstanceNotFoundException;
 
@@ -87,9 +86,9 @@ public interface CinemaService {
 	 *             locationsAmmount more than max locations allowed to buy
 	 * @return the purchase
 	 */
-	public Purchase purchaseTickets(Long userId,BigDecimal creditCardNumber, Calendar creditCardExpirationDate,
-			Calendar date,Long sessionId, int locationsAmount)
-			throws InstanceNotFoundException,InputValidationException,TooManyLocationsException;
+	public Purchase purchaseTickets(Long userId, String creditCardNumber, Calendar creditCardExpirationDate,
+			Long sessionId, int locationsAmount)
+			throws InstanceNotFoundException, InputValidationException, TooManyLocationsException;
 
 	/**
 	 * Gets the purchases.

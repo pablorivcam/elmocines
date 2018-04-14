@@ -1,6 +1,5 @@
 package es.udc.pa.pa009.elmocines.model.purchase;
 
-import java.math.BigDecimal;
 import java.util.Calendar;
 
 import javax.persistence.Column;
@@ -41,37 +40,26 @@ public class Purchase {
 	};
 
 	/** The purchase id. */
-	@SequenceGenerator(name = "PurchaseIdGenerator", sequenceName = "purchaseSeq")
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "PurchaseIdGenerator")
 	private Long purchaseId;
 
 	/** The credit card number. */
-	private BigDecimal creditCardNumber;
+	private String creditCardNumber;
 
 	/** The location count. */
 	private Integer locationCount;
 
 	/** The purchase state. */
-	@Enumerated(EnumType.STRING)
 	private PurchaseState purchaseState;
 
 	/** The credit card expiration date. */
-	@Temporal(TemporalType.DATE)
-	@Column(name = "creditCardExpiration")
 	private Calendar creditCardExpirationDate;
 
 	/** The date. */
-	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar date;
 
 	/** The session. */
-	@ManyToOne(optional = false, fetch = FetchType.LAZY)
-	@JoinColumn(name = "sessionId")
 	private Session session;
 
-	@ManyToOne(optional = false, fetch = FetchType.LAZY)
-	@JoinColumn(name = "usrId")
 	private UserProfile user;
 
 	/**
@@ -97,7 +85,7 @@ public class Purchase {
 	 * @param session
 	 *            the session
 	 */
-	public Purchase(BigDecimal creditCardNumber, Calendar creditCardExpirationDate, Integer locationCount,
+	public Purchase(String creditCardNumber, Calendar creditCardExpirationDate, Integer locationCount,
 			PurchaseState purchaseState, Calendar date, Session session, UserProfile user) {
 		this.creditCardNumber = creditCardNumber;
 		this.creditCardExpirationDate = creditCardExpirationDate;
@@ -106,6 +94,10 @@ public class Purchase {
 		this.date = date;
 		this.session = session;
 		this.user = user;
+
+		// FIXME: deberíamos resetear más cosas. Recordar que expiration date es solo
+		// una fecha.
+		date.set(Calendar.MILLISECOND, 0);
 	}
 
 	/**
@@ -113,8 +105,15 @@ public class Purchase {
 	 *
 	 * @return the purchase id
 	 */
+	@SequenceGenerator(name = "PurchaseIdGenerator", sequenceName = "purchaseSeq")
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "PurchaseIdGenerator")
 	public Long getPurchaseId() {
 		return purchaseId;
+	}
+
+	public void setPurchaseId(Long purchaseId) {
+		this.purchaseId = purchaseId;
 	}
 
 	/**
@@ -122,7 +121,7 @@ public class Purchase {
 	 *
 	 * @return the credit card number
 	 */
-	public BigDecimal getCreditCardNumber() {
+	public String getCreditCardNumber() {
 		return creditCardNumber;
 	}
 
@@ -132,7 +131,7 @@ public class Purchase {
 	 * @param creditCardNumber
 	 *            the new credit card number
 	 */
-	public void setCreditCardNumber(BigDecimal creditCardNumber) {
+	public void setCreditCardNumber(String creditCardNumber) {
 		this.creditCardNumber = creditCardNumber;
 	}
 
@@ -141,6 +140,8 @@ public class Purchase {
 	 *
 	 * @return the credit card expiration date
 	 */
+	@Temporal(TemporalType.DATE)
+	@Column(name = "creditCardExpiration")
 	public Calendar getCreditCardExpirationDate() {
 		return creditCardExpirationDate;
 	}
@@ -179,6 +180,7 @@ public class Purchase {
 	 *
 	 * @return the date
 	 */
+	@Temporal(TemporalType.TIMESTAMP)
 	public Calendar getDate() {
 		return date;
 	}
@@ -191,6 +193,7 @@ public class Purchase {
 	 */
 	public void setDate(Calendar date) {
 		this.date = date;
+		date.set(Calendar.MILLISECOND, 0);
 	}
 
 	/**
@@ -198,6 +201,8 @@ public class Purchase {
 	 *
 	 * @return the session
 	 */
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "sessionId")
 	public Session getSession() {
 		return session;
 	}
@@ -212,6 +217,7 @@ public class Purchase {
 		this.session = session;
 	}
 
+	@Enumerated(EnumType.STRING)
 	public PurchaseState getPurchaseState() {
 		return purchaseState;
 	}
@@ -220,6 +226,8 @@ public class Purchase {
 		this.purchaseState = purchaseState;
 	}
 
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "usrId")
 	public UserProfile getUser() {
 		return user;
 	}

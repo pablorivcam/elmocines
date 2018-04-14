@@ -19,9 +19,6 @@ import javax.persistence.TemporalType;
 public class Movie {
 
 	/** The movie id. */
-	@Id
-	@SequenceGenerator(name = "movieIdGenerator", sequenceName = "movieSeq")
-	@GeneratedValue(generator = "movieIdGenerator", strategy = GenerationType.AUTO)
 	private Long movieId;
 
 	/** The title. */
@@ -34,12 +31,9 @@ public class Movie {
 	private Integer lenght;
 
 	/** The init date. */
-	// Nota: usamos date porque solo queremos almacenar la fecha.
-	@Temporal(TemporalType.DATE)
 	private Calendar initDate;
 
 	/** The final date. */
-	@Temporal(TemporalType.DATE)
 	private Calendar finalDate;
 
 	/**
@@ -69,6 +63,12 @@ public class Movie {
 		this.lenght = lenght;
 		this.initDate = initDate;
 		this.finalDate = finalDate;
+
+		// FIXME: es necesario resetear las fechas si no tienen tiempo?
+	}
+
+	public void setMovieId(Long movieId) {
+		this.movieId = movieId;
 	}
 
 	/**
@@ -76,6 +76,9 @@ public class Movie {
 	 *
 	 * @return the movie id
 	 */
+	@Id
+	@SequenceGenerator(name = "movieIdGenerator", sequenceName = "movieSeq")
+	@GeneratedValue(generator = "movieIdGenerator", strategy = GenerationType.AUTO)
 	public Long getMovieId() {
 		return movieId;
 	}
@@ -142,6 +145,7 @@ public class Movie {
 	 *
 	 * @return the inits the date
 	 */
+	@Temporal(TemporalType.DATE)
 	public Calendar getInitDate() {
 		return initDate;
 	}
@@ -161,6 +165,7 @@ public class Movie {
 	 *
 	 * @return the final date
 	 */
+	@Temporal(TemporalType.DATE)
 	public Calendar getFinalDate() {
 		return finalDate;
 	}

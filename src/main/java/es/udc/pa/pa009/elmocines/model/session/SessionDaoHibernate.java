@@ -27,7 +27,7 @@ public class SessionDaoHibernate extends GenericDaoHibernate<Session, Long> impl
 				queryString += "s.room.roomId= :roomId" + i + " ";
 			}
 		}
-		queryString += "ORDER BY s.hour DESC";
+		queryString += "ORDER BY s.date DESC";
 
 		Query query = getSession().createQuery(queryString);
 

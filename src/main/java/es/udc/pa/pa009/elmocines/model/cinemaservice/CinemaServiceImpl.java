@@ -1,6 +1,5 @@
 package es.udc.pa.pa009.elmocines.model.cinemaservice;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -29,7 +28,7 @@ import es.udc.pojo.modelutil.exceptions.InstanceNotFoundException;
 @Service("cinemaService")
 @Transactional
 public class CinemaServiceImpl implements CinemaService {
-	
+
 	@Autowired
 	UserProfileDao userDao;
 
@@ -44,10 +43,10 @@ public class CinemaServiceImpl implements CinemaService {
 
 	@Autowired
 	PurchaseDao purchaseDao;
-	
+
 	@Autowired
 	ProvinceDao provinceDao;
-	
+
 	@Autowired
 	MovieDao movieDao;
 
@@ -98,7 +97,7 @@ public class CinemaServiceImpl implements CinemaService {
 
 	@Override
 	public Movie findMovieById(Long movieId) throws InstanceNotFoundException {
-		return movieDao.find(movieId); 
+		return movieDao.find(movieId);
 	}
 
 	@Override
@@ -107,46 +106,46 @@ public class CinemaServiceImpl implements CinemaService {
 	}
 
 	@Override
-	public Purchase purchaseTickets(Long userId,BigDecimal creditCardNumber, Calendar creditCardExpirationDate,
-			Calendar date,Long sessionId, int locationsAmount) throws InstanceNotFoundException,InputValidationException,TooManyLocationsException{
-		
-		UserProfile user=new UserProfile();
-		Session session=new Session();
+	public Purchase purchaseTickets(Long userId, String creditCardNumber, Calendar creditCardExpirationDate,
+			Long sessionId, int locationsAmount)
+			throws InstanceNotFoundException, InputValidationException, TooManyLocationsException {
+
+		UserProfile user = new UserProfile();
+		Session session = new Session();
 		int sessionFreeLocations;
-		
-		if (locationsAmount>10){
+
+		if (locationsAmount > 10) {
 			throw new InputValidationException();
 		}
-		
-		if(sessionId != null){
-			session =sessionDao.find(sessionId);
+
+		if (sessionId != null) {
+			session = sessionDao.find(sessionId);
 		}
-		
-		sessionFreeLocations=session.getFreeLocationsCount();
-		
-		if (locationsAmount>sessionFreeLocations){
+
+		sessionFreeLocations = session.getFreeLocationsCount();
+
+		if (locationsAmount > sessionFreeLocations) {
 			throw new TooManyLocationsException(sessionFreeLocations);
 		}
-		
+
 		if (userId != null) {
 			user = userDao.find(userId);
 		}
-		
-		Purchase purchase = new Purchase(creditCardNumber,creditCardExpirationDate,locationsAmount,
-				Purchase.PurchaseState.PENDING, date, session, user);
-		
+
+		Purchase purchase = new Purchase(creditCardNumber, creditCardExpirationDate, locationsAmount,
+				Purchase.PurchaseState.PENDING, Calendar.getInstance(), session, user);
+
 		purchaseDao.save(purchase);
-		
-		session.setFreeLocationsCount(sessionFreeLocations-locationsAmount);
-		
+
+		session.setFreeLocationsCount(sessionFreeLocations - locationsAmount);
+
 		return purchase;
 	}
 
 	@Override
 	public Block<Purchase> getPurchases(Long userId, int startIndex, int count)
-			throws InputValidationException, InstanceNotFoundException
-	{
-		
+			throws InputValidationException, InstanceNotFoundException {
+
 		if (startIndex < 0 || count < 0) {
 			throw new InputValidationException();
 		}
