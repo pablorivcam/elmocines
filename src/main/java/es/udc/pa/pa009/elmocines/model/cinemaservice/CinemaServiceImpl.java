@@ -135,13 +135,20 @@ public class CinemaServiceImpl implements CinemaService {
 	}
 
 	@Override
-	public Purchase collectTickets(Long purchaseId) throws InstanceNotFoundException, TicketsAlreadyCollectedException {
+	public Purchase collectTickets(Long purchaseId) throws InstanceNotFoundException, TicketsAlreadyCollectedException, ExpiredDateException {		
 		Purchase purchase = purchaseDao.find(purchaseId);
+		
+		Calendar current = Calendar.getInstance();
+		Calendar ticketDate = purchase.getSession().getDate();
 
 		if (purchase.getPurchaseState().equals(Purchase.PurchaseState.DELIVERED)) {
 			throw new TicketsAlreadyCollectedException();
 		}
 
+		if(ticketDate.compareTo(current)<0) {
+			throw new ExpiredDateException();
+		}
+		
 		purchase.setPurchaseState(Purchase.PurchaseState.DELIVERED); // No hace falta llamar al save, hibernate lo hace
 																		// automáticamente.
 		return purchase;

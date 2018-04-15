@@ -138,7 +138,8 @@ public interface CinemaService {
 	 *             the instance not found exception
 	 * @throws TicketsAlreadyCollectedException
 	 *             the tickets already collected exception
+	 * @throws ExpiredDateException 
 	 */
-	public Purchase collectTickets(Long purchaseId) throws InstanceNotFoundException, TicketsAlreadyCollectedException;
+	public Purchase collectTickets(Long purchaseId) throws InstanceNotFoundException, TicketsAlreadyCollectedException, ExpiredDateException;
 
 }

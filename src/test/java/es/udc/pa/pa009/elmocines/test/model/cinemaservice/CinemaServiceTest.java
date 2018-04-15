@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import es.udc.pa.pa009.elmocines.model.cinema.Cinema;
 import es.udc.pa.pa009.elmocines.model.cinema.CinemaDao;
 import es.udc.pa.pa009.elmocines.model.cinemaservice.CinemaService;
+import es.udc.pa.pa009.elmocines.model.cinemaservice.ExpiredDateException;
 import es.udc.pa.pa009.elmocines.model.cinemaservice.InputValidationException;
 import es.udc.pa.pa009.elmocines.model.cinemaservice.TicketsAlreadyCollectedException;
 import es.udc.pa.pa009.elmocines.model.cinemaservice.TooManyLocationsException;
@@ -496,13 +497,16 @@ public class CinemaServiceTest {
 		} catch (TicketsAlreadyCollectedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (ExpiredDateException e){
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 		assertEquals(purchase.getPurchaseState(), Purchase.PurchaseState.DELIVERED);
 	}
 
 	@Test(expected = InstanceNotFoundException.class)
-	public void collectInvalidTicketsTest() throws InstanceNotFoundException {
+	public void collectInvalidTicketsTest() throws InstanceNotFoundException, ExpiredDateException {
 		try {
 			cinemaService.collectTickets(NON_EXISTENT_PURCHASE_ID);
 		} catch (TicketsAlreadyCollectedException e) {
@@ -531,6 +535,33 @@ public class CinemaServiceTest {
 			assertEquals(purchase.getPurchaseState(), Purchase.PurchaseState.DELIVERED);
 			cinemaService.collectTickets(purchase.getPurchaseId());
 		} catch (InstanceNotFoundException e) {
+			e.printStackTrace();
+		} catch (ExpiredDateException e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	@Test(expected = ExpiredDateException.class)
+	public void collectExpiredTicketsTest() throws ExpiredDateException {
+		Province province = createProvince(PROVINCE_TEST_NAME);
+		Cinema cinema = createCinema(CINEMA_TEST_NAME, province);
+		Room room = createRoom(ROOM_TEST_NAME, 10, cinema);
+		Movie movie = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(), Calendar.getInstance());
+
+		Session session = createSession(getYesterday(), new BigDecimal(10.4), movie, room);
+
+		UserProfile user = registerUser(USER_TEST_NAME, PASSWORD_TEST);
+
+		Purchase purchase = createPurchase(CREDIT_CARD_TEST_NUMBER, Calendar.getInstance(), 10, Calendar.getInstance(),
+				session, user);
+		
+		try {
+			cinemaService.collectTickets(purchase.getPurchaseId());
+			assertEquals(purchase.getSession().getDate(), session.getDate());
+		} catch (InstanceNotFoundException e){
+			e.printStackTrace();
+		} catch (TicketsAlreadyCollectedException e){
 			e.printStackTrace();
 		}
 
