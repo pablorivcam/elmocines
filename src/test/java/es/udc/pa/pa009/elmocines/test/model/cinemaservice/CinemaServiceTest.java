@@ -36,6 +36,7 @@ import es.udc.pa.pa009.elmocines.model.userprofile.UserProfile;
 import es.udc.pa.pa009.elmocines.model.userprofile.UserProfile.Role;
 import es.udc.pa.pa009.elmocines.model.userservice.UserProfileDetails;
 import es.udc.pa.pa009.elmocines.model.userservice.UserService;
+import es.udc.pa.pa009.elmocines.model.util.MovieSessionsDto;
 import es.udc.pojo.modelutil.data.Block;
 import es.udc.pojo.modelutil.exceptions.DuplicateInstanceException;
 import es.udc.pojo.modelutil.exceptions.InstanceNotFoundException;
@@ -99,6 +100,12 @@ public class CinemaServiceTest {
 		return c;
 	}
 
+	private Calendar getYesterday() {
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.DAY_OF_YEAR, -1);
+		return c;
+	}
+
 	private UserProfile registerUser(String loginName, String clearPassword) {
 
 		UserProfileDetails userProfileDetails = new UserProfileDetails("name", "lastName", "user@udc.es");
@@ -122,8 +129,8 @@ public class CinemaServiceTest {
 
 	private Room createRoom(String name, int capacity, Cinema cinema) {
 		Room room = new Room(name, capacity, cinema);
-		roomDao.save(room); // FIXME: creo que no hace falta actualizar la entidad cinema con la nueva room
-							// y que hibernate lo hace automáticamente.
+		roomDao.save(room);
+		cinemaDao.save(cinema);
 		return room;
 	}
 
@@ -133,9 +140,10 @@ public class CinemaServiceTest {
 		return movie;
 	}
 
-	private Session createSession(int freeLocationsCount, Calendar date, BigDecimal price, Movie movie, Room room) {
-		Session session = new Session(freeLocationsCount, date, price, movie, room);
+	private Session createSession(Calendar date, BigDecimal price, Movie movie, Room room) {
+		Session session = new Session(date, price, movie, room);
 		sessionDao.save(session);
+		roomDao.save(room);
 		return session;
 	}
 
@@ -198,71 +206,6 @@ public class CinemaServiceTest {
 	}
 
 	@Test
-	public void getSessionsByCinemaIdTest() {
-
-		Province province = createProvince(PROVINCE_TEST_NAME);
-		Cinema cinema = createCinema(CINEMA_TEST_NAME, province);
-		Room room = createRoom(ROOM_TEST_NAME, 10, cinema);
-		Room room2 = createRoom(ROOM_TEST_NAME + 2, 10, cinema);
-		Movie movie = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(), Calendar.getInstance());
-
-		Session session = createSession(100, getTomorrow(), new BigDecimal(10.4), movie, room);
-		Session session2 = createSession(100, getTomorrow(), new BigDecimal(11.4), movie, room2);
-
-		Block<Session> sessions = null;
-
-		try {
-			sessions = cinemaService.getSessionsByCinemaId(cinema.getCinemaId(), 0, 10);
-
-		} catch (InstanceNotFoundException e) {
-			e.printStackTrace();
-		} catch (InputValidationException e) {
-			e.printStackTrace();
-		}
-
-		assertEquals(sessions.getItems().size(), 2);
-		assertEquals(sessions.getItems().get(0).getRoom(), session.getRoom());
-		assertEquals(sessions.getItems().get(0).getPrice(), session.getPrice());
-		assertEquals(sessions.getItems().get(1).getRoom(), session2.getRoom());
-		assertEquals(sessions.getItems().get(1).getPrice(), session2.getPrice());
-	}
-
-	@Test(expected = InstanceNotFoundException.class)
-	public void findNonExistentCinemaTest() throws InstanceNotFoundException {
-
-		try {
-			cinemaService.getSessionsByCinemaId(NON_EXISTENT_CINEMA_ID, 0, 10);
-		} catch (InputValidationException e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	@Test(expected = InputValidationException.class)
-	public void getSessionsByCinemaIdTestWithInvalidCountParameter() throws InputValidationException {
-		Province province = createProvince(PROVINCE_TEST_NAME);
-		Cinema cinema = createCinema(CINEMA_TEST_NAME, province);
-		try {
-			cinemaService.getSessionsByCinemaId(cinema.getCinemaId(), -2, 10);
-		} catch (InstanceNotFoundException e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	@Test(expected = InputValidationException.class)
-	public void getSessionsByCinemaIdTestWithInvalidStartIndexParameter() throws InputValidationException {
-		Province province = createProvince(PROVINCE_TEST_NAME);
-		Cinema cinema = createCinema(CINEMA_TEST_NAME, province);
-		try {
-			cinemaService.getSessionsByCinemaId(cinema.getCinemaId(), 0, -10);
-		} catch (InstanceNotFoundException e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	@Test
 	public void findMovieByIdTest() {
 		Movie movieExpected = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(),
 				Calendar.getInstance());
@@ -288,7 +231,7 @@ public class CinemaServiceTest {
 		Room room = createRoom(ROOM_TEST_NAME, 10, cinema);
 		Movie movie = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(), Calendar.getInstance());
 
-		Session expected = createSession(100, getTomorrow(), new BigDecimal(10.4), movie, room);
+		Session expected = createSession(getTomorrow(), new BigDecimal(10.4), movie, room);
 		Session session = null;
 		try {
 			session = cinemaService.findSessionBySessionId(expected.getSessionId());
@@ -313,7 +256,7 @@ public class CinemaServiceTest {
 		Room room = createRoom(ROOM_TEST_NAME, 10, cinema);
 		Movie movie = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(), Calendar.getInstance());
 
-		Session session = createSession(100, getTomorrow(), new BigDecimal(10.4), movie, room);
+		Session session = createSession(getTomorrow(), new BigDecimal(10.4), movie, room);
 		UserProfile user = registerUser(USER_TEST_NAME, PASSWORD_TEST);
 		Purchase expected = new Purchase();
 		Purchase purchase = new Purchase();
@@ -346,7 +289,7 @@ public class CinemaServiceTest {
 		Room room = createRoom(ROOM_TEST_NAME, 10, cinema);
 		Movie movie = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(), Calendar.getInstance());
 
-		Session session = createSession(100, getTomorrow(), new BigDecimal(10.3), movie, room);
+		Session session = createSession(getTomorrow(), new BigDecimal(10.3), movie, room);
 		UserProfile user = registerUser(USER_TEST_NAME, PASSWORD_TEST);
 
 		try {
@@ -380,7 +323,7 @@ public class CinemaServiceTest {
 		Room room = createRoom(ROOM_TEST_NAME, 10, cinema);
 		Movie movie = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(), Calendar.getInstance());
 
-		Session session = createSession(100, getTomorrow(), new BigDecimal(10.4), movie, room);
+		Session session = createSession(getTomorrow(), new BigDecimal(10.4), movie, room);
 
 		try {
 			cinemaService.purchaseTickets(NON_EXISTENT_USER_ID, CREDIT_CARD_TEST_NUMBER, Calendar.getInstance(),
@@ -396,10 +339,10 @@ public class CinemaServiceTest {
 	public void purchaseTicketsInvalidLocationsFreeest() throws TooManyLocationsException {
 		Province province = createProvince(PROVINCE_TEST_NAME);
 		Cinema cinema = createCinema(CINEMA_TEST_NAME, province);
-		Room room = createRoom(ROOM_TEST_NAME, 10, cinema);
-		Movie movie = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(), Calendar.getInstance());
+		Room room = createRoom(ROOM_TEST_NAME, 5, cinema);
+		Movie movie = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 5, Calendar.getInstance(), Calendar.getInstance());
 
-		Session session = createSession(5, getTomorrow(), new BigDecimal(10.4), movie, room);
+		Session session = createSession(getTomorrow(), new BigDecimal(10.4), movie, room);
 		UserProfile user = registerUser(USER_TEST_NAME, PASSWORD_TEST);
 
 		try {
@@ -428,9 +371,9 @@ public class CinemaServiceTest {
 		Movie movie3 = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(),
 				Calendar.getInstance());
 
-		Session session1 = createSession(100, getTomorrow(), new BigDecimal(10.4), movie1, room2);
-		Session session2 = createSession(100, getTomorrow(), new BigDecimal(10.4), movie2, room3);
-		Session session3 = createSession(100, getTomorrow(), new BigDecimal(10.4), movie3, room1);
+		Session session1 = createSession(getTomorrow(), new BigDecimal(10.4), movie1, room2);
+		Session session2 = createSession(getTomorrow(), new BigDecimal(10.4), movie2, room3);
+		Session session3 = createSession(getTomorrow(), new BigDecimal(10.4), movie3, room1);
 
 		UserProfile user1 = registerUser(USER_TEST_NAME, PASSWORD_TEST);
 		UserProfile user2 = registerUser("USER2", PASSWORD_TEST);
@@ -497,7 +440,7 @@ public class CinemaServiceTest {
 	public void getPurchasesTestWithInvalidStartIndexParameter() throws InputValidationException {
 		UserProfile user = registerUser(USER_TEST_NAME, PASSWORD_TEST);
 		try {
-			cinemaService.getSessionsByCinemaId(user.getUserProfileId(), 0, -10);
+			cinemaService.getPurchases(user.getUserProfileId(), 0, -10);
 		} catch (InstanceNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -510,7 +453,7 @@ public class CinemaServiceTest {
 		Cinema cinema = createCinema(CINEMA_TEST_NAME, province);
 		Room room = createRoom(ROOM_TEST_NAME, 10, cinema);
 		Movie movie = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(), Calendar.getInstance());
-		Session session = createSession(100, getTomorrow(), new BigDecimal(10.4), movie, room);
+		Session session = createSession(getTomorrow(), new BigDecimal(10.4), movie, room);
 		UserProfile user = registerUser(USER_TEST_NAME, PASSWORD_TEST);
 
 		Purchase purchaseExpected = createPurchase(CREDIT_CARD_TEST_NUMBER, Calendar.getInstance(), 10,
@@ -536,7 +479,7 @@ public class CinemaServiceTest {
 		Room room = createRoom(ROOM_TEST_NAME, 10, cinema);
 		Movie movie = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(), Calendar.getInstance());
 
-		Session session = createSession(100, getTomorrow(), new BigDecimal(10.4), movie, room);
+		Session session = createSession(getTomorrow(), new BigDecimal(10.4), movie, room);
 
 		UserProfile user = registerUser(USER_TEST_NAME, PASSWORD_TEST);
 
@@ -574,7 +517,7 @@ public class CinemaServiceTest {
 		Room room = createRoom(ROOM_TEST_NAME, 10, cinema);
 		Movie movie = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(), Calendar.getInstance());
 
-		Session session = createSession(100, getTomorrow(), new BigDecimal(10.4), movie, room);
+		Session session = createSession(getTomorrow(), new BigDecimal(10.4), movie, room);
 
 		UserProfile user = registerUser(USER_TEST_NAME, PASSWORD_TEST);
 
@@ -588,6 +531,79 @@ public class CinemaServiceTest {
 			assertEquals(purchase.getPurchaseState(), Purchase.PurchaseState.DELIVERED);
 			cinemaService.collectTickets(purchase.getPurchaseId());
 		} catch (InstanceNotFoundException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@Test
+	public void findSessionsByCinemaIdAndDateTest() {
+		Province province = createProvince(PROVINCE_TEST_NAME);
+		Cinema cinema = createCinema(CINEMA_TEST_NAME, province);
+		Cinema cinema2 = createCinema(CINEMA_TEST_NAME + 2, province);
+
+		Room room = createRoom(ROOM_TEST_NAME, 10, cinema);
+		Room room2 = createRoom(ROOM_TEST_NAME + 2, 10, cinema);
+		Room room3 = createRoom(ROOM_TEST_NAME + 3, 10, cinema2);
+
+		Movie movie = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 90, getYesterday(), getTomorrow());
+		Movie movie2 = createMovie(MOVIE_TEST_NAME + 2, MOVIE_TEST_NAME + 2, 90, getYesterday(), getTomorrow());
+
+		Session s = createSession(getTomorrow(), new BigDecimal(10), movie, room);
+		Session s2 = createSession(getTomorrow(), new BigDecimal(10), movie2, room2);
+		Session s3 = createSession(getTomorrow(), new BigDecimal(10), movie, room3);
+
+		List<MovieSessionsDto> movieSessions = null;
+
+		try {
+			movieSessions = cinemaService.findSessionsByCinemaIdAndDate(cinema.getCinemaId(), Calendar.getInstance(),
+					getTomorrow());
+		} catch (InstanceNotFoundException e) {
+			e.printStackTrace();
+		} catch (InputValidationException e) {
+			e.printStackTrace();
+		}
+
+		assertEquals(2, movieSessions.size());
+		assertEquals(movie, movieSessions.get(0).getMovie());
+		assertEquals(s, movieSessions.get(0).getSessions().get(0));
+		assertEquals(movie2, movieSessions.get(1).getMovie());
+		assertEquals(s2, movieSessions.get(1).getSessions().get(0));
+		assertEquals(1, movieSessions.get(0).getSessions().size());
+		assertEquals(1, movieSessions.get(1).getSessions().size());
+
+	}
+
+	@Test(expected = InputValidationException.class)
+	public void findSessionsByCinemaIdAndDateTestWithInvalidInitDate() throws InputValidationException {
+		Province province = createProvince(PROVINCE_TEST_NAME);
+		Cinema cinema = createCinema(CINEMA_TEST_NAME, province);
+
+		try {
+			cinemaService.findSessionsByCinemaIdAndDate(cinema.getCinemaId(), getTomorrow(), getTomorrow());
+		} catch (InstanceNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test(expected = InputValidationException.class)
+	public void findSessionsByCinemaIdAndDateTestWithInvalidDateRange() throws InputValidationException {
+		Province province = createProvince(PROVINCE_TEST_NAME);
+		Cinema cinema = createCinema(CINEMA_TEST_NAME, province);
+
+		try {
+			cinemaService.findSessionsByCinemaIdAndDate(cinema.getCinemaId(), Calendar.getInstance(), getYesterday());
+		} catch (InstanceNotFoundException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@Test(expected = InstanceNotFoundException.class)
+	public void findSessionsByCinemaIdAndDateTestWithInvalidCinema() throws InstanceNotFoundException {
+		try {
+			cinemaService.findSessionsByCinemaIdAndDate(NON_EXISTENT_CINEMA_ID, Calendar.getInstance(), getTomorrow());
+		} catch (InputValidationException e) {
 			e.printStackTrace();
 		}
 

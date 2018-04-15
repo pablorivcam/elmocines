@@ -8,6 +8,7 @@ import es.udc.pa.pa009.elmocines.model.movie.Movie;
 import es.udc.pa.pa009.elmocines.model.province.Province;
 import es.udc.pa.pa009.elmocines.model.purchase.Purchase;
 import es.udc.pa.pa009.elmocines.model.session.Session;
+import es.udc.pa.pa009.elmocines.model.util.MovieSessionsDto;
 import es.udc.pojo.modelutil.data.Block;
 import es.udc.pojo.modelutil.exceptions.InstanceNotFoundException;
 
@@ -34,21 +35,21 @@ public interface CinemaService {
 	public List<Cinema> findCinemasByProvinceId(Long provinceId);
 
 	/**
-	 * Gets the sessions on a cinema.
+	 * Find sessions by cinema id and a date range.
 	 *
 	 * @param cinemaId
 	 *            the cinema id
-	 * @param startIndex
-	 *            the start index of the sessions that we want to get.
-	 * @param count
-	 *            the number of sessions that we want to get.
-	 * @return the sessions
+	 * @param initDate
+	 *            the init date
+	 * @param finalDate
+	 *            the final date
+	 * @return the list of sessions
 	 * @throws InputValidationException
 	 *             the input validation exception
 	 * @throws InstanceNotFoundException
 	 *             the instance not found exception
 	 */
-	public Block<Session> getSessionsByCinemaId(Long cinemaId, int startIndex, int count)
+	public List<MovieSessionsDto> findSessionsByCinemaIdAndDate(Long cinemaId, Calendar date, Calendar finalDate)
 			throws InputValidationException, InstanceNotFoundException;
 
 	/**
@@ -76,15 +77,23 @@ public interface CinemaService {
 	/**
 	 * Purchase tickets.
 	 *
+	 * @param userId
+	 *            the user id
+	 * @param creditCardNumber
+	 *            the credit card number
+	 * @param creditCardExpirationDate
+	 *            the credit card expiration date
 	 * @param sessionId
 	 *            the session id
 	 * @param locationsAmount
 	 *            the locations amount
+	 * @return the purchase
 	 * @throws InstanceNotFoundException
 	 *             the instance not found exception
+	 * @throws InputValidationException
+	 *             the input validation exception
 	 * @throws TooManyLocationsException
-	 *             locationsAmmount more than max locations allowed to buy
-	 * @return the purchase
+	 *             the too many locations exception
 	 */
 	public Purchase purchaseTickets(Long userId, String creditCardNumber, Calendar creditCardExpirationDate,
 			Long sessionId, int locationsAmount)

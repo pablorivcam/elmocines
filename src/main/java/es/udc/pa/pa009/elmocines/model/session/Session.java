@@ -57,8 +57,6 @@ public class Session {
 	/**
 	 * Instantiates a new session.
 	 *
-	 * @param freeLocationsCount
-	 *            the free locations count
 	 * @param date
 	 *            the date
 	 * @param price
@@ -68,12 +66,15 @@ public class Session {
 	 * @param room
 	 *            the room
 	 */
-	public Session(int freeLocationsCount, Calendar date, BigDecimal price, Movie movie, Room room) {
-		this.freeLocationsCount = freeLocationsCount;
+	public Session(Calendar date, BigDecimal price, Movie movie, Room room) {
+
 		this.date = date;
 		this.price = price;
 		this.movie = movie;
 		this.room = room;
+
+		// FIXME: ?
+		freeLocationsCount = room.getCapacity();
 
 		date.set(Calendar.MILLISECOND, 0);
 		date.set(Calendar.SECOND, 0);

@@ -16,12 +16,12 @@ import es.udc.pa.pa009.elmocines.model.province.Province;
 import es.udc.pa.pa009.elmocines.model.province.ProvinceDao;
 import es.udc.pa.pa009.elmocines.model.purchase.Purchase;
 import es.udc.pa.pa009.elmocines.model.purchase.PurchaseDao;
-import es.udc.pa.pa009.elmocines.model.room.Room;
 import es.udc.pa.pa009.elmocines.model.room.RoomDao;
 import es.udc.pa.pa009.elmocines.model.session.Session;
 import es.udc.pa.pa009.elmocines.model.session.SessionDao;
 import es.udc.pa.pa009.elmocines.model.userprofile.UserProfile;
 import es.udc.pa.pa009.elmocines.model.userprofile.UserProfileDao;
+import es.udc.pa.pa009.elmocines.model.util.MovieSessionsDto;
 import es.udc.pojo.modelutil.data.Block;
 import es.udc.pojo.modelutil.exceptions.InstanceNotFoundException;
 
@@ -58,41 +58,6 @@ public class CinemaServiceImpl implements CinemaService {
 	@Override
 	public List<Cinema> findCinemasByProvinceId(Long provinceId) {
 		return cinemaDao.findCinemasByProvinceId(provinceId);
-	}
-
-	@Override
-	@Transactional(readOnly = true)
-	public Block<Session> getSessionsByCinemaId(Long cinemaId, int startIndex, int count)
-			throws InputValidationException, InstanceNotFoundException
-
-	{
-		if (startIndex < 0 || count < 0) {
-			throw new InputValidationException();
-		}
-
-		if (cinemaId != null) {
-			cinemaDao.find(cinemaId);
-
-		}
-
-		List<Room> rooms = roomDao.findRoomsByCinemaId(cinemaId);
-
-		List<Long> roomIds = new ArrayList<>();
-		for (Room r : rooms) {
-			roomIds.add(r.getRoomId());
-		}
-
-		// Buscamos las count+1 sessiones desde el start index
-		List<Session> sessions = sessionDao.findSessionsByRoomsId(roomIds, startIndex, count);
-		// Si las sessiones buscadas llenan toda la lista, es decir count+1>count, es
-		// que quedan más items por buscar
-		boolean existMoreItems = sessions.size() > count;
-
-		if (existMoreItems) {
-			sessions.remove(sessions.size() - 1);
-		}
-
-		return new Block<>(sessions, existMoreItems);
 	}
 
 	@Override
@@ -154,7 +119,7 @@ public class CinemaServiceImpl implements CinemaService {
 			userDao.find(userId);
 		}
 
-		List<Purchase> purchases = purchaseDao.findPurchasesByUserId(userId);
+		List<Purchase> purchases = purchaseDao.findPurchasesByUserId(userId, startIndex, count);
 		boolean existMoreItems = purchases.size() > count;
 
 		if (existMoreItems) {
@@ -173,12 +138,56 @@ public class CinemaServiceImpl implements CinemaService {
 	public Purchase collectTickets(Long purchaseId) throws InstanceNotFoundException, TicketsAlreadyCollectedException {
 		Purchase purchase = purchaseDao.find(purchaseId);
 
-		if (purchase.getPurchaseState().equals(Purchase.PurchaseState.DELIVERED))
+		if (purchase.getPurchaseState().equals(Purchase.PurchaseState.DELIVERED)) {
 			throw new TicketsAlreadyCollectedException();
+		}
 
 		purchase.setPurchaseState(Purchase.PurchaseState.DELIVERED); // No hace falta llamar al save, hibernate lo hace
 																		// automáticamente.
 		return purchase;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<MovieSessionsDto> findSessionsByCinemaIdAndDate(Long cinemaId, Calendar initDate, Calendar finalDate)
+			throws InputValidationException, InstanceNotFoundException {
+
+		// Miramos si el cine existe
+		cinemaDao.find(cinemaId);
+
+		if (initDate.after(finalDate)) {
+			throw new InputValidationException("Init date cannot be after final date.");
+		}
+
+		if (initDate.after(Calendar.getInstance())) {
+			throw new InputValidationException("Init date cannot be after actual's date.");
+		}
+
+		List<Session> sessions = sessionDao.findSessionsByCinemaId(cinemaId, initDate, finalDate);
+		List<Movie> movies = new ArrayList<>();
+		List<MovieSessionsDto> movieSessions = new ArrayList<>();
+
+		MovieSessionsDto movieSession = null;
+
+		// FIXME: no me fio yo de esta implementación
+		for (Session s : sessions) {
+			if (!movies.contains(s.getMovie())) {
+				movies.add(s.getMovie());
+				movieSession = new MovieSessionsDto(s.getMovie(), new ArrayList<>());
+				movieSessions.add(movieSession);
+			} else {
+				if (movieSession.getMovie() != s.getMovie()) {
+					for (MovieSessionsDto m : movieSessions) {
+						if (m.getMovie().equals(s.getMovie())) {
+							movieSession = m;
+						}
+					}
+				}
+			}
+			movieSession.getSessions().add(s);
+		}
+
+		return movieSessions;
 	}
 
 }

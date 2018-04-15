@@ -1,8 +1,7 @@
 package es.udc.pa.pa009.elmocines.model.session;
 
+import java.util.Calendar;
 import java.util.List;
-
-import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 
@@ -11,33 +10,16 @@ import es.udc.pojo.modelutil.dao.GenericDaoHibernate;
 @Repository("sessionDao")
 public class SessionDaoHibernate extends GenericDaoHibernate<Session, Long> implements SessionDao {
 
-	// FIXME: ESTO ESTÁ BIEN ASI?
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Session> findSessionsByRoomsId(List<Long> rooms, int startIndex, int count) {
-		List<Session> sessions = null;
+	public List<Session> findSessionsByCinemaId(Long cinemaId, Calendar initDate, Calendar finalDate) {
 
-		String queryString = "SELECT s FROM Session s ";
-		if (rooms.size() > 0) {
-			queryString += "WHERE ";
-			for (int i = 0; i < rooms.size(); i++) {
-				if (i != 0) {
-					queryString += "OR ";
-				}
-				queryString += "s.room.roomId= :roomId" + i + " ";
-			}
-		}
-		queryString += "ORDER BY s.date DESC";
+		return getSession()
+				.createQuery("SELECT s FROM Session s WHERE s.room.cinema.cinemaId = :cinemaId "
+						+ "AND s.date BETWEEN :initDate AND :finalDate ORDER BY s.date DESC")
+				.setParameter("cinemaId", cinemaId).setParameter("initDate", initDate)
+				.setParameter("finalDate", finalDate).getResultList();
 
-		Query query = getSession().createQuery(queryString);
-
-		for (int i = 0; i < rooms.size(); i++) {
-			query.setParameter("roomId" + i, rooms.get(i));
-		}
-
-		sessions = query.setFirstResult(startIndex).setMaxResults(count).getResultList();
-
-		return sessions;
 	}
 
 }

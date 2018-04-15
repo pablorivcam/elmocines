@@ -11,4 +11,8 @@ public class InputValidationException extends Exception {
 		super("Some input values are not correct.");
 	}
 
+	public InputValidationException(String message) {
+		super(message);
+	}
+
 }
