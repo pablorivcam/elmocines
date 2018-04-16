@@ -68,6 +68,36 @@ public class Purchase {
 	public Purchase() {
 
 	}
+	
+	/**
+	 * Instantiates a new purchase.
+	 *
+	 * @param creditCardNumber
+	 *            the credit card number
+	 * @param creditCardExpirationDate
+	 *            the credit card expiration date
+	 * @param locationCount
+	 *            the location count
+	 * @param date
+	 *            the date
+	 * @param session
+	 *            the session
+	 */
+	public Purchase(String creditCardNumber, Calendar creditCardExpirationDate, Integer locationCount,
+			 Calendar date, Session session, UserProfile user) {
+		this.creditCardNumber = creditCardNumber;
+		this.creditCardExpirationDate = creditCardExpirationDate;
+		this.locationCount = locationCount;
+		this.purchaseState = PurchaseState.PENDING;
+		this.date = date;
+		this.session = session;
+		this.user = user;
+
+		// FIXME: deberíamos resetear más cosas. Recordar que expiration date es solo
+		// una fecha.
+		date.set(Calendar.MILLISECOND, 0);
+	}
+	
 
 	/**
 	 * Instantiates a new purchase.

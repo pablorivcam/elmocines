@@ -56,7 +56,7 @@ public class CinemaServiceImpl implements CinemaService {
 	}
 
 	@Override
-	public List<Cinema> findCinemasByProvinceId(Long provinceId) {
+	public List<Cinema> findCinemasByProvinceId(Long provinceId) throws InstanceNotFoundException{
 		return cinemaDao.findCinemasByProvinceId(provinceId);
 	}
 
@@ -73,11 +73,12 @@ public class CinemaServiceImpl implements CinemaService {
 	@Override
 	public Purchase purchaseTickets(Long userId, String creditCardNumber, Calendar creditCardExpirationDate,
 			Long sessionId, int locationsAmount)
-			throws InstanceNotFoundException, InputValidationException, TooManyLocationsException {
+			throws InstanceNotFoundException, InputValidationException, TooManyLocationsException,ExpiredDateException {
 
 		UserProfile user = new UserProfile();
 		Session session = new Session();
 		int sessionFreeLocations;
+		Calendar current = Calendar.getInstance();
 
 		if (locationsAmount > 10) {
 			throw new InputValidationException();
@@ -85,6 +86,12 @@ public class CinemaServiceImpl implements CinemaService {
 
 		if (sessionId != null) {
 			session = sessionDao.find(sessionId);
+		}
+		
+		Calendar sessionDate = session.getDate();
+		
+		if(sessionDate.compareTo(current)<0) {
+			throw new ExpiredDateException();
 		}
 
 		sessionFreeLocations = session.getFreeLocationsCount();
@@ -98,11 +105,13 @@ public class CinemaServiceImpl implements CinemaService {
 		}
 
 		Purchase purchase = new Purchase(creditCardNumber, creditCardExpirationDate, locationsAmount,
-				Purchase.PurchaseState.PENDING, Calendar.getInstance(), session, user);
+				 current, session, user);
 
 		purchaseDao.save(purchase);
 
 		session.setFreeLocationsCount(sessionFreeLocations - locationsAmount);
+		
+		sessionDao.save(session);
 
 		return purchase;
 	}
@@ -151,6 +160,8 @@ public class CinemaServiceImpl implements CinemaService {
 		
 		purchase.setPurchaseState(Purchase.PurchaseState.DELIVERED); // No hace falta llamar al save, hibernate lo hace
 																		// automáticamente.
+		purchaseDao.save(purchase);
+		
 		return purchase;
 	}
 

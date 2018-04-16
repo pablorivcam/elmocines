@@ -190,7 +190,12 @@ public class CinemaServiceTest {
 		Long provinceId = province_test.getProvinceId();
 
 		List<Cinema> cinema_test = new ArrayList<>();
-		List<Cinema> cinema_service = cinemaService.findCinemasByProvinceId(provinceId);
+		List<Cinema> cinema_service=null;
+		try {
+			cinema_service = cinemaService.findCinemasByProvinceId(provinceId);
+		} catch (InstanceNotFoundException e) {
+			e.printStackTrace();
+		}
 		assertEquals(cinema_test, cinema_service);
 
 		Cinema cinema1 = createCinema("YelmoCines", province_test);
@@ -201,7 +206,11 @@ public class CinemaServiceTest {
 		cinema_test.add(cinema3);
 		cinema_test.add(cinema1);
 
-		cinema_service = cinemaService.findCinemasByProvinceId(provinceId);
+		try {
+			cinema_service = cinemaService.findCinemasByProvinceId(provinceId);
+		} catch (InstanceNotFoundException e) {
+			e.printStackTrace();
+		}
 		assertEquals(cinema_test, cinema_service);
 
 	}
@@ -273,6 +282,8 @@ public class CinemaServiceTest {
 			e.printStackTrace();
 		} catch (InputValidationException e) {
 			e.printStackTrace();
+		} catch (ExpiredDateException e) {
+			e.printStackTrace();
 		}
 
 		assertEquals(purchase.getPurchaseId(), expected.getPurchaseId());
@@ -300,6 +311,8 @@ public class CinemaServiceTest {
 			e.printStackTrace();
 		} catch (InstanceNotFoundException e) {
 			e.printStackTrace();
+		} catch (ExpiredDateException e) {
+			e.printStackTrace();
 		}
 
 	}
@@ -313,6 +326,8 @@ public class CinemaServiceTest {
 		} catch (TooManyLocationsException e) {
 			e.printStackTrace();
 		} catch (InputValidationException e) {
+			e.printStackTrace();
+		} catch (ExpiredDateException e) {
 			e.printStackTrace();
 		}
 	}
@@ -333,6 +348,8 @@ public class CinemaServiceTest {
 			e.printStackTrace();
 		} catch (InputValidationException e) {
 			e.printStackTrace();
+		} catch (ExpiredDateException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -352,6 +369,8 @@ public class CinemaServiceTest {
 		} catch (InstanceNotFoundException e) {
 			e.printStackTrace();
 		} catch (InputValidationException e) {
+			e.printStackTrace();
+		} catch (ExpiredDateException e) {
 			e.printStackTrace();
 		}
 	}
@@ -582,7 +601,7 @@ public class CinemaServiceTest {
 
 		Session s = createSession(getTomorrow(), new BigDecimal(10), movie, room);
 		Session s2 = createSession(getTomorrow(), new BigDecimal(10), movie2, room2);
-		Session s3 = createSession(getTomorrow(), new BigDecimal(10), movie, room3);
+		createSession(getTomorrow(), new BigDecimal(10), movie, room3);
 
 		List<MovieSessionsDto> movieSessions = null;
 

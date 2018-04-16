@@ -32,7 +32,8 @@ public interface CinemaService {
 	 *            the province id
 	 * @return the list
 	 */
-	public List<Cinema> findCinemasByProvinceId(Long provinceId);
+	public List<Cinema> findCinemasByProvinceId(Long provinceId)
+			throws InstanceNotFoundException;;
 
 	/**
 	 * Find sessions by cinema id and a date range.
@@ -97,7 +98,7 @@ public interface CinemaService {
 	 */
 	public Purchase purchaseTickets(Long userId, String creditCardNumber, Calendar creditCardExpirationDate,
 			Long sessionId, int locationsAmount)
-			throws InstanceNotFoundException, InputValidationException, TooManyLocationsException;
+			throws InstanceNotFoundException, InputValidationException, TooManyLocationsException,ExpiredDateException;
 
 	/**
 	 * Gets the purchases.
