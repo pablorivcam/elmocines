@@ -47,6 +47,7 @@ import es.udc.pojo.modelutil.exceptions.InstanceNotFoundException;
 @Transactional
 public class CinemaServiceTest {
 
+	private final long NON_EXISTENT_PROVINCE_ID = -1;
 	private final long NON_EXISTENT_CINEMA_ID = -1;
 	private final long NON_EXISTENT_SESSION_ID = -1;
 	private final long NON_EXISTENT_PURCHASE_ID = -1;
@@ -151,7 +152,7 @@ public class CinemaServiceTest {
 	private Purchase createPurchase(String creditCardNumber, Calendar creditCardExpirationDate, int locationCount,
 			Calendar date, Session session, UserProfile user) {
 		Purchase purchase = new Purchase(creditCardNumber, creditCardExpirationDate, locationCount,
-				Purchase.PurchaseState.PENDING, date, session, user);
+				 date, session, user);
 
 		purchaseDao.save(purchase);
 
@@ -215,6 +216,11 @@ public class CinemaServiceTest {
 
 	}
 
+	@Test(expected = InstanceNotFoundException.class)
+	public void findCinemasByProvinceIdInvalidIdTest() throws InstanceNotFoundException {
+		cinemaService.findCinemasByProvinceId(NON_EXISTENT_PROVINCE_ID);
+	}
+	
 	@Test
 	public void findMovieByIdTest() {
 		Movie movieExpected = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(),
@@ -246,7 +252,6 @@ public class CinemaServiceTest {
 		try {
 			session = cinemaService.findSessionBySessionId(expected.getSessionId());
 		} catch (InstanceNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -354,7 +359,7 @@ public class CinemaServiceTest {
 	}
 
 	@Test(expected = TooManyLocationsException.class)
-	public void purchaseTicketsInvalidLocationsFreeest() throws TooManyLocationsException {
+	public void purchaseTicketsInvalidLocationsFreeTest() throws TooManyLocationsException {
 		Province province = createProvince(PROVINCE_TEST_NAME);
 		Cinema cinema = createCinema(CINEMA_TEST_NAME, province);
 		Room room = createRoom(ROOM_TEST_NAME, 5, cinema);
@@ -371,6 +376,28 @@ public class CinemaServiceTest {
 		} catch (InputValidationException e) {
 			e.printStackTrace();
 		} catch (ExpiredDateException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test(expected = ExpiredDateException.class)
+	public void purchaseTicketsInvalidDateSessionTest() throws ExpiredDateException {
+		Province province = createProvince(PROVINCE_TEST_NAME);
+		Cinema cinema = createCinema(CINEMA_TEST_NAME, province);
+		Room room = createRoom(ROOM_TEST_NAME, 10, cinema);
+		Movie movie = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 5, Calendar.getInstance(), Calendar.getInstance());
+
+		Session session = createSession(getYesterday(), new BigDecimal(10.4), movie, room);
+		UserProfile user = registerUser(USER_TEST_NAME, PASSWORD_TEST);
+
+		try {
+			cinemaService.purchaseTickets(user.getUserProfileId(), CREDIT_CARD_TEST_NUMBER, Calendar.getInstance(),
+					session.getSessionId(), 7);
+		} catch (InstanceNotFoundException e) {
+			e.printStackTrace();
+		} catch (InputValidationException e) {
+			e.printStackTrace();
+		} catch (TooManyLocationsException e) {
 			e.printStackTrace();
 		}
 	}

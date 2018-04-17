@@ -57,6 +57,9 @@ public class CinemaServiceImpl implements CinemaService {
 
 	@Override
 	public List<Cinema> findCinemasByProvinceId(Long provinceId) throws InstanceNotFoundException{
+		if(provinceId!=null){
+			provinceDao.find(provinceId);
+		}
 		return cinemaDao.findCinemasByProvinceId(provinceId);
 	}
 
