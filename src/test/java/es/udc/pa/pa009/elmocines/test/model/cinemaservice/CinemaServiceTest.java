@@ -425,15 +425,32 @@ public class CinemaServiceTest {
 		UserProfile user1 = registerUser(USER_TEST_NAME, PASSWORD_TEST);
 		UserProfile user2 = registerUser("USER2", PASSWORD_TEST);
 
-		Purchase purchase1 = createPurchase(CREDIT_CARD_TEST_NUMBER, Calendar.getInstance(), 10, Calendar.getInstance(),
+		Purchase purchase1 = createPurchase(CREDIT_CARD_TEST_NUMBER, Calendar.getInstance(), 5, Calendar.getInstance(),
 				session1, user1);
-		createPurchase(CREDIT_CARD_TEST_NUMBER, Calendar.getInstance(), 10, Calendar.getInstance(), session2, user2);
-		Purchase purchase3 = createPurchase(CREDIT_CARD_TEST_NUMBER, Calendar.getInstance(), 10, Calendar.getInstance(),
+		createPurchase(CREDIT_CARD_TEST_NUMBER, Calendar.getInstance(), 1, Calendar.getInstance(), session2, user2);
+		Purchase purchase3 = createPurchase(CREDIT_CARD_TEST_NUMBER, Calendar.getInstance(), 5, Calendar.getInstance(),
 				session3, user1);
-		Purchase purchase4 = createPurchase(CREDIT_CARD_TEST_NUMBER, Calendar.getInstance(), 10, Calendar.getInstance(),
+		Purchase purchase4 = createPurchase(CREDIT_CARD_TEST_NUMBER, Calendar.getInstance(), 1, Calendar.getInstance(),
+				session2, user1);
+		Purchase purchase5 = createPurchase(CREDIT_CARD_TEST_NUMBER, Calendar.getInstance(), 1, Calendar.getInstance(),
+				session2, user1);
+		Purchase purchase6 = createPurchase(CREDIT_CARD_TEST_NUMBER, Calendar.getInstance(), 1, Calendar.getInstance(),
+				session3, user1);
+		Purchase purchase7 = createPurchase(CREDIT_CARD_TEST_NUMBER, Calendar.getInstance(), 1, Calendar.getInstance(),
+				session1, user1);
+		Purchase purchase8 = createPurchase(CREDIT_CARD_TEST_NUMBER, Calendar.getInstance(), 2, Calendar.getInstance(),
+				session2, user1);
+		Purchase purchase9 = createPurchase(CREDIT_CARD_TEST_NUMBER, Calendar.getInstance(), 2, Calendar.getInstance(),
+				session3, user1);
+		Purchase purchase10 = createPurchase(CREDIT_CARD_TEST_NUMBER, Calendar.getInstance(), 1, Calendar.getInstance(),
+				session1, user1);
+		Purchase purchase11 = createPurchase(CREDIT_CARD_TEST_NUMBER, Calendar.getInstance(), 1, Calendar.getInstance(),
+				session2, user1);
+		createPurchase(CREDIT_CARD_TEST_NUMBER, Calendar.getInstance(), 1, Calendar.getInstance(),
 				session2, user1);
 
 		Block<Purchase> purchases = null;
+		List<Purchase> expected_purchases = new ArrayList<>();
 
 		try {
 			purchases = cinemaService.getPurchases(user1.getUserProfileId(), 0, 10);
@@ -443,20 +460,20 @@ public class CinemaServiceTest {
 		} catch (InputValidationException e) {
 			e.printStackTrace();
 		}
+		
+		expected_purchases.add(purchase1);
+		expected_purchases.add(purchase3);
+		expected_purchases.add(purchase4);
+		expected_purchases.add(purchase5);
+		expected_purchases.add(purchase6);
+		expected_purchases.add(purchase7);
+		expected_purchases.add(purchase8);
+		expected_purchases.add(purchase9);
+		expected_purchases.add(purchase10);
+		expected_purchases.add(purchase11);
 
-		assertEquals(purchases.getItems().size(), 3);
-
-		assertEquals(purchases.getItems().get(0).getPurchaseId(), purchase1.getPurchaseId());
-		assertEquals(purchases.getItems().get(0).getUser(), purchase1.getUser());
-		assertEquals(purchases.getItems().get(0).getSession(), purchase1.getSession());
-
-		assertEquals(purchases.getItems().get(1).getPurchaseId(), purchase3.getPurchaseId());
-		assertEquals(purchases.getItems().get(1).getUser(), purchase3.getUser());
-		assertEquals(purchases.getItems().get(1).getSession(), purchase3.getSession());
-
-		assertEquals(purchases.getItems().get(2).getPurchaseId(), purchase4.getPurchaseId());
-		assertEquals(purchases.getItems().get(2).getUser(), purchase4.getUser());
-		assertEquals(purchases.getItems().get(2).getSession(), purchase4.getSession());
+		assertEquals(10,purchases.getItems().size());
+		assertEquals(expected_purchases, purchases.getItems());
 
 	}
 
