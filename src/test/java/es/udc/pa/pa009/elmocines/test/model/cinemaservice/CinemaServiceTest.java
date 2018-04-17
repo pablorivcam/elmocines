@@ -279,7 +279,7 @@ public class CinemaServiceTest {
 		try {
 			expected = cinemaService.purchaseTickets(user.getUserProfileId(), CREDIT_CARD_TEST_NUMBER,
 					Calendar.getInstance(), session.getSessionId(), 20);
-			purchase = purchaseDao.find(expected.getPurchaseId());
+			purchase = cinemaService.getPurchase(expected.getPurchaseId());
 
 		} catch (TooManyLocationsException e) {
 			e.printStackTrace();
