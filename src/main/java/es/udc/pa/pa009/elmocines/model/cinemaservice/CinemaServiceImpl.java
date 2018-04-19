@@ -53,19 +53,22 @@ public class CinemaServiceImpl implements CinemaService {
 	}
 
 	@Override
-	public List<Cinema> findCinemasByProvinceId(Long provinceId) throws InstanceNotFoundException{
-		if(provinceId!=null){
+	@Transactional(readOnly = true)
+	public List<Cinema> findCinemasByProvinceId(Long provinceId) throws InstanceNotFoundException {
+		if (provinceId != null) {
 			provinceDao.find(provinceId);
 		}
 		return cinemaDao.findCinemasByProvinceId(provinceId);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public Movie findMovieById(Long movieId) throws InstanceNotFoundException {
 		return movieDao.find(movieId);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public Session findSessionBySessionId(Long sessionId) throws InstanceNotFoundException {
 		return sessionDao.find(sessionId);
 	}

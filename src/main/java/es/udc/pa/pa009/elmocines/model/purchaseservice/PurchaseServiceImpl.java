@@ -45,12 +45,11 @@ public class PurchaseServiceImpl implements PurchaseService {
 
 	@Autowired
 	MovieDao movieDao;
-	
 
 	@Override
 	public Purchase purchaseTickets(Long userId, String creditCardNumber, Calendar creditCardExpirationDate,
-			Long sessionId, int locationsAmount)
-			throws InstanceNotFoundException, InputValidationException, TooManyLocationsException,ExpiredDateException {
+			Long sessionId, int locationsAmount) throws InstanceNotFoundException, InputValidationException,
+			TooManyLocationsException, ExpiredDateException {
 
 		UserProfile user = new UserProfile();
 		Session session = new Session();
@@ -64,10 +63,10 @@ public class PurchaseServiceImpl implements PurchaseService {
 		if (sessionId != null) {
 			session = sessionDao.find(sessionId);
 		}
-		
+
 		Calendar sessionDate = session.getDate();
-		
-		if(sessionDate.compareTo(current)<0) {
+
+		if (sessionDate.compareTo(current) < 0) {
 			throw new ExpiredDateException();
 		}
 
@@ -81,19 +80,20 @@ public class PurchaseServiceImpl implements PurchaseService {
 			user = userDao.find(userId);
 		}
 
-		Purchase purchase = new Purchase(creditCardNumber, creditCardExpirationDate, locationsAmount,
-				 current, session, user);
+		Purchase purchase = new Purchase(creditCardNumber, creditCardExpirationDate, locationsAmount, current, session,
+				user);
 
 		purchaseDao.save(purchase);
 
 		session.setFreeLocationsCount(sessionFreeLocations - locationsAmount);
-		
+
 		sessionDao.save(session);
 
 		return purchase;
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public Block<Purchase> getPurchases(Long userId, int startIndex, int count)
 			throws InputValidationException, InstanceNotFoundException {
 
@@ -121,9 +121,10 @@ public class PurchaseServiceImpl implements PurchaseService {
 	}
 
 	@Override
-	public Purchase collectTickets(Long purchaseId) throws InstanceNotFoundException, TicketsAlreadyCollectedException, ExpiredDateException {		
+	public Purchase collectTickets(Long purchaseId)
+			throws InstanceNotFoundException, TicketsAlreadyCollectedException, ExpiredDateException {
 		Purchase purchase = purchaseDao.find(purchaseId);
-		
+
 		Calendar current = Calendar.getInstance();
 		Calendar ticketDate = purchase.getSession().getDate();
 
@@ -131,15 +132,15 @@ public class PurchaseServiceImpl implements PurchaseService {
 			throw new TicketsAlreadyCollectedException();
 		}
 
-		if(ticketDate.compareTo(current)<0) {
+		if (ticketDate.compareTo(current) < 0) {
 			throw new ExpiredDateException();
 		}
-		
+
 		purchase.setPurchaseState(Purchase.PurchaseState.DELIVERED); // No hace falta llamar al save, hibernate lo hace
 																		// automáticamente.
 		purchaseDao.save(purchase);
-		
+
 		return purchase;
 	}
-	
+
 }

@@ -16,6 +16,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
 
+import org.hibernate.annotations.BatchSize;
+
 import es.udc.pa.pa009.elmocines.model.movie.Movie;
 import es.udc.pa.pa009.elmocines.model.room.Room;
 
@@ -24,6 +26,7 @@ import es.udc.pa.pa009.elmocines.model.room.Room;
  */
 @Entity
 @Table(name = "SessionMovies")
+@BatchSize(size = 10)
 public class Session {
 
 	/** The session id. */
