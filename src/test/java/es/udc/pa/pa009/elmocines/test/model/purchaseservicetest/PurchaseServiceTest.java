@@ -46,13 +46,9 @@ import es.udc.pojo.modelutil.exceptions.InstanceNotFoundException;
 @Transactional
 public class PurchaseServiceTest {
 
-	private final long NON_EXISTENT_PROVINCE_ID = -1;
-	private final long NON_EXISTENT_CINEMA_ID = -1;
 	private final long NON_EXISTENT_SESSION_ID = -1;
 	private final long NON_EXISTENT_PURCHASE_ID = -1;
 	private final long NON_EXISTENT_USER_ID = -1;
-	private final long NON_EXISTENT_MOVIE_ID = -1;
-
 	public static final String USER_TEST_NAME = "TEST_USER";
 	public static final String PASSWORD_TEST = "TEST_PASSWORD";
 	public static final String PROVINCE_TEST_NAME = "TEST_PROVINCE";
@@ -173,7 +169,7 @@ public class PurchaseServiceTest {
 
 		try {
 			expected = purchaseService.purchaseTickets(user.getUserProfileId(), CREDIT_CARD_TEST_NUMBER,
-					Calendar.getInstance(), session.getSessionId(), 20);
+					Calendar.getInstance(), session.getSessionId(), 7);
 			purchase = purchaseService.getPurchase(expected.getPurchaseId());
 
 		} catch (TooManyLocationsException e) {
@@ -185,12 +181,13 @@ public class PurchaseServiceTest {
 		} catch (ExpiredDateException e) {
 			e.printStackTrace();
 		}
-
+		
 		assertEquals(purchase.getPurchaseId(), expected.getPurchaseId());
 		assertEquals(purchase.getUser(), expected.getUser());
 		assertEquals(purchase.getSession(), expected.getSession());
 		assertEquals(purchase.getCreditCardNumber(), expected.getCreditCardNumber());
 		assertEquals(purchase.getDate(), expected.getDate());
+		assertEquals(room.getCapacity()- expected.getLocationCount(),session.getFreeLocationsCount());
 
 	}
 
@@ -322,7 +319,8 @@ public class PurchaseServiceTest {
 
 		Purchase purchase1 = createPurchase(CREDIT_CARD_TEST_NUMBER, Calendar.getInstance(), 5, Calendar.getInstance(),
 				session1, user1);
-		createPurchase(CREDIT_CARD_TEST_NUMBER, Calendar.getInstance(), 1, Calendar.getInstance(), session2, user2);
+		createPurchase(CREDIT_CARD_TEST_NUMBER, Calendar.getInstance(), 1, Calendar.getInstance(),
+				session2, user2);
 		Purchase purchase3 = createPurchase(CREDIT_CARD_TEST_NUMBER, Calendar.getInstance(), 5, Calendar.getInstance(),
 				session3, user1);
 		Purchase purchase4 = createPurchase(CREDIT_CARD_TEST_NUMBER, Calendar.getInstance(), 1, Calendar.getInstance(),
@@ -366,7 +364,7 @@ public class PurchaseServiceTest {
 		expected_purchases.add(purchase9);
 		expected_purchases.add(purchase10);
 		expected_purchases.add(purchase11);
-
+		
 		assertEquals(10,purchases.getItems().size());
 		assertEquals(expected_purchases, purchases.getItems());
 
