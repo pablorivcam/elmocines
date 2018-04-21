@@ -24,18 +24,11 @@ import es.udc.pa.pa009.elmocines.model.movie.Movie;
 import es.udc.pa.pa009.elmocines.model.movie.MovieDao;
 import es.udc.pa.pa009.elmocines.model.province.Province;
 import es.udc.pa.pa009.elmocines.model.province.ProvinceDao;
-import es.udc.pa.pa009.elmocines.model.purchase.Purchase;
-import es.udc.pa.pa009.elmocines.model.purchase.PurchaseDao;
 import es.udc.pa.pa009.elmocines.model.room.Room;
 import es.udc.pa.pa009.elmocines.model.room.RoomDao;
 import es.udc.pa.pa009.elmocines.model.session.Session;
 import es.udc.pa.pa009.elmocines.model.session.SessionDao;
-import es.udc.pa.pa009.elmocines.model.userprofile.UserProfile;
-import es.udc.pa.pa009.elmocines.model.userprofile.UserProfile.Role;
-import es.udc.pa.pa009.elmocines.model.userservice.UserProfileDetails;
-import es.udc.pa.pa009.elmocines.model.userservice.UserService;
 import es.udc.pa.pa009.elmocines.model.util.MovieSessionsDto;
-import es.udc.pojo.modelutil.exceptions.DuplicateInstanceException;
 import es.udc.pojo.modelutil.exceptions.InstanceNotFoundException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -46,8 +39,6 @@ public class CinemaServiceTest {
 	private final long NON_EXISTENT_PROVINCE_ID = -1;
 	private final long NON_EXISTENT_CINEMA_ID = -1;
 	private final long NON_EXISTENT_SESSION_ID = -1;
-	private final long NON_EXISTENT_PURCHASE_ID = -1;
-	private final long NON_EXISTENT_USER_ID = -1;
 	private final long NON_EXISTENT_MOVIE_ID = -1;
 
 	public static final String USER_TEST_NAME = "TEST_USER";
@@ -64,9 +55,6 @@ public class CinemaServiceTest {
 	private CinemaService cinemaService;
 
 	@Autowired
-	private UserService userService;
-
-	@Autowired
 	private CinemaDao cinemaDao;
 
 	@Autowired
@@ -80,9 +68,6 @@ public class CinemaServiceTest {
 
 	@Autowired
 	private MovieDao movieDao;
-
-	@Autowired
-	private PurchaseDao purchaseDao;
 
 	public Province createProvince(String name) {
 
@@ -102,20 +87,6 @@ public class CinemaServiceTest {
 		Calendar c = Calendar.getInstance();
 		c.add(Calendar.DAY_OF_YEAR, -1);
 		return c;
-	}
-
-	private UserProfile registerUser(String loginName, String clearPassword) {
-
-		UserProfileDetails userProfileDetails = new UserProfileDetails("name", "lastName", "user@udc.es");
-
-		try {
-
-			return userService.registerUser(loginName, clearPassword, userProfileDetails, Role.CLIENT);
-
-		} catch (DuplicateInstanceException e) {
-			throw new RuntimeException(e);
-		}
-
 	}
 
 	private Cinema createCinema(String name, Province province) {
@@ -143,16 +114,6 @@ public class CinemaServiceTest {
 		sessionDao.save(session);
 		roomDao.save(room);
 		return session;
-	}
-
-	private Purchase createPurchase(String creditCardNumber, Calendar creditCardExpirationDate, int locationCount,
-			Calendar date, Session session, UserProfile user) {
-		Purchase purchase = new Purchase(creditCardNumber, creditCardExpirationDate, locationCount,
-				 date, session, user);
-
-		purchaseDao.save(purchase);
-
-		return purchase;
 	}
 
 	@Test
