@@ -4,9 +4,10 @@
       xmlns:p="tapestry:parameter">
 <head>
     <meta charset="utf-8" />
-    <title>${title} - MiniPortal</title>
+    <title>${title} - Elmocines</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+    <link rel="stylesheet" type="text/css" href="${context:css/bootstrap.css}" />
+    <link rel="shortcut icon" type="image/png" href="${context:images/favicon.png}" />
     <style type="text/css">
         body {
             padding-top: 60px;
@@ -34,7 +35,10 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#" t:type="PageLink" t:page="index">MiniPortal</a>
+            <a class="navbar-brand" href="#" t:type="PageLink" t:page="index">
+            	<img src="${context:images/logo.png}" width="100px" alt="Elmo cines"/>
+            	
+            </a>
         </div>
         
         <div class="navbar-collapse collapse">
