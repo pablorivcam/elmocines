@@ -46,11 +46,18 @@
             
 			    <div class="form-group mx-sm-3">
 			    
-			    	<label for="provinceId" class="sr-only">${message:provincia}</label>
+			    	<label for="provinceId" class="sr-only">${message:province}</label>
 					<t:select t:id="provinceId" model="provincesSelect"
-						blankLabel="${message:province}" blankOption="never" />			    
+						 blankOption="never" />			    
 			    </div>
-			         
+			    
+			    <div class="form-group mx-sm-3">
+			    
+			    	<label for="cinemaId" class="sr-only">${message:cinema}</label>
+					<t:select t:id="cinemaId" model="cinemasSelect"
+						 blankOption="never" />			    
+			    </div>
+			         			         
          		<div class="form-group mx-sm-3">
 					<button type="submit" class="btn btn-info">
 					<span class="glyphicon glyphicon-search"></span> ${message:searchBillboard}

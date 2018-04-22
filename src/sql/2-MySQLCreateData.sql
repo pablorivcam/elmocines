@@ -10,7 +10,10 @@ INSERT INTO Provinces VALUES (4, 'Ourense');
 -- cinemaId,provinceId,name
 INSERT INTO Cinemas VALUES (1, 1,'Los Rosales');
 INSERT INTO Cinemas VALUES (2, 1,'Espacio Coruña');
-INSERT INTO Cinemas VALUES (3, 2,'Cines Melchor Roel');
+INSERT INTO Cinemas VALUES (3, 2,'Melchor Roel');
+INSERT INTO Cinemas VALUES (4, 2,'A Leira');
+INSERT INTO Cinemas VALUES (5, 3,'Afonía');
+INSERT INTO Cinemas VALUES (6, 4,'As Termas');
 
 -- RoomId,cinemaId,name,capacity
 INSERT INTO Rooms VALUES (1,3,'Sala Apátrida',100);

@@ -10,6 +10,7 @@ import org.apache.tapestry5.annotations.SessionState;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Cookies;
 
+import es.udc.pa.pa009.elmocines.model.cinema.Cinema;
 import es.udc.pa.pa009.elmocines.model.cinemaservice.CinemaService;
 import es.udc.pa.pa009.elmocines.model.province.Province;
 import es.udc.pa.pa009.elmocines.web.pages.Index;
@@ -17,6 +18,7 @@ import es.udc.pa.pa009.elmocines.web.services.AuthenticationPolicy;
 import es.udc.pa.pa009.elmocines.web.services.AuthenticationPolicyType;
 import es.udc.pa.pa009.elmocines.web.util.CookiesManager;
 import es.udc.pa.pa009.elmocines.web.util.UserSession;
+import es.udc.pojo.modelutil.exceptions.InstanceNotFoundException;
 
 @Import(library = { "tapestry5/bootstrap/js/collapse.js",
 		"tapestry5/bootstrap/js/dropdown.js" }, stylesheet = "tapestry5/bootstrap/css/bootstrap-theme.css")
@@ -30,6 +32,9 @@ public class Layout {
 
 	@Property
 	private String provincesSelect;
+
+	@Property
+	private String cinemasSelect;
 
 	@Inject
 	private CinemaService cinemaService;
@@ -58,6 +63,35 @@ public class Layout {
 
 	}
 
+	void rechargeCinemaSelector(Long provinceId) {
+		List<Cinema> cinemasList = null;
+		try {
+			cinemasList = cinemaService.findCinemasByProvinceId(provinceId);
+		} catch (InstanceNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		if (cinemasList != null) {
+			StringJoiner cinemasJoiner = new StringJoiner(",");
+
+			for (Cinema c : cinemasList) {
+				cinemasJoiner.add(c.getCinemaId().toString() + "=" + c.getName());
+			}
+
+			cinemasSelect = cinemasJoiner.toString();
+
+			if (!cinemasList.isEmpty()) {
+				cinemaId = cinemasList.get(0).getCinemaId();
+			}
+
+		}
+
+	}
+
+	void onValueChangedFromProvinceId(Long prov) {
+		rechargeCinemaSelector(prov);
+	}
+
 	// Método para inicializar el selector de las provincias
 	void onPrepareForRender() {
 
@@ -68,11 +102,15 @@ public class Layout {
 			provincesJoiner.add(p.getProvinceId().toString() + "=" + p.getName());
 		}
 
-		provincesSelect = "provinces:" + provincesJoiner.toString();
+		provincesSelect = provincesJoiner.toString();
 
 		if (!provincesList.isEmpty()) {
 			provinceId = provincesList.get(0).getProvinceId();
 		}
+
+		/////////////////////////////////
+
+		rechargeCinemaSelector(provincesList.get(0).getProvinceId());
 
 	}
 
