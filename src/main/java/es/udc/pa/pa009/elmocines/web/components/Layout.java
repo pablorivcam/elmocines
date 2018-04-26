@@ -4,11 +4,14 @@ import java.util.List;
 import java.util.StringJoiner;
 
 import org.apache.tapestry5.annotations.Import;
+import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SessionState;
+import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Cookies;
+import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
 
 import es.udc.pa.pa009.elmocines.model.cinema.Cinema;
 import es.udc.pa.pa009.elmocines.model.cinemaservice.CinemaService;
@@ -53,6 +56,14 @@ public class Layout {
 	@Inject
 	private Cookies cookies;
 
+	// AÑADIDO PARA QUE AJAX PUEDA RE RENDERIZAR EL SEGUNDO SELECTOR
+	@InjectComponent
+	private Zone cinemaSelectorZone;
+
+	@Inject
+	private AjaxResponseRenderer ajaxResponseRenderer;
+	////////////////////////////////////////////////////////////////
+
 	public boolean getShowTitleInBody() {
 
 		if (showTitleInBody == null) {
@@ -88,8 +99,9 @@ public class Layout {
 
 	}
 
-	void onValueChangedFromProvinceId(Long prov) {
-		rechargeCinemaSelector(prov);
+	void onValueChangedFromProvinceId(String provinceId) {
+		rechargeCinemaSelector(Long.parseLong(provinceId));
+		ajaxResponseRenderer.addRender(cinemaSelectorZone);
 	}
 
 	// Método para inicializar el selector de las provincias
