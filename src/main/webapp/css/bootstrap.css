@@ -18,6 +18,37 @@ html {
 body {
   margin: 0;
 }
+
+
+.sessionLink {
+	padding: 1em;
+	margin: 0.2em;
+	color: #FFFFFF;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	background-color: #50A3EB;
+	*background-color: #50A3EB;
+	background-image: -moz-linear-gradient(top, #23527C, #50A3EB);
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#23527C), to(#50A3EB));
+	background-image: -webkit-linear-gradient(top, #23527C, #50A3EB);
+	background-image: -o-linear-gradient(top, #23527C, #50A3EB);
+	background-image: linear-gradient(to bottom, #23527C, #50A3EB);
+	background-repeat: repeat-x;
+	border-color: #50A3EB;
+	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#23527C', endColorstr='#50A3EB', GradientType=0);
+	filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+}
+.sessionLink:hover,
+.sessionLink:focus,
+.sessionLink:active,
+.sessionLink.active,
+.sessionLink.disabled,
+.sessionLink[disabled] {
+	color: #E0E0E0;
+	background-color: #50A3EB;
+	*background-color: #003bb3;
+}
+
 article,
 aside,
 details,
@@ -1109,7 +1140,7 @@ a {
 a:hover,
 a:focus {
   color: #8b2727;
-  text-decoration: underline;
+  text-decoration: none;
 }
 a:focus {
   outline: thin dotted;
@@ -1380,7 +1411,7 @@ a.text-danger:focus {
 }
 .bg-primary {
   color: #fff;
-  background-color: #337ab7;
+  background-color: #b71115;
 }
 a.bg-primary:hover,
 a.bg-primary:focus {

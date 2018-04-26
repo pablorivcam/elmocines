@@ -116,4 +116,9 @@ public class CinemaServiceImpl implements CinemaService {
 		return movieSessions;
 	}
 
+	@Override
+	public Cinema findCinemaByCinemaId(Long cinemaId) throws InstanceNotFoundException {
+		return cinemaDao.find(cinemaId);
+	}
+
 }

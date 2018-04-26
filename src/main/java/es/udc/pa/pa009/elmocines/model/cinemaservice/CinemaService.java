@@ -30,8 +30,7 @@ public interface CinemaService {
 	 *            the province id
 	 * @return the list
 	 */
-	public List<Cinema> findCinemasByProvinceId(Long provinceId)
-			throws InstanceNotFoundException;;
+	public List<Cinema> findCinemasByProvinceId(Long provinceId) throws InstanceNotFoundException;;
 
 	/**
 	 * Find sessions by cinema id and a date range.
@@ -72,4 +71,15 @@ public interface CinemaService {
 	 *             the instance not found exception
 	 */
 	public Session findSessionBySessionId(Long sessionId) throws InstanceNotFoundException;
+
+	/**
+	 * Find cinema by cinema id.
+	 *
+	 * @param cinemaId
+	 *            the cinema id
+	 * @return the cinema
+	 * @throws InstanceNotFoundException
+	 *             the instance not found exception
+	 */
+	public Cinema findCinemaByCinemaId(Long cinemaId) throws InstanceNotFoundException;
 }

@@ -5,6 +5,7 @@ import java.util.StringJoiner;
 
 import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.InjectComponent;
+import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SessionState;
@@ -17,14 +18,14 @@ import es.udc.pa.pa009.elmocines.model.cinema.Cinema;
 import es.udc.pa.pa009.elmocines.model.cinemaservice.CinemaService;
 import es.udc.pa.pa009.elmocines.model.province.Province;
 import es.udc.pa.pa009.elmocines.web.pages.Index;
+import es.udc.pa.pa009.elmocines.web.pages.cinema.CinemaBillboard;
 import es.udc.pa.pa009.elmocines.web.services.AuthenticationPolicy;
 import es.udc.pa.pa009.elmocines.web.services.AuthenticationPolicyType;
 import es.udc.pa.pa009.elmocines.web.util.CookiesManager;
 import es.udc.pa.pa009.elmocines.web.util.UserSession;
 import es.udc.pojo.modelutil.exceptions.InstanceNotFoundException;
 
-@Import(library = { "tapestry5/bootstrap/js/collapse.js",
-		"tapestry5/bootstrap/js/dropdown.js" }, stylesheet = "tapestry5/bootstrap/css/bootstrap-theme.css")
+@Import(library = { "tapestry5/bootstrap/js/collapse.js", "tapestry5/bootstrap/js/dropdown.js" })
 public class Layout {
 
 	@Property
@@ -41,6 +42,9 @@ public class Layout {
 
 	@Inject
 	private CinemaService cinemaService;
+
+	@InjectPage
+	private CinemaBillboard cinemaBillboard;
 
 	@Property
 	@Parameter(required = true, defaultPrefix = "message")
@@ -124,6 +128,11 @@ public class Layout {
 
 		rechargeCinemaSelector(provincesList.get(0).getProvinceId());
 
+	}
+
+	Object onSuccessFromFindSessionsForm() {
+		cinemaBillboard.setCinemaId(cinemaId);
+		return cinemaBillboard;
 	}
 
 	@AuthenticationPolicy(AuthenticationPolicyType.AUTHENTICATED_USERS)

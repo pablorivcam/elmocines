@@ -1,0 +1,54 @@
+<html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
+	t:type="Layout" t:title="title" showTitleInBody="false">
+
+
+	<h1 class="p-3 mb-2 bg-primary text-white container-fluid">
+		<span class="glyphicon glyphicon-info-sign"/>
+		${message:sessionsFor} ${cinema.name}
+	</h1>
+
+	<table id="sessionsTable" class="table table-striped" align="center">
+    
+    <thead>
+      <tr>
+        <th></th>
+        <th>${message:movieName}</th>
+      </tr>
+    </thead>
+    
+    <tbody>
+    
+		<t:loop source="sessions" value="movieSession">
+    
+    		<tr>
+    		
+    			<td rowspan="2" width="180">
+
+					<img src="${context:images/movies}/${movieSession.movie.movieId}.png" width="180" height="300"/>
+
+				</td>
+				
+    			<td>
+    				<h2>${movieSession.movie.title}</h2>
+    			</td>
+    		</tr>	
+			<tr>
+			
+    			<td>
+    				<!-- LOOP para las sesiones --> 
+					<t:loop source="movieSession.sessions" value="session">
+						<div t:type="PageLink" t:page="index" class="sessionLink bg-gradient-dark">
+							<t:output format="literal:hh:mm " value="session.date.time"/>
+						</div>
+					</t:loop>    			
+    			</td>
+			</tr>
+    		
+    
+		</t:loop>
+    	
+    </tbody>
+    
+	</table>
+
+</html>

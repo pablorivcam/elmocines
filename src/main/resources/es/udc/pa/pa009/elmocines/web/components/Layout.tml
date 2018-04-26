@@ -41,8 +41,8 @@
             
             <!-- Formulario de búsqueda de cines -->
             
-            <form t:type="Form" class="form-inline" t:id="findSessionsForm">
-            <!-- <t:errors /> --> 
+            <form t:type="Form" class="form-inline" t:id="findSessionsForm" role="form">
+            <t:errors />  
             
 			    <div class="form-group mx-sm-3">
 			    
