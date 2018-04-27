@@ -1,0 +1,64 @@
+<html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
+	t:type="Layout" t:title="title" showTitleInBody="false">
+		
+	<style>
+		.buyTicketsForm{
+			margin-top:2em; 
+			background-color:#EEEEEE; 
+			padding:1em; 
+			margin-left: 20em;
+			padding-left:11em
+		}
+	</style>
+		
+	<h1 class="p-3 mb-2 bg-primary text-white container-fluid">
+		${message:buyTicketsFor} ${session.movie.title}
+	</h1>
+	
+	<table id="sessionDetailsTable" class="table table-striped" align="center">
+	
+		<tr>
+			<td width="150">
+				<img src="${context:images/movies}/${session.movie.movieId}.png" width="150" height="250"/>			
+			</td>
+			<td style="padding-left:2em; padding-top:2em">
+				<p><b>${message:cinema}: </b>${session.room.cinema.name}</p>
+				<p><b>${message:room}: </b>${session.room.name}</p>
+				<p><b>${message:date}: </b> <t:output format="format" value="session.date.time"/></p>
+				<p><b>${message:sessionHour}: </b> <t:output format="literal:HH:mm " value="session.date.time"/></p>
+				<p><b>${message:lenght}: </b>${session.movie.lenght} min.</p>
+				<p><b>${message:price}: </b>${session.price}€</p>
+				<p><b>${message:freeLocationsCount}: </b>${session.freeLocationsCount}</p>
+        	</td>
+        	
+        	<td>
+				<t:zone t:id="ticketsZone" id="ticketsZone">        		
+		        	<form t:type="form" t:id="ticketsForm" t:zone="ticketsZone" class="buyTicketsForm">
+			    	    <div class="form-group" style="margin-left: 10px">
+		                	<table>
+		                		<tr>
+		                			<td><b>${message:amount}: </b></td>
+		                			<td><t:eventLink event="minusOneUnit" async="true" class="glyphicon glyphicon-minus-sign" style="margin: 5px" /></td>
+		                			<td><input t:id="amountBox" t:value="amount" t:type="TextField" t:validate="required, min=0, max=10" style="width: 50px" /></td>
+		                			<td><t:eventLink event="plusOneUnit" async="true" class="glyphicon glyphicon-plus-sign" style="margin: 5px" /></td>
+
+		                		</tr>
+		                	</table>
+		                		                	
+						</div>
+					    <t:if test="amountValid">			         
+							
+			         		<div class="form-group mx-sm-3" style="margin-left:1em">
+								<button type="submit" class="btn btn-info">
+									${message:buyTickets}<span class="glyphicon glyphicon-chevron-right"></span> 
+								</button>
+							</div>
+						</t:if>
+					</form>
+				</t:zone>
+			</td>
+		</tr>
+	
+	</table>
+	
+</html>

@@ -54,7 +54,8 @@
 			    			<td>
 			    				<!-- LOOP para las sesiones --> 
 								<t:loop source="movieSession.sessions" value="session">
-									<div t:type="PageLink" t:page="index" class="sessionLink bg-gradient-dark">
+									<div t:type="PageLink" t:page="cinema/SessionDetails" 
+										 t:context="${session.sessionId}" class="sessionLink bg-gradient-dark">
 										<t:output format="literal:HH:mm " value="session.date.time"/>
 									</div>
 								</t:loop>    			

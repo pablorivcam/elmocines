@@ -64,9 +64,8 @@
 			         			         
          		<div class="form-group mx-sm-3">
 					<button type="submit" class="btn btn-info">
-					<span class="glyphicon glyphicon-search"></span> ${message:searchBillboard}
-				</button>
-				
+						<span class="glyphicon glyphicon-search"></span> ${message:searchBillboard}
+					</button>
 				</div>
 			         
 			            

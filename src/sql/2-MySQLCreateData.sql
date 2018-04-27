@@ -38,7 +38,7 @@ INSERT INTO Rooms VALUES (14,6,'Sala Magosto',25);
 INSERT INTO Rooms VALUES (15,6,'Sala Gonzalo Jácome',25);
 
 -- MovieId,name,review,lenght,startDate,finalDate
-INSERT INTO Movies VALUES (1,'Lo que la concurrencia se llevó','Un alumno despistado, pone un mutex en donde no debe y la lía parda. Lo que pasó a continuación, solo el paralelismo lo sabe.','90','2018-06-07','2018-4-07');
+INSERT INTO Movies VALUES (1,'Lo que la concurrencia se llevó','Un alumno despistado, pone un mutex en donde no debe y la lía parda. Lo que pasó a continuación, sólo el paralelismo lo sabe.','90','2018-06-07','2018-4-07');
 INSERT INTO Movies VALUES (2,'Segmentation Fault Core Dumped','El compilador decide enviar un error inesperado, que ni un ingeniero puede encontrar. Podrá ser desenmascarado antes de que la práctica se entregue a tiempo?','121','2018-06-07','2018-4-07');
 INSERT INTO Movies VALUES (3,'Tecnoloxía Electrónica, El Regreso','Tras no haberse estudiado la materia con su propia sangre, nuestro protagonista ha de matricularse por tercera vez en la asignatura. Conseguirá evadir la temida cuarta convocatoria?','141','2018-06-07','2018-4-07');
 INSERT INTO Movies VALUES (4,'Instanciar a un Ruiseñor',' Empleado es una clase de seis años, sin herencia, agrega a la clase Department en el imaginario programa en java.','95','2018-06-07','2018-4-07');
