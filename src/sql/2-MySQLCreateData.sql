@@ -51,66 +51,68 @@ INSERT INTO Movies VALUES (7,'La luz es mi fuerza','Un plan sólido','95','2018-
 
 -- Sesiones Espacio Coruña
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
-	VALUES (1,8,1,'2018-07-20 10:00:00',7.5,10);
+	VALUES (1,8,1,TIMESTAMPADD(HOUR, 4, NOW()),7.5,10);
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
-	VALUES (2,9,2,'2018-07-20 10:00:00',7.0,100);
+	VALUES (2,9,2,TIMESTAMPADD(HOUR, 4, NOW()),7.0,100);
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
-	VALUES (3,10,3,'2018-07-20 10:00:00',7.0,100);
+	VALUES (3,10,3,TIMESTAMPADD(HOUR, 4, NOW()),7.0,100);
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
-	VALUES (4,8,4,'2018-07-20 13:00:00',6.0,10);
+	VALUES (4,8,4,TIMESTAMPADD(HOUR, 6, NOW()),6.0,10);
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
-	VALUES (5,9,5,'2018-07-20 13:00:00',7.3,100);
+	VALUES (5,9,5,TIMESTAMPADD(HOUR, 6, NOW()),7.3,100);
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
-	VALUES (6,10,6,'2018-07-20 13:00:00',8.5,100);	
+	VALUES (6,10,6,TIMESTAMPADD(HOUR, 6, NOW()),8.5,100);	
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
-	VALUES (7,8,7,'2018-07-20 17:30:00',7.5,10);
+	VALUES (7,8,7,TIMESTAMPADD(HOUR, 8, NOW()),7.5,10);
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
-	VALUES (8,9,6,'2018-07-20 20:00:00',7.0,100);
+	VALUES (8,9,6,TIMESTAMPADD(HOUR, 10, NOW()),7.0,100);
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
-	VALUES (9,10,3,'2018-07-20 19:00:00',7.0,100);
+	VALUES (9,10,3,TIMESTAMPADD(HOUR, 11, NOW()),7.0,100);
 
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
-	VALUES (10,8,1,'2018-07-21 10:00:00',7.5,10);
+	VALUES (10,8,1,TIMESTAMPADD(HOUR, 4, TIMESTAMPADD(DAY, 1, NOW())),7.5,10);
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
-	VALUES (11,9,2,'2018-07-21 10:00:00',7.0,100);
+	VALUES (11,9,2,TIMESTAMPADD(HOUR, 4, TIMESTAMPADD(DAY, 1, NOW())),7.0,100);
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
-	VALUES (12,10,3,'2018-07-21 10:00:00',7.0,100);
+	VALUES (12,10,3,TIMESTAMPADD(HOUR, 4, TIMESTAMPADD(DAY, 1, NOW())),7.0,100);
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
-	VALUES (13,8,4,'2018-07-21 13:00:00',6.0,10);
+	VALUES (13,8,4,TIMESTAMPADD(HOUR, 6, TIMESTAMPADD(DAY, 1, NOW())),6.0,10);
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
-	VALUES (14,9,5,'2018-07-21 13:00:00',7.3,100);
+	VALUES (14,9,5,TIMESTAMPADD(HOUR, 6, TIMESTAMPADD(DAY, 1, NOW())),7.3,100);
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
-	VALUES (15,10,6,'2018-07-21 13:00:00',8.5,100);	
+	VALUES (15,10,6,TIMESTAMPADD(HOUR, 6, TIMESTAMPADD(DAY, 1, NOW())),8.5,100);	
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
-	VALUES (16,8,7,'2018-07-21 17:30:00',7.5,10);
+	VALUES (16,8,7,TIMESTAMPADD(HOUR, 8, TIMESTAMPADD(DAY, 1, NOW())),7.5,10);
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
-	VALUES (17,9,6,'2018-07-21 20:00:00',7.0,100);
+	VALUES (17,9,6,TIMESTAMPADD(HOUR, 8, TIMESTAMPADD(DAY, 1, NOW())),7.0,100);
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
-	VALUES (18,10,3,'2018-07-21 19:00:00',7.0,100);
+	VALUES (18,10,3,TIMESTAMPADD(HOUR, 8, TIMESTAMPADD(DAY, 1, NOW())),7.0,100);
 	
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
-	VALUES (19,8,1,'2018-07-22 10:00:00',7.5,10);
+	VALUES (19,8,1,TIMESTAMPADD(HOUR, 4, TIMESTAMPADD(DAY, 2, NOW())),7.5,10);
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
-	VALUES (20,9,2,'2018-07-22 10:00:00',7.0,100);
+	VALUES (20,9,2,TIMESTAMPADD(HOUR, 5, TIMESTAMPADD(DAY, 3, NOW())),7.0,100);
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
-	VALUES (21,10,3,'2018-07-22 10:00:00',7.0,100);
+	VALUES (21,10,3,TIMESTAMPADD(HOUR, 6, TIMESTAMPADD(DAY, 4, NOW())),7.0,100);
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
-	VALUES (22,8,4,'2018-07-22 13:00:00',6.0,10);
+	VALUES (22,8,4,TIMESTAMPADD(HOUR, 7, TIMESTAMPADD(DAY, 5, NOW())),6.0,10);
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
-	VALUES (23,9,5,'2018-07-22 13:00:00',7.3,100);
+	VALUES (23,9,5,TIMESTAMPADD(HOUR, 8, TIMESTAMPADD(DAY, 6, NOW())),7.3,100);
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
-	VALUES (24,10,6,'2018-07-22 13:00:00',8.5,100);	
+	VALUES (24,10,6,TIMESTAMPADD(HOUR, 8, TIMESTAMPADD(DAY, 6, NOW())),8.5,100);	
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
-	VALUES (25,8,7,'2018-07-22 17:30:00',7.5,10);
+	VALUES (25,8,7,TIMESTAMPADD(HOUR, 8, TIMESTAMPADD(DAY, 6, NOW())),7.5,10);
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
-	VALUES (26,9,6,'2018-07-22 20:00:00',7.0,100);
+	VALUES (26,9,6,TIMESTAMPADD(HOUR, 4, TIMESTAMPADD(DAY, 6, NOW())),7.0,100);
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
-	VALUES (27,10,3,'2018-07-22 22:00:00',7.0,100);
+	VALUES (27,10,3,TIMESTAMPADD(HOUR, 4, TIMESTAMPADD(DAY, 7, NOW())),7.0,100);
 	
 -- Sesiones afonía
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
-	VALUES (28,13,3,'2018-07-22 19:00:00',7.0,25);
+	VALUES (28,13,3,TIMESTAMPADD(HOUR, 4, NOW()),7.0,25);
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
-	VALUES (29,13,5,'2018-07-22 22:30:00',7.0,25);	
+	VALUES (29,13,5,TIMESTAMPADD(HOUR, 4, TIMESTAMPADD(DAY, 1, NOW())),7.0,25);	
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
-	VALUES (30,13,7,'2018-07-22 23:50:00',7.0,25);	
+	VALUES (30,13,7,TIMESTAMPADD(HOUR, 7, TIMESTAMPADD(DAY, 1, NOW())),7.0,25);	
+	
+	-- TIMESTAMPADD(HOUR, 7, TIMESTAMPADD(DAY, 1, CURDATE()))

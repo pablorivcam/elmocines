@@ -148,7 +148,7 @@ public class CinemaServiceTest {
 		Long provinceId = province_test.getProvinceId();
 
 		List<Cinema> cinema_test = new ArrayList<>();
-		List<Cinema> cinema_service=null;
+		List<Cinema> cinema_service = null;
 		try {
 			cinema_service = cinemaService.findCinemasByProvinceId(provinceId);
 		} catch (InstanceNotFoundException e) {
@@ -177,7 +177,7 @@ public class CinemaServiceTest {
 	public void findCinemasByProvinceIdInvalidIdTest() throws InstanceNotFoundException {
 		cinemaService.findCinemasByProvinceId(NON_EXISTENT_PROVINCE_ID);
 	}
-	
+
 	@Test
 	public void findMovieByIdTest() {
 		Movie movieExpected = createMovie(MOVIE_TEST_NAME, MOVIE_TEST_NAME, 10, Calendar.getInstance(),
@@ -220,9 +220,14 @@ public class CinemaServiceTest {
 	public void findSessionsByInvalidSessionIdTest() throws InstanceNotFoundException {
 		cinemaService.findSessionBySessionId(NON_EXISTENT_SESSION_ID);
 	}
-	
+
 	@Test
 	public void findSessionsByCinemaIdAndDateTest() {
+		Calendar afterTomorrow = getTomorrow();
+		afterTomorrow.add(Calendar.DAY_OF_YEAR, 2);
+		Calendar beforeToday = Calendar.getInstance();
+		beforeToday.add(Calendar.DAY_OF_YEAR, -2);
+
 		Province province = createProvince(PROVINCE_TEST_NAME);
 		Cinema cinema = createCinema(CINEMA_TEST_NAME, province);
 		Cinema cinema2 = createCinema(CINEMA_TEST_NAME + 2, province);
@@ -236,6 +241,10 @@ public class CinemaServiceTest {
 
 		Session s = createSession(getTomorrow(), new BigDecimal(10), movie, room);
 		Session s2 = createSession(getTomorrow(), new BigDecimal(10), movie2, room2);
+		Session s3 = createSession(getTomorrow(), new BigDecimal(10), movie2, room3);
+		Session s4 = createSession(afterTomorrow, new BigDecimal(10), movie2, room2);
+		Session s5 = createSession(beforeToday, new BigDecimal(10), movie2, room2);
+
 		createSession(getTomorrow(), new BigDecimal(10), movie, room3);
 
 		List<MovieSessionsDto> movieSessions = null;
@@ -265,7 +274,7 @@ public class CinemaServiceTest {
 		Cinema cinema = createCinema(CINEMA_TEST_NAME, province);
 
 		try {
-			cinemaService.findSessionsByCinemaIdAndDate(cinema.getCinemaId(), getTomorrow(), getTomorrow());
+			cinemaService.findSessionsByCinemaIdAndDate(cinema.getCinemaId(), getTomorrow(), getYesterday());
 		} catch (InstanceNotFoundException e) {
 			e.printStackTrace();
 		}

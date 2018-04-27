@@ -7,48 +7,64 @@
 		${message:sessionsFor} ${cinema.name}
 	</h1>
 
-	<table id="sessionsTable" class="table table-striped" align="center">
+    <form t:type="Form" class="form-inline" t:id="findSessionsByDateForm" role="form">
     
-    <thead>
-      <tr>
-        <th></th>
-        <th>${message:movieName}</th>
-      </tr>
-    </thead>
+	    <div class="form-group mx-sm-3">
+			    
+	    	<label for="dateSelected">${message:date}: </label>
+			<t:select t:id="dateSelected" model="dateSelectorModel"
+				 blankOption="never" zone="sessionsZone"/>			    
+	    </div>
+	         			          
     
-    <tbody>
-    
-		<t:loop source="sessions" value="movieSession">
-    
-    		<tr>
-    		
-    			<td rowspan="2" width="180">
+	</form>
 
-					<img src="${context:images/movies}/${movieSession.movie.movieId}.png" width="180" height="300"/>
-
-				</td>
-				
-    			<td>
-    				<h2>${movieSession.movie.title}</h2>
-    			</td>
-    		</tr>	
-			<tr>
+	<t:zone t:id="sessionsZone" id="sessionsZone">
+	
+		<table id="sessionsTable" class="table table-striped" align="center">
+		    
+		    <thead>
+		      <tr>
+		        <th></th>
+		        <th>${message:movieName}</th>
+		      </tr>
+		    </thead>
+	    
+		    <tbody>
+		    	<t:if test="sessions">
+		    
+					<t:loop source="sessions" value="movieSession">
+			    
+			    		<tr>
+			    		
+			    			<td rowspan="2" width="180">
 			
-    			<td>
-    				<!-- LOOP para las sesiones --> 
-					<t:loop source="movieSession.sessions" value="session">
-						<div t:type="PageLink" t:page="index" class="sessionLink bg-gradient-dark">
-							<t:output format="literal:hh:mm " value="session.date.time"/>
-						</div>
-					</t:loop>    			
-    			</td>
-			</tr>
-    		
-    
-		</t:loop>
-    	
-    </tbody>
-    
-	</table>
+								<img src="${context:images/movies}/${movieSession.movie.movieId}.png" width="180" height="300"/>
+			
+							</td>
+							
+			    			<td>
+			    				<h2>${movieSession.movie.title}</h2>
+			    			</td>
+			    		</tr>	
+						<tr>
+						
+			    			<td>
+			    				<!-- LOOP para las sesiones --> 
+								<t:loop source="movieSession.sessions" value="session">
+									<div t:type="PageLink" t:page="index" class="sessionLink bg-gradient-dark">
+										<t:output format="literal:HH:mm " value="session.date.time"/>
+									</div>
+								</t:loop>    			
+			    			</td>
+						</tr>
+			    			    
+					</t:loop>
+				</t:if>
+						
+		    </tbody>
+	    
+		</table>
+	</t:zone>
 
 </html>

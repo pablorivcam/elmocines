@@ -85,8 +85,10 @@ public class CinemaServiceImpl implements CinemaService {
 			throw new InputValidationException("Init date cannot be after final date.");
 		}
 
-		if (initDate.after(Calendar.getInstance())) {
-			throw new InputValidationException("Init date cannot be after actual's date.");
+		Calendar now = Calendar.getInstance();
+
+		if (initDate.getTimeInMillis() < now.getTimeInMillis() - 30) {
+			throw new InputValidationException("Init date cannot be before actual's date.");
 		}
 
 		List<Session> sessions = sessionDao.findSessionsByCinemaId(cinemaId, initDate, finalDate);
