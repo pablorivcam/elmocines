@@ -22,12 +22,12 @@ INSERT INTO Rooms VALUES (3,3,'Sala Maya',100);
 INSERT INTO Rooms VALUES (4,3,'Sala Crisis',100);
 INSERT INTO Rooms VALUES (5,3,'Sala Mutex TWD',50);
 
-INSERT INTO Rooms VALUES (6,2,'Sala Computación',100);
-INSERT INTO Rooms VALUES (7,2,'Sala Cafeta',80);
+INSERT INTO Rooms VALUES (6,1,'Sala Computación',100);
+INSERT INTO Rooms VALUES (7,1,'Sala Cafeta',80);
 
-INSERT INTO Rooms VALUES (8,1,'Sala Cúbica',10);
-INSERT INTO Rooms VALUES (9,1,'Sala Elmo',100);
-INSERT INTO Rooms VALUES (10,1,'Sala 4ªconvocatoria',100);
+INSERT INTO Rooms VALUES (8,2,'Sala Cúbica',10);
+INSERT INTO Rooms VALUES (9,2,'Sala Elmo',100);
+INSERT INTO Rooms VALUES (10,2,'Sala 4ªconvocatoria',100);
 
 INSERT INTO Rooms VALUES (11,4,'Sala Pemento',25);
 INSERT INTO Rooms VALUES (12,4,'Sala Cogomelo',25);
@@ -114,5 +114,13 @@ INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCoun
 	VALUES (29,13,5,TIMESTAMPADD(HOUR, 4, TIMESTAMPADD(DAY, 1, NOW())),7.0,25);	
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
 	VALUES (30,13,7,TIMESTAMPADD(HOUR, 7, TIMESTAMPADD(DAY, 1, NOW())),7.0,25);	
+	
+-- Sesiones Rosales
+INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
+	VALUES (31,6,7,TIMESTAMPADD(HOUR, 4, NOW()),7.0,25);
+INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
+	VALUES (32,7,5,TIMESTAMPADD(HOUR, 4, TIMESTAMPADD(DAY, 1, NOW())),7.0,25);	
+INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
+	VALUES (33,6,7,TIMESTAMPADD(HOUR, 7, TIMESTAMPADD(DAY, 1, NOW())),7.0,25);	
 	
 	-- TIMESTAMPADD(HOUR, 7, TIMESTAMPADD(DAY, 1, CURDATE()))

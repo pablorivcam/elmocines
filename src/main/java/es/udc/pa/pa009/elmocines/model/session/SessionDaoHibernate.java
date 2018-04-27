@@ -16,7 +16,7 @@ public class SessionDaoHibernate extends GenericDaoHibernate<Session, Long> impl
 
 		return getSession()
 				.createQuery("SELECT s FROM Session s WHERE s.room.cinema.cinemaId = :cinemaId "
-						+ "AND s.date BETWEEN :initDate AND :finalDate ORDER BY s.date DESC")
+						+ "AND s.date BETWEEN :initDate AND :finalDate ORDER BY s.date")
 				.setParameter("cinemaId", cinemaId).setParameter("initDate", initDate)
 				.setParameter("finalDate", finalDate).getResultList();
 

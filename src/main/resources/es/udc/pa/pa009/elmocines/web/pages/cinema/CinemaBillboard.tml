@@ -38,13 +38,15 @@
 			    		<tr>
 			    		
 			    			<td rowspan="2" width="180">
-			
-								<img src="${context:images/movies}/${movieSession.movie.movieId}.png" width="180" height="300"/>
-			
+								<a t:type="PageLink" t:page="cinema/MovieDetails" t:context="${movieSession.movie.movieId}">
+									<img src="${context:images/movies}/${movieSession.movie.movieId}.png" width="180" height="300"/>
+								</a>
 							</td>
 							
 			    			<td>
-			    				<h2>${movieSession.movie.title}</h2>
+								<a t:type="PageLink" t:page="cinema/MovieDetails" t:context="${movieSession.movie.movieId}">		    			
+				    				<h2>${movieSession.movie.title}</h2>
+			    				</a>
 			    			</td>
 			    		</tr>	
 						<tr>
