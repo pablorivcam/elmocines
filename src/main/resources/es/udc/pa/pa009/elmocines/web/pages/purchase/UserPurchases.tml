@@ -1,4 +1,5 @@
 <html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
+	xmlns:p="tapestry:parameter"
 	t:type="Layout" t:title="title" showTitleInBody="false">
 	
 <t:if test="purchases">	
@@ -14,17 +15,17 @@
 			    <th>${message:purchaseState}</th>
 			</tr>
 		</thead>
-	<!--  
+
 		<tbody>			
 			<tr t:type="Loop" t:source="purchases" t:value="purchase">
-			    <td><t:output value="purchase.purchaseId"/></td>
-			    <td><t:output value="purchase.session" /></td>
-			    <td><t:output value="purchase.date" /></td>
-			    <td><t:output value="purchase.locations" /></td>
-			    <td><t:output value="purchase.purchaseState"/></td>
+				<td><b>${purchase.purchaseId} </b></td>
+				<td><b>$purchase.session.sessionId} </b></td>
+				<td><t:output format="format" value="purchase.date.time"/></td>
+				<td><b>${purchase.locationCount} </b></td>
+				<td><b>${purchase.purchaseState} </b></td>
 			</tr>
 		</tbody>
-	-->
+
 	</table>
 	
 	<ul class="pager">
@@ -46,6 +47,10 @@
 		</t:if>
 
 	</ul>
+	
+	<p:else>	
+		<h4 class="alert alert-danger text-center">${message:noPurchases}</h4>
+	</p:else>
 
 </t:if>	
 

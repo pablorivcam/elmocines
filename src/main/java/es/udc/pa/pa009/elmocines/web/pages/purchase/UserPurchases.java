@@ -6,8 +6,10 @@ package es.udc.pa.pa009.elmocines.web.pages.purchase;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SessionState;
 import org.apache.tapestry5.ioc.annotations.Inject;
-
-
+import java.util.List;
+import java.text.DateFormat;
+import java.text.Format;
+import java.util.Locale;
 import es.udc.pa.pa009.elmocines.model.userservice.UserService;
 import es.udc.pa.pa009.elmocines.model.purchase.Purchase;
 import es.udc.pa.pa009.elmocines.model.purchaseservice.PurchaseService;
@@ -21,11 +23,13 @@ import es.udc.pojo.modelutil.data.Block;
 @AuthenticationPolicy(AuthenticationPolicyType.AUTHENTICATED_USERS)
 public class UserPurchases {
 	
-	private final static int PURCHASES_PER_PAGE = 20;
+	private final static int PURCHASES_PER_PAGE = 2;
 	private int startIndex = 0;
+	private Purchase purchase;
+	private Block<Purchase> purchaseBlock;
 	
-	@Property
-	private Block<Purchase> purchases;
+	@Inject
+	private Locale locale;
 	
 	@SessionState(create=false)
     private UserSession userSession;
@@ -35,6 +39,22 @@ public class UserPurchases {
     
     @Inject
     private PurchaseService purchaseService;
+    
+    public List<Purchase> getPurchases() {
+		return purchaseBlock.getItems();
+	}
+	
+	public Purchase getPurchase() {
+		return purchase;
+	}
+
+	public void setPurchase(Purchase purchase) {
+		this.purchase = purchase;
+	}
+	
+	public Format getFormat() {
+		return DateFormat.getDateInstance(DateFormat.DEFAULT, locale);
+	}
     
     public Object[] getPreviousLinkContext() {
 		
@@ -48,25 +68,13 @@ public class UserPurchases {
 	
 	public Object[] getNextLinkContext() {
 		
-		if (purchases.getExistMoreItems()) {
+		if (purchaseBlock.getExistMoreItems()) {
 			return new Object[] {userSession.getUserProfileId(), startIndex+PURCHASES_PER_PAGE};
 		} else {
 			return null;
 		}
 		
 	}
-    
-    void onPrepareForRender(){
-        
-        try {
-			purchases = purchaseService.getPurchases(userSession.getUserProfileId(),startIndex,PURCHASES_PER_PAGE);
-		} catch (InstanceNotFoundException e) {
-			e.printStackTrace();
-		} catch (InputValidationException e) {
-			e.printStackTrace();
-		}
-
-    }
     
     public Object[] onPassivate() {
 		return new Object[] {userSession.getUserProfileId(), startIndex};
@@ -75,7 +83,7 @@ public class UserPurchases {
 	void onActivate(Long userId, int startIndex) {
 		this.startIndex = startIndex;
 		 try {
-				purchases = purchaseService.getPurchases(userId,startIndex,PURCHASES_PER_PAGE);
+				purchaseBlock = purchaseService.getPurchases(userId,startIndex,PURCHASES_PER_PAGE);
 			} catch (InstanceNotFoundException e) {
 				e.printStackTrace();
 			} catch (InputValidationException e) {
