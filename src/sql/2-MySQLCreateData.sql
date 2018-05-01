@@ -124,3 +124,14 @@ INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCoun
 	VALUES (33,6,7,TIMESTAMPADD(HOUR, 7, TIMESTAMPADD(DAY, 1, NOW())),7.0,25);	
 	
 	-- TIMESTAMPADD(HOUR, 7, TIMESTAMPADD(DAY, 1, CURDATE()))
+
+-- UserProfile (usrId, loginName, firstName, lastName, enPassword, email, role)
+INSERT INTO UserProfile (usrId, loginName, firstName, lastName, enPassword, email, role)
+	VALUES (1, 'Uno','Uno','el Primero', 1111, 'uno@uno.gal', 'WORKER');
+INSERT INTO UserProfile (usrId, loginName, firstName, lastName, enPassword, email, role)
+	VALUES (2, 'Dos','Dos','el Segundo', 2222, 'dos@dos.gal', 'CLIENT');
+
+
+-- Purchases (purchaseId, usrId, sessionId, creditCardNumber, creditCardExpiration, locationCount, purchaseState, date)
+INSERT INTO Purchases (purchaseId, usrId, sessionId, creditCardNumber, creditCardExpiration, locationCount, purchaseState, date)
+	VALUES (1, 2, 33, "1234567AB", TIMESTAMPADD(DAY, 7, NOW()), 3, 'PENDING', TIMESTAMPADD(HOUR, 4, NOW()));

@@ -1,0 +1,38 @@
+<html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
+	t:type="Layout" t:title="title" showTitleInBody="false">
+	
+	<h1 class="p-3 mb-2 bg-primary text-white container-fluid">
+		${message:title} 
+	</h1>
+	<table id="purchaseDetailsTable" class="table table-striped" align="center">
+		
+		<tr>
+			<td width="180">
+				<img src="${context:images/movies}/${movie.movieId}.png" width="180" height="300"/>		
+			</td>
+			<td>
+				<h4>${message:cinema}:</h4>
+				<p>${cinema.name}</p>
+				<h4>${message:room}:</h4>
+				<p>${room.name}</p>
+				<h4>${message:movietitle}:</h4>
+				<p>${movie.title}</p>
+				<h4>${message:session}:</h4>
+				<p><t:output format="format" value="session.date.time"/> - <t:output format="literal:HH:mm " value="session.date.time"/></p>
+			</td>
+			<td>
+				<h4>${message:status}:</h4>
+				<p>${purchase.purchaseState}</p>
+				<h4>${message:count}:</h4>
+				<p>${purchase.locationCount}</p>
+				<h4>${message:date}:</h4>
+				<p><t:output format="format" value="purchase.date.time"/> - <t:output format="literal:HH:mm " value="purchase.date.time"/></p>
+				<h4>${message:creditcard}:</h4>
+				<p>${purchase.creditCardNumber}</p>
+			</td>
+		</tr>
+	
+	</table>
+
+
+</html>
