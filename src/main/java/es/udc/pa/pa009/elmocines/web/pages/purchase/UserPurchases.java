@@ -3,7 +3,7 @@
  */
 package es.udc.pa.pa009.elmocines.web.pages.purchase;
 
-import org.apache.tapestry5.annotations.Property;
+
 import org.apache.tapestry5.annotations.SessionState;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import java.util.List;
@@ -23,7 +23,7 @@ import es.udc.pojo.modelutil.data.Block;
 @AuthenticationPolicy(AuthenticationPolicyType.AUTHENTICATED_USERS)
 public class UserPurchases {
 	
-	private final static int PURCHASES_PER_PAGE = 2;
+	private final static int PURCHASES_PER_PAGE = 10;
 	private int startIndex = 0;
 	private Purchase purchase;
 	private Block<Purchase> purchaseBlock;
