@@ -47,9 +47,9 @@
 		                		                	
 						</div>
 					    <t:if test="amountValid">			         
-							
 			         		<div class="form-group mx-sm-3" style="margin-left:1em">
-								<button type="submit" class="btn btn-info">
+								<button t:type="PageLink" t:page="purchase/PurchaseSession" 
+										 t:context="${session.sessionId}" class="btn btn-info">
 									${message:buyTickets}<span class="glyphicon glyphicon-chevron-right"></span> 
 								</button>
 							</div>

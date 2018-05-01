@@ -2,6 +2,7 @@
 -- Put here INSERT statements for inserting data required by the application
 -- in the "pojo" database.
 -------------------------------------------------------------------------------
+
 INSERT INTO Provinces VALUES (1, 'A Coruña');
 INSERT INTO Provinces VALUES (2, 'Lugo');
 INSERT INTO Provinces VALUES (3, 'Pontevedra');
@@ -124,3 +125,5 @@ INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCoun
 	VALUES (33,6,7,TIMESTAMPADD(HOUR, 7, TIMESTAMPADD(DAY, 1, NOW())),7.0,25);	
 	
 	-- TIMESTAMPADD(HOUR, 7, TIMESTAMPADD(DAY, 1, CURDATE()))
+	
+	

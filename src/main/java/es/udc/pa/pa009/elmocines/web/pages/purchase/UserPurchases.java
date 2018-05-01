@@ -11,7 +11,6 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import es.udc.pa.pa009.elmocines.model.userservice.UserService;
 import es.udc.pa.pa009.elmocines.model.purchase.Purchase;
 import es.udc.pa.pa009.elmocines.model.purchaseservice.PurchaseService;
-import es.udc.pa.pa009.elmocines.web.pages.Index;
 import es.udc.pa.pa009.elmocines.web.services.AuthenticationPolicy;
 import es.udc.pa.pa009.elmocines.web.services.AuthenticationPolicyType;
 import es.udc.pa.pa009.elmocines.web.util.UserSession;

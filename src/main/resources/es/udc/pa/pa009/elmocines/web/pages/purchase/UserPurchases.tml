@@ -1,6 +1,8 @@
 <html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
 	t:type="Layout" t:title="title" showTitleInBody="false">
 	
+<t:if test="purchases">	
+
 	<table id="purchasesTable" class="table table-striped table-hover" align="center">
 	
 		<thead>
@@ -12,13 +14,17 @@
 			    <th>${message:purchaseState}</th>
 			</tr>
 		</thead>
-	
-		<tr>
-			<td>
-				
-			</td>
-		</tr>
-	
+	<!--  
+		<tbody>			
+			<tr t:type="Loop" t:source="purchases" t:value="purchase">
+			    <td><t:output value="purchase.purchaseId"/></td>
+			    <td><t:output value="purchase.session" /></td>
+			    <td><t:output value="purchase.date" /></td>
+			    <td><t:output value="purchase.locations" /></td>
+			    <td><t:output value="purchase.purchaseState"/></td>
+			</tr>
+		</tbody>
+	-->
 	</table>
 	
 	<ul class="pager">
@@ -40,6 +46,7 @@
 		</t:if>
 
 	</ul>
-		
+
+</t:if>	
 
 </html>
