@@ -107,7 +107,7 @@ INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCoun
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
 	VALUES (27,10,3,TIMESTAMPADD(HOUR, 4, TIMESTAMPADD(DAY, 7, NOW())),7.0,100);
 	
--- Sesiones afonía
+-- Sesiones afonía 	
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
 	VALUES (28,13,3,TIMESTAMPADD(HOUR, 4, NOW()),7.0,25);
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
@@ -124,13 +124,12 @@ INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCoun
 	VALUES (33,6,7,TIMESTAMPADD(HOUR, 7, TIMESTAMPADD(DAY, 1, NOW())),7.0,25);	
 	
 	-- TIMESTAMPADD(HOUR, 7, TIMESTAMPADD(DAY, 1, CURDATE()))
-
+	
 -- UserProfile (usrId, loginName, firstName, lastName, enPassword, email, role)
 INSERT INTO UserProfile (usrId, loginName, firstName, lastName, enPassword, email, role)
-	VALUES (1, 'Uno','Uno','el Primero', 1111, 'uno@uno.gal', 'WORKER');
+	VALUES (1, 'Uno','Uno','el Primero', 'QNs7qk2YnAqmc', 'uno@uno.gal', 'WORKER');
 INSERT INTO UserProfile (usrId, loginName, firstName, lastName, enPassword, email, role)
-	VALUES (2, 'Dos','Dos','el Segundo', 2222, 'dos@dos.gal', 'CLIENT');
-
+	VALUES (2, 'Dos','Dos','el Segundo', 'QNs7qk2YnAqmc', 'dos@dos.gal', 'CLIENT');
 
 -- Purchases (purchaseId, usrId, sessionId, creditCardNumber, creditCardExpiration, locationCount, purchaseState, date)
 INSERT INTO Purchases (purchaseId, usrId, sessionId, creditCardNumber, creditCardExpiration, locationCount, purchaseState, date)
