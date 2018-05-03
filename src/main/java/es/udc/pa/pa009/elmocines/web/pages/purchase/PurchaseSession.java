@@ -103,21 +103,19 @@ public class PurchaseSession {
 		
 		Calendar cal = Calendar.getInstance();
 		DateFormat df =DateFormat.getDateInstance(DateFormat.DEFAULT,locale);
-		try {
-			cal.setTime(df.parse(cardExpiredDate));
-		} catch (ParseException e1) {
-			purchaseForm.recordError(expiredDateField, messages.get("error-expiredDateFormat"));
-		}
-
-		if (locationsAmount>10) {
+	
+		if ((locationsAmount>10) || (locationsAmount==0)){
 			purchaseForm.recordError(locationsAmountField, messages.get("error-locationsAmountNotAllowed"));
 		} else {
 
 			try {
+				cal.setTime(df.parse(cardExpiredDate));
 				purchaseService.purchaseTickets(userSession.getUserProfileId(),
 					creditCardNumber,cal,sessionId,locationsAmount);
 			} catch (TooManyLocationsException e) {
 				purchaseForm.recordError(locationsAmountField, messages.get("error-freeLocationsPurchased"));
+			} catch (ParseException e) {
+				purchaseForm.recordError(expiredDateField, messages.get("error-expiredDateFormat"));
 			}
 		}
 
