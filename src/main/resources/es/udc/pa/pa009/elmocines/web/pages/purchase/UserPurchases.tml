@@ -9,8 +9,10 @@
 		<thead>
 			<tr>
 			    <th>${message:purchaseId}</th>
-			    <th>${message:session}</th>
-			    <th>${message:date}</th>			    
+			    <th>${message:sessionMovie}</th>
+			    <th>${message:sessionRoom}</th>
+			    <th>${message:sessionDate}</th>
+			    <th>${message:purchaseDate}</th>			    
 			    <th>${message:locations}</th>
 			    <th>${message:purchaseState}</th>
 			</tr>
@@ -19,7 +21,9 @@
 		<tbody>			
 			<tr t:type="Loop" t:source="purchases" t:value="purchase">
 				<td><b>${purchase.purchaseId} </b></td>
-				<td><b>${purchase.session.sessionId} </b></td>
+				<td><b>${purchase.session.movie.title} </b></td>
+				<td><b>${purchase.session.room.name} </b></td>
+				<td><t:output format="format" value="purchase.session.date.time"/></td>
 				<td><t:output format="format" value="purchase.date.time"/></td>
 				<td><b>${purchase.locationCount} </b></td>
 				<td><b>${purchase.purchaseState} </b></td>
