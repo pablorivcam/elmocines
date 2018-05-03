@@ -2,8 +2,32 @@
 	t:type="Layout" t:title="title" showTitleInBody="false">
 	
 	<h1 class="p-3 mb-2 bg-primary text-white container-fluid">
+		${message:searchtitle} 
+	</h1>
+	
+	<div style="display: table-row;">
+		<form t:type="form" t:id="purchaseIdForm">
+			<div class="form-group" style="float: left">
+				<table>
+					<tr>
+						<td><h4><b>${message:purchaseidtitle}:</b></h4></td>
+						<td><input t:id="purchaseIdBox" t:value="purchaseId" t:type="TextField" t:validate="required, min=0" style="margin-left:1em;"/></td>
+					</tr>
+				</table>
+			</div>
+			<div class="form-group mx-sm-3" style="float: right; margin-left:2em;">
+				<button t:page="purchase/details" 
+					t:context="${purchase.purchaseId}" class="btn btn-info">
+					${message:search}<span class="glyphicon glyphicon-chevron-right"></span> 
+				</button>
+			</div>
+		</form>
+	</div>
+	
+	<h1 class="p-3 mb-2 bg-primary text-white container-fluid">
 		${message:title} 
 	</h1>
+	
 	<table id="purchaseDetailsTable" class="table table-striped" align="center">
 		
 		<tr>
@@ -11,28 +35,27 @@
 				<img src="${context:images/movies}/${movie.movieId}.png" width="180" height="300"/>		
 			</td>
 			<td>
-				<h4>${message:cinema}:</h4>
+				<h4><b>${message:cinema}:</b></h4>
 				<p>${cinema.name}</p>
-				<h4>${message:room}:</h4>
+				<h4><b>${message:room}:</b></h4>
 				<p>${room.name}</p>
-				<h4>${message:movietitle}:</h4>
+				<h4><b>${message:movietitle}:</b></h4>
 				<p>${movie.title}</p>
-				<h4>${message:session}:</h4>
+				<h4><b>${message:session}:</b></h4>
 				<p><t:output format="format" value="session.date.time"/> - <t:output format="literal:HH:mm " value="session.date.time"/></p>
 			</td>
 			<td>
-				<h4>${message:status}:</h4>
+				<h4><b>${message:status}:</b></h4>
 				<p>${purchase.purchaseState}</p>
-				<h4>${message:count}:</h4>
+				<h4><b>${message:count}:</b></h4>
 				<p>${purchase.locationCount}</p>
-				<h4>${message:date}:</h4>
+				<h4><b>${message:date}:</b></h4>
 				<p><t:output format="format" value="purchase.date.time"/> - <t:output format="literal:HH:mm " value="purchase.date.time"/></p>
-				<h4>${message:creditcard}:</h4>
+				<h4><b>${message:creditcard}:</b></h4>
 				<p>${purchase.creditCardNumber}</p>
 			</td>
 		</tr>
 	
 	</table>
-
 
 </html>

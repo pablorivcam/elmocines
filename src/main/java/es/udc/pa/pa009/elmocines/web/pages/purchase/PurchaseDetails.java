@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.Format;
 import java.util.Locale;
 
+import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
@@ -18,7 +19,7 @@ import es.udc.pojo.modelutil.exceptions.InstanceNotFoundException;
 public class PurchaseDetails {
 
 		private Long purchaseId;
-
+		
 		@Property
 		private Purchase purchase;
 		
@@ -40,6 +41,9 @@ public class PurchaseDetails {
 		@Inject
 		private Locale locale;
 		
+		@InjectPage
+		private PurchaseDetails purchaseDetails;
+		
 		void onActivate(Long purchaseId) {
 			this.purchaseId = purchaseId;
 		}
@@ -48,6 +52,11 @@ public class PurchaseDetails {
 			return purchaseId;
 		}
 
+		Object onSuccessFromPurchaseIdBox(){
+			purchaseDetails.setPurchaseId(purchaseId);
+			return purchaseDetails;
+		}
+		
 		void onPrepareForRender() {
 			try {
 				purchase = purchaseService.getPurchase(purchaseId);
