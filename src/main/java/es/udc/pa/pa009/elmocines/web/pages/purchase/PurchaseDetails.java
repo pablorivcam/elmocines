@@ -1,4 +1,4 @@
-package es.udc.pa.pa009.elmocines.web.pages.ticket;
+package es.udc.pa.pa009.elmocines.web.pages.purchase;
 
 import java.text.DateFormat;
 import java.text.Format;
