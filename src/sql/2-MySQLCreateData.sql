@@ -126,10 +126,12 @@ INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCoun
 	-- TIMESTAMPADD(HOUR, 7, TIMESTAMPADD(DAY, 1, CURDATE()))
 	
 -- UserProfile (usrId, loginName, firstName, lastName, enPassword, email, role)
+-- Contraseña de admin: admin
 INSERT INTO UserProfile (usrId, loginName, firstName, lastName, enPassword, email, role)
-	VALUES (1, 'Uno','Uno','el Primero', 'QNs7qk2YnAqmc', 'uno@uno.gal', 'WORKER');
+	VALUES (1, 'admin','Taquillero','Elmocines', 'FIQ0M9AfvviS2', 'uno@uno.gal', 'WORKER');
+-- Contraseña de client: client
 INSERT INTO UserProfile (usrId, loginName, firstName, lastName, enPassword, email, role)
-	VALUES (2, 'Dos','Dos','el Segundo', 'QNs7qk2YnAqmc', 'dos@dos.gal', 'CLIENT');
+	VALUES (2, 'client','Cliente','Indiana', 'INVkUdk2OCk4Y', 'dos@dos.gal', 'CLIENT');
 
 -- Purchases (purchaseId, usrId, sessionId, creditCardNumber, creditCardExpiration, locationCount, purchaseState, date)
 INSERT INTO Purchases (purchaseId, usrId, sessionId, creditCardNumber, creditCardExpiration, locationCount, purchaseState, date)

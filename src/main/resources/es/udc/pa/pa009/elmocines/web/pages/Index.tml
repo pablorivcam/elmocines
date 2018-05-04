@@ -1,4 +1,4 @@
-<html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
+<html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter"
 	t:type="Layout" t:title="title" showTitleInBody="false">
 
 
@@ -12,12 +12,12 @@
 
   <!-- Wrapper for slides -->
   <div class="carousel-inner">
-    <div class="item active">
-      <img src="${context:images/carousel/slide0.png}" alt="El Recolector de Basura"/>
+    <div  t:type="PageLink" t:page="cinema/CinemaBillboard" t:context="${favouriteCinemaIdForLinks}" class="item active">
+      	<img src="${context:images/carousel/slide0.png}" alt="El Recolector de Basura"/>
     </div>
 
-    <div class="item">
-      <img src="${context:images/carousel/slide1.png}" alt="La luz es mi Fuerza"/>
+    <div t:type="PageLink" t:page="cinema/CinemaBillboard" t:context="${favouriteCinemaIdForLinks}" class="item">
+  		<img src="${context:images/carousel/slide1.png}" alt="La luz es mi Fuerza"/>
     </div>
 
   </div>
@@ -38,7 +38,84 @@
 
 <!-- Fin de carousel --> 
 
-<p class="text-center">${message:welcome}</p>
+<!-- Vemos la cartelera -->
+<t:if test="favouriteCinemaId">
+	<h1 class="p-3 mb-2 bg-primary text-white container-fluid">
+		<span class="glyphicon glyphicon-info-sign"/>
+		${message:sessionsFor} ${cinema.name}
+	</h1>
 
+    <form t:type="Form" class="form-inline" t:id="findSessionsByDateForm" role="form">
+    
+	    <div class="form-group mx-sm-3">
+			    
+	    	<label for="dateSelected">${message:date}: </label>
+			<t:select t:id="dateSelected" model="dateSelectorModel"
+				 blankOption="never" zone="sessionsZone"/>			    
+	    </div>
+	         			          
+    
+	</form>
+
+	<t:zone t:id="sessionsZone" id="sessionsZone">
+	
+		<table id="sessionsTable" class="table table-striped" align="center">
+		    
+		    <thead>
+		      <tr>
+		        <th></th>
+		        <th>${message:movieName}</th>
+		      </tr>
+		    </thead>
+	    
+		    <tbody>
+		    	<t:if test="sessions">
+		    
+					<t:loop source="sessions" value="movieSession">
+			    
+			    		<tr>
+			    		
+			    			<td rowspan="2" width="180">
+								<a t:type="PageLink" t:page="cinema/MovieDetails" t:context="${movieSession.movie.movieId}">
+									<img src="${context:images/movies}/${movieSession.movie.movieId}.png" width="180" height="300"/>
+								</a>
+							</td>	
+							
+			    			<td>
+								<a t:type="PageLink" t:page="cinema/MovieDetails" t:context="${movieSession.movie.movieId}">		    			
+				    				<h2>${movieSession.movie.title}</h2>
+			    				</a>
+			    			</td>
+			    		</tr>	
+						<tr>
+						
+			    			<td>
+			    				<!-- LOOP para las sesiones --> 
+								<t:loop source="movieSession.sessions" value="session">
+									<div t:type="PageLink" t:page="cinema/SessionDetails" 
+										 t:context="${session.sessionId}" class="sessionLink bg-gradient-dark">
+										<t:output format="literal:HH:mm " value="session.date.time"/>
+									</div>
+								</t:loop>    			
+			    			</td>
+						</tr>
+			    			    
+					</t:loop>
+				</t:if>
+						
+		    </tbody>
+	    
+		</table>
+	</t:zone>
+
+	<p:else>
+		<br/>
+		<div class="alert alert-info">
+			<span class="glyphicon glyphicon-info-sign"/>		
+			${message:noFavouriteCinema}
+		</div>	
+	</p:else>
+
+</t:if>
    
 </html>

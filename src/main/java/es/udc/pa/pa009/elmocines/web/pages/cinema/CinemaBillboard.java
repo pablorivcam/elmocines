@@ -13,6 +13,7 @@ import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Cookies;
 import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
 
 import es.udc.pa.pa009.elmocines.model.cinema.Cinema;
@@ -24,10 +25,15 @@ import es.udc.pojo.modelutil.exceptions.InstanceNotFoundException;
 
 public class CinemaBillboard {
 
+	private static final String FAVOURITE_CINEMA_COOKIE = "favouriteCinema";
+	private static final int FAVOURITE_CINEMA_COOKIE_AGE = 30 * 24 * 3600; // 30 days in seconds
+
 	private Long cinemaId;
 
 	@Property
 	private Calendar date;
+
+	private Long favouriteCinemaId;
 
 	@Property
 	private List<MovieSessionsDto> sessions;
@@ -53,13 +59,12 @@ public class CinemaBillboard {
 	@Inject
 	private Locale locale;
 
-	void onActivate(Long cinemaId) {
-		this.cinemaId = cinemaId;
-	}
+	@Inject
+	private Cookies cookies;
 
-	Long onPassivate() {
-		return cinemaId;
-	}
+	// Zona par actualizar la zona del botón de cine favorito
+	@InjectComponent
+	private Zone favoriteCinemaZone;
 
 	// AÑADIDO PARA QUE AJAX PUEDA RE-RENDERIZAR LAS SESIONES SEGÚN LAS FECHAS
 	@InjectComponent
@@ -68,7 +73,23 @@ public class CinemaBillboard {
 	@Inject
 	private AjaxResponseRenderer ajaxResponseRenderer;
 
+	void onActivate(Long cinemaId) {
+		this.cinemaId = cinemaId;
+	}
+
+	Long onPassivate() {
+		return cinemaId;
+	}
+
 	void onPrepareForRender() {
+
+		// Obtenemos el id del cine favorito de las cookies
+		String favouriteCinemaIdAsString = cookies.readCookieValue(FAVOURITE_CINEMA_COOKIE);
+
+		if (favouriteCinemaIdAsString != null)
+			favouriteCinemaId = Long.parseLong(favouriteCinemaIdAsString);
+		else
+			favouriteCinemaId = null;
 
 		// Creamos el modelo del selector
 		date = Calendar.getInstance();
@@ -102,6 +123,10 @@ public class CinemaBillboard {
 		}
 	}
 
+	public Boolean getFavouriteCinemaId() {
+		return (favouriteCinemaId != null && favouriteCinemaId == cinemaId);
+	}
+
 	void onValueChangedFromDateSelected(String dateSelected) {
 
 		Calendar now = Calendar.getInstance();
@@ -128,6 +153,22 @@ public class CinemaBillboard {
 		}
 
 		ajaxResponseRenderer.addRender(sessionsZone);
+
+	}
+
+	// Método al clikar el establecer el cine favorito
+	void onSetFavouriteCinema() {
+
+		if (favouriteCinemaId == null || favouriteCinemaId != cinemaId) {
+			System.out.println("\n\n\n\nDONT RESET ME " + favouriteCinemaId + " -> " + cinemaId + "\n\n\n");
+			cookies.getBuilder(FAVOURITE_CINEMA_COOKIE, cinemaId.toString()).setMaxAge(FAVOURITE_CINEMA_COOKIE_AGE)
+					.write();
+			favouriteCinemaId = cinemaId;
+		} else {
+			cookies.getBuilder(FAVOURITE_CINEMA_COOKIE, cinemaId.toString()).delete();
+			favouriteCinemaId = null;
+		}
+		ajaxResponseRenderer.addRender(favoriteCinemaZone);
 
 	}
 

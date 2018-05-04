@@ -4,12 +4,9 @@ import java.text.DateFormat;
 import java.text.Format;
 import java.util.Locale;
 
-import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
-import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
 
 import es.udc.pa.pa009.elmocines.model.cinemaservice.CinemaService;
 import es.udc.pa.pa009.elmocines.model.session.Session;
@@ -31,14 +28,8 @@ public class SessionDetails {
 	@Inject
 	private Locale locale;
 
-	@InjectComponent
-	private Zone ticketsZone;
-
 	@Inject
 	private Request request;
-
-	@Inject
-	private AjaxResponseRenderer ajaxResponseRenderer;
 
 	void onActivate(Long sessionId) {
 		this.sessionId = sessionId;
@@ -57,20 +48,6 @@ public class SessionDetails {
 		}
 	}
 
-	public boolean getAmountValid() {
-		return (amount > 0);
-	}
-
-	void onPlusOneUnit() {
-		amount += 1;
-		formatAjax();
-	}
-
-	void onMinusOneUnit() {
-		amount -= 1;
-		formatAjax();
-	}
-
 	public Long getSessionId() {
 		return sessionId;
 	}
@@ -81,12 +58,6 @@ public class SessionDetails {
 
 	public Format getFormat() {
 		return DateFormat.getDateInstance(DateFormat.DEFAULT, locale);
-	}
-
-	private void formatAjax() {
-		if (request.isXHR()) {
-			ajaxResponseRenderer.addRender("ticketsZone", ticketsZone);
-		}
 	}
 
 }

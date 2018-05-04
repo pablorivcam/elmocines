@@ -1,11 +1,27 @@
-<html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
+<html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter"
 	t:type="Layout" t:title="title" showTitleInBody="false">
-
 
 	<h1 class="p-3 mb-2 bg-primary text-white container-fluid">
 		<span class="glyphicon glyphicon-info-sign"/>
 		${message:sessionsFor} ${cinema.name}
 	</h1>
+	
+	<t:zone t:id="favoriteCinemaZone" id="favoriteCinemaZone">
+
+		<t:eventLink event="setFavouriteCinema">
+			<div style="font-size: 2em" >
+			
+				<t:if test="favouriteCinemaId">
+					<p style="color:#ff9900"><spam class="glyphicon glyphicon-star"/> ${message:favouriteCinema}</p>
+					<p:else>
+						<p style="color:#aaaaaa"><spam class="glyphicon glyphicon glyphicon-star-empty"/> ${message:favouriteCinema}</p>
+					</p:else>
+				</t:if>
+			
+			</div>
+		</t:eventLink>
+		
+	</t:zone>
 
     <form t:type="Form" class="form-inline" t:id="findSessionsByDateForm" role="form">
     
@@ -41,7 +57,7 @@
 								<a t:type="PageLink" t:page="cinema/MovieDetails" t:context="${movieSession.movie.movieId}">
 									<img src="${context:images/movies}/${movieSession.movie.movieId}.png" width="180" height="300"/>
 								</a>
-							</td>
+							</td>	
 							
 			    			<td>
 								<a t:type="PageLink" t:page="cinema/MovieDetails" t:context="${movieSession.movie.movieId}">		    			
