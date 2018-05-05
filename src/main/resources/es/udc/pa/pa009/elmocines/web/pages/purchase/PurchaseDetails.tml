@@ -45,14 +45,22 @@
 				<p><t:output format="format" value="session.date.time"/> - <t:output format="literal:HH:mm " value="session.date.time"/></p>
 			</td>
 			<td>
-				<h4><b>${message:status}:</b></h4>
-				<p>${purchase.purchaseState}</p>
 				<h4><b>${message:count}:</b></h4>
 				<p>${purchase.locationCount}</p>
 				<h4><b>${message:date}:</b></h4>
 				<p><t:output format="format" value="purchase.date.time"/> - <t:output format="literal:HH:mm " value="purchase.date.time"/></p>
 				<h4><b>${message:creditcard}:</b></h4>
 				<p>${purchase.creditCardNumber}</p>
+				<h4><b>${message:status}:</b></h4>
+				<p>${purchase.purchaseState}</p>
+				
+				<t:if test="purchaseDelivered">				
+					<div class="form-group mx-sm-3" style="float: right; margin-right:2em;">
+						<t:eventlink t:event="DeliverTickets" t:context="${purchase.purchaseId}" class="btn btn-info">
+            				${message:deliverTickets}<span class="glyphicon glyphicon-chevron-right"></span> 
+        				</t:eventlink>
+					</div>
+				</t:if>	
 			</td>
 		</tr>
 	

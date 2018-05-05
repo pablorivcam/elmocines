@@ -11,7 +11,9 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import es.udc.pa.pa009.elmocines.model.cinema.Cinema;
 import es.udc.pa.pa009.elmocines.model.movie.Movie;
 import es.udc.pa.pa009.elmocines.model.purchase.Purchase;
+import es.udc.pa.pa009.elmocines.model.purchaseservice.ExpiredDateException;
 import es.udc.pa.pa009.elmocines.model.purchaseservice.PurchaseService;
+import es.udc.pa.pa009.elmocines.model.purchaseservice.TicketsAlreadyCollectedException;
 import es.udc.pa.pa009.elmocines.model.room.Room;
 import es.udc.pa.pa009.elmocines.model.session.Session;
 import es.udc.pojo.modelutil.exceptions.InstanceNotFoundException;
@@ -69,6 +71,18 @@ public class PurchaseDetails {
 			}
 		}
 
+		public void onDeliverTickets(Long purchaseId){
+			try {
+				purchaseService.collectTickets(purchaseId);
+			} catch (InstanceNotFoundException | TicketsAlreadyCollectedException | ExpiredDateException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		public boolean isPurchaseDelivered(){
+			return (purchase.getPurchaseState().toString().equals("PENDING"));
+		}
+		
 		public Long getPurchaseId() {
 			return purchaseId;
 		}
