@@ -16,34 +16,32 @@
 	</h1>
 	
 	<table id="sessionDetailsTable" class="table table-striped" align="center">
-	
 		<tr>
-			<td width="150">
-				<img src="${context:images/movies}/${session.movie.movieId}.png" width="150" height="250"/>			
+			<td width="180">
+				<img src="${context:images/movies}/${session.movie.movieId}.png" width="180" height="300"/>		
 			</td>
-			<td style="padding-left:2em; padding-top:2em">
-				<p><b>${message:cinema}: </b>${session.room.cinema.name}</p>
-				<p><b>${message:room}: </b>${session.room.name}</p>
-				<p><b>${message:date}: </b> <t:output format="format" value="session.date.time"/></p>
-				<p><b>${message:sessionHour}: </b> <t:output format="literal:HH:mm " value="session.date.time"/></p>
-				<p><b>${message:lenght}: </b>${session.movie.lenght} min.</p>
-
-        	</td>
-			<td style="padding-left:2em; padding-top:2em">
-				<p><b>${message:price}: </b>${session.price}€</p>
-				<p><b>${message:freeLocationsCount}: </b>${session.freeLocationsCount}</p>
-
-         		<div class="form-group mx-sm-3" style="margin-left:1em">
-					<button t:type="PageLink" t:page="purchase/PurchaseSession" 
-							 t:context="${session.sessionId}" class="btn btn-info">
-						${message:buyTickets}<span class="glyphicon glyphicon-chevron-right"></span> 
-					</button>
-				</div>
-
-        	</td>
-        	
-		</tr>
-	
+			<td>
+				<h4>${message:cinema}:</h4>
+				<p>${session.room.cinema.name}</p>
+				<h4>${message:room}:</h4>
+				<p>${session.room.name}</p>
+				<h4>${message:session}:</h4>
+				<p><t:output format="format" value="session.date.time"/> - <t:output format="literal:HH:mm " value="session.date.time"/></p>
+				<h4>${message:length}:</h4>
+				<p>${session.movie.lenght} min.</p>
+			</td>
+			<td>
+				<h4>${message:price}:</h4>
+				<p>${session.price}€</p>
+				<h4>${message:freeLocationsCount}:</h4>
+				<p>${session.freeLocationsCount}</p>
+				<div class="form-group mx-sm-3" style="margin-left:1em">
+					<t:eventlink t:event="NextPage" t:context="${session.sessionId}" class="btn btn-info">
+            		${message:buyTickets}<span class="glyphicon glyphicon-chevron-right"></span> 
+        			</t:eventlink>
+				</div>	
+			</td>
+		</tr>	
 	</table>
 	
 </html>

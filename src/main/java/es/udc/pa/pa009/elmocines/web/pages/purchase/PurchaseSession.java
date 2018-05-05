@@ -78,6 +78,15 @@ public class PurchaseSession {
 	@Component
 	private Form purchaseForm;
 	
+	
+	public Long getSessionId() {
+		return sessionId;
+	}
+
+	public void setSessionId(Long sessionId) {
+		this.sessionId = sessionId;
+	}
+
 	void onActivate(Long sessionId) {
 		this.sessionId = sessionId;
 	}
@@ -85,6 +94,7 @@ public class PurchaseSession {
 	Long onPassivate() {
 		return sessionId;
 	}
+	
 
 	void onPrepareForRender() {
 
