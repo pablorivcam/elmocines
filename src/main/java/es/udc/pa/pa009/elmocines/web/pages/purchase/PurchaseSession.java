@@ -12,6 +12,7 @@ import java.util.Locale;
 
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.annotations.Component;
+import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SessionState;
 import org.apache.tapestry5.corelib.components.TextField;
@@ -24,6 +25,7 @@ import es.udc.pa.pa009.elmocines.web.services.AuthenticationPolicyType;
 import es.udc.pa.pa009.elmocines.web.util.UserSession;
 import es.udc.pa.pa009.elmocines.model.cinemaservice.CinemaService;
 import es.udc.pa.pa009.elmocines.model.cinemaservice.InputValidationException;
+import es.udc.pa.pa009.elmocines.model.purchase.Purchase;
 import es.udc.pa.pa009.elmocines.model.session.Session;
 import es.udc.pojo.modelutil.exceptions.InstanceNotFoundException;
 import es.udc.pa.pa009.elmocines.model.purchaseservice.ExpiredDateException;
@@ -35,6 +37,7 @@ import es.udc.pa.pa009.elmocines.model.purchaseservice.TooManyLocationsException
 public class PurchaseSession {
 	
 	private Long sessionId;
+	private Purchase purchase;
 	
 	@Property
 	private String creditCardNumber;
@@ -77,6 +80,9 @@ public class PurchaseSession {
 	
 	@Component
 	private Form purchaseForm;
+	
+	@InjectPage
+	private SuccessfulPurchase successfulPurchase;
 	
 	
 	public Long getSessionId() {
@@ -123,7 +129,7 @@ public class PurchaseSession {
 					purchaseForm.recordError(expiredDateField, messages.get("error-expiredCard"));
 				}
 				else{
-				purchaseService.purchaseTickets(userSession.getUserProfileId(),
+				purchase=purchaseService.purchaseTickets(userSession.getUserProfileId(),
 					creditCardNumber,cal,sessionId,locationsAmount);
 				}
 			} catch (TooManyLocationsException e) {
@@ -136,8 +142,8 @@ public class PurchaseSession {
 	}
 
 	Object onSuccess() {
-		return Index.class;
-
+		successfulPurchase.setPurchaseId(purchase.getPurchaseId());
+		return successfulPurchase;
 	}
 	
 	public Format getFormat() {
