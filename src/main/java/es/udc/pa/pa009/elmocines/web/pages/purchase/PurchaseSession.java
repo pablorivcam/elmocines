@@ -117,11 +117,15 @@ public class PurchaseSession {
 		if ((locationsAmount>10) || (locationsAmount==0)){
 			purchaseForm.recordError(locationsAmountField, messages.get("error-locationsAmountNotAllowed"));
 		} else {
-
 			try {
 				cal.setTime(df.parse(cardExpiredDate));
+				if(cal.before(Calendar.getInstance())){
+					purchaseForm.recordError(expiredDateField, messages.get("error-expiredCard"));
+				}
+				else{
 				purchaseService.purchaseTickets(userSession.getUserProfileId(),
 					creditCardNumber,cal,sessionId,locationsAmount);
+				}
 			} catch (TooManyLocationsException e) {
 				purchaseForm.recordError(locationsAmountField, messages.get("error-freeLocationsPurchased"));
 			} catch (ParseException e) {

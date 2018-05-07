@@ -24,6 +24,7 @@ import es.udc.pojo.modelutil.data.Block;
 public class UserPurchases {
 	
 	private final static int PURCHASES_PER_PAGE = 10;
+	private Long userId;
 	private int startIndex = 0;
 	private Purchase purchase;
 	private Block<Purchase> purchaseBlock;
@@ -59,7 +60,7 @@ public class UserPurchases {
     public Object[] getPreviousLinkContext() {
 		
 		if (startIndex-PURCHASES_PER_PAGE >= 0) {
-			return new Object[] {userSession.getUserProfileId(), startIndex-PURCHASES_PER_PAGE};
+			return new Object[] {userId, startIndex-PURCHASES_PER_PAGE};
 		} else {
 			return null;
 		}
@@ -69,7 +70,7 @@ public class UserPurchases {
 	public Object[] getNextLinkContext() {
 		
 		if (purchaseBlock.getExistMoreItems()) {
-			return new Object[] {userSession.getUserProfileId(), startIndex+PURCHASES_PER_PAGE};
+			return new Object[] {userId, startIndex+PURCHASES_PER_PAGE};
 		} else {
 			return null;
 		}
@@ -81,6 +82,7 @@ public class UserPurchases {
 	}
 	
 	void onActivate(Long userId, int startIndex) {
+		this.userId = userId;
 		this.startIndex = startIndex;
 		 try {
 				purchaseBlock = purchaseService.getPurchases(userId,startIndex,PURCHASES_PER_PAGE);
