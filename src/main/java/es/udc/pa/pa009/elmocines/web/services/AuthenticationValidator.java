@@ -5,7 +5,6 @@ import org.apache.tapestry5.services.ApplicationStateManager;
 import org.apache.tapestry5.services.ComponentSource;
 import org.apache.tapestry5.services.MetaDataLocator;
 
-import es.udc.pa.pa009.elmocines.model.userprofile.UserProfile;
 import es.udc.pa.pa009.elmocines.model.userprofile.UserProfile.Role;
 import es.udc.pa.pa009.elmocines.web.util.UserSession;
 
@@ -77,7 +76,7 @@ public class AuthenticationValidator {
 		boolean userAuthenticated = applicationStateManager.exists(UserSession.class);
 
 		// Obtenemos el usuario autenticado
-		UserProfile user = applicationStateManager.getIfExists(UserProfile.class);
+		UserSession user = applicationStateManager.getIfExists(UserSession.class);
 
 		switch (policyType) {
 

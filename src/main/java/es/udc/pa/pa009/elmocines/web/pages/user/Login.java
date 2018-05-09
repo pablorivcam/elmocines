@@ -26,42 +26,42 @@ public class Login {
 	private Long sessionId;
 	@InjectPage
 	private PurchaseSession purchaseSession;
-	
-    @Property
-    private String loginName;
 
-    @Property
-    private String password;
+	@Property
+	private String loginName;
 
-    @Property
-    private boolean rememberMyPassword;
+	@Property
+	private String password;
 
-    @SessionState(create=false)
-    private UserSession userSession;
+	@Property
+	private boolean rememberMyPassword;
 
-    @Inject
-    private Cookies cookies;
+	@SessionState(create = false)
+	private UserSession userSession;
 
-    @Component
-    private Form loginForm;
+	@Inject
+	private Cookies cookies;
 
-    @Inject
-    private Messages messages;
+	@Component
+	private Form loginForm;
 
-    @Inject
-    private UserService userService;
+	@Inject
+	private Messages messages;
 
-    private UserProfile userProfile = null;
-    
-    public Long getSessionId() {
+	@Inject
+	private UserService userService;
+
+	private UserProfile userProfile = null;
+
+	public Long getSessionId() {
 		return sessionId;
 	}
 
 	public void setSessionId(Long sessionId) {
 		this.sessionId = sessionId;
 	}
-    
-    void onActivate(Long sessionId) {
+
+	void onActivate(Long sessionId) {
 		this.sessionId = sessionId;
 	}
 
@@ -69,41 +69,40 @@ public class Login {
 		return sessionId;
 	}
 
-    void onValidateFromLoginForm() {
+	void onValidateFromLoginForm() {
 
-        if (!loginForm.isValid()) {
-            return;
-        }
+		if (!loginForm.isValid()) {
+			return;
+		}
 
-        try {
-            userProfile = userService.login(loginName, password, false);
-        } catch (InstanceNotFoundException e) {
-            loginForm.recordError(messages.get("error-authenticationFailed"));
-        } catch (IncorrectPasswordException e) {
-            loginForm.recordError(messages.get("error-authenticationFailed"));
-        }
+		try {
+			userProfile = userService.login(loginName, password, false);
+		} catch (InstanceNotFoundException e) {
+			loginForm.recordError(messages.get("error-authenticationFailed"));
+		} catch (IncorrectPasswordException e) {
+			loginForm.recordError(messages.get("error-authenticationFailed"));
+		}
 
-    }
+	}
 
-    Object onSuccess() {
+	Object onSuccess() {
 
-    	userSession = new UserSession();
-        userSession.setUserProfileId(userProfile.getUserProfileId());
-        userSession.setFirstName(userProfile.getFirstName());
+		userSession = new UserSession();
+		userSession.setUserProfileId(userProfile.getUserProfileId());
+		userSession.setFirstName(userProfile.getFirstName());
+		userSession.setRole(userProfile.getRole());
 
-        if (rememberMyPassword) {
-            CookiesManager.leaveCookies(cookies, loginName, userProfile
-                    .getEncryptedPassword());
-        }
-        
-        if(sessionId!=null){
-        	purchaseSession.setSessionId(sessionId);
-        	return purchaseSession;
-        }
-        else{
-        	return Index.class;
-        }
+		if (rememberMyPassword) {
+			CookiesManager.leaveCookies(cookies, loginName, userProfile.getEncryptedPassword());
+		}
 
-    }
+		if (sessionId != null) {
+			purchaseSession.setSessionId(sessionId);
+			return purchaseSession;
+		} else {
+			return Index.class;
+		}
+
+	}
 
 }

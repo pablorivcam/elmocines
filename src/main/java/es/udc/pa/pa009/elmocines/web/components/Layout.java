@@ -17,6 +17,7 @@ import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
 import es.udc.pa.pa009.elmocines.model.cinema.Cinema;
 import es.udc.pa.pa009.elmocines.model.cinemaservice.CinemaService;
 import es.udc.pa.pa009.elmocines.model.province.Province;
+import es.udc.pa.pa009.elmocines.model.userprofile.UserProfile.Role;
 import es.udc.pa.pa009.elmocines.web.pages.Index;
 import es.udc.pa.pa009.elmocines.web.pages.cinema.CinemaBillboard;
 import es.udc.pa.pa009.elmocines.web.services.AuthenticationPolicy;
@@ -142,4 +143,11 @@ public class Layout {
 		return Index.class;
 	}
 
+	public boolean isWorker() {
+		return userSession.getRole().equals(Role.WORKER);
+	}
+
+	public boolean isClient() {
+		return userSession.getRole().equals(Role.CLIENT);
+	}
 }

@@ -87,6 +87,8 @@ public class Register {
 		userSession = new UserSession();
 		userSession.setUserProfileId(userProfileId);
 		userSession.setFirstName(firstName);
+		userSession.setRole(Role.CLIENT);
+
 		return Index.class;
 
 	}
