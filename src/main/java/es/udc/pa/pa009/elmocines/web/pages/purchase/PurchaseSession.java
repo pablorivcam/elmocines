@@ -17,7 +17,6 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SessionState;
 import org.apache.tapestry5.corelib.components.TextField;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import es.udc.pa.pa009.elmocines.web.pages.Index;
 import org.apache.tapestry5.ioc.Messages;
 import es.udc.pa.pa009.elmocines.model.userservice.UserService;
 import es.udc.pa.pa009.elmocines.web.services.AuthenticationPolicy;
