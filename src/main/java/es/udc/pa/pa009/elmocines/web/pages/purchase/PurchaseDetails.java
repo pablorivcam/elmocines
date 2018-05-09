@@ -15,6 +15,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import es.udc.pa.pa009.elmocines.model.cinema.Cinema;
 import es.udc.pa.pa009.elmocines.model.movie.Movie;
 import es.udc.pa.pa009.elmocines.model.purchase.Purchase;
+import es.udc.pa.pa009.elmocines.model.purchase.Purchase.PurchaseState;
 import es.udc.pa.pa009.elmocines.model.purchaseservice.ExpiredDateException;
 import es.udc.pa.pa009.elmocines.model.purchaseservice.PurchaseService;
 import es.udc.pa.pa009.elmocines.model.purchaseservice.TicketsAlreadyCollectedException;
@@ -114,7 +115,7 @@ public class PurchaseDetails {
 		}
 		
 		public boolean isPurchaseDelivered(){
-			return (purchase.getPurchaseState().toString().equals("PENDING"));
+			return (purchase.getPurchaseState().equals(PurchaseState.PENDING));
 		}
 		
 		public Long getPurchaseId() {
