@@ -367,6 +367,7 @@ public class PurchaseServiceTest {
 		
 		assertEquals(10,purchases.getItems().size());
 		assertEquals(expected_purchases, purchases.getItems());
+		assertTrue(purchases.getExistMoreItems());
 	}
 
 	@Test(expected = InstanceNotFoundException.class)

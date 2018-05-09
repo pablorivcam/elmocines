@@ -105,7 +105,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 			userDao.find(userId);
 		}
 
-		List<Purchase> purchases = purchaseDao.findPurchasesByUserId(userId, startIndex, count);
+		List<Purchase> purchases = purchaseDao.findPurchasesByUserId(userId, startIndex, count+1);
 		boolean existMoreItems = purchases.size() > count;
 
 		if (existMoreItems) {
