@@ -70,7 +70,7 @@ public class PurchaseDetails {
 				e.printStackTrace();
 			}
 		}
-
+		
 		public void onDeliverTickets(Long purchaseId){
 			try {
 				purchaseService.collectTickets(purchaseId);
