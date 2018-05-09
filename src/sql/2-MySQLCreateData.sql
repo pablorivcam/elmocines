@@ -109,7 +109,7 @@ INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCoun
 	
 -- Sesiones afonía 	
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
-	VALUES (28,13,3,TIMESTAMPADD(HOUR, 4, NOW()),7.0,25);
+	VALUES (28,13,3,TIMESTAMPADD(HOUR, 4, NOW()),7.0,3);
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
 	VALUES (29,13,5,TIMESTAMPADD(HOUR, 4, TIMESTAMPADD(DAY, 1, NOW())),7.0,25);	
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
@@ -121,7 +121,9 @@ INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCoun
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
 	VALUES (32,7,5,TIMESTAMPADD(HOUR, 4, TIMESTAMPADD(DAY, 1, NOW())),7.0,25);	
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
-	VALUES (33,6,7,TIMESTAMPADD(HOUR, 7, TIMESTAMPADD(DAY, 1, NOW())),7.0,25);	
+	VALUES (33,6,7,TIMESTAMPADD(HOUR, 7, TIMESTAMPADD(DAY, 1, NOW())),7.0,25);
+INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
+	VALUES (34,6,7,TIMESTAMPADD(HOUR, -1, TIMESTAMPADD(DAY, 1, NOW())),7.0,25);		
 	
 	-- TIMESTAMPADD(HOUR, 7, TIMESTAMPADD(DAY, 1, CURDATE()))
 	
@@ -129,10 +131,50 @@ INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCoun
 -- Contraseña de admin: admin
 INSERT INTO UserProfile (usrId, loginName, firstName, lastName, enPassword, email, role)
 	VALUES (1, 'admin','Taquillero','Elmocines', 'FIQ0M9AfvviS2', 'uno@uno.gal', 'WORKER');
--- Contraseña de client: client
+-- Contraseña de client: admin
 INSERT INTO UserProfile (usrId, loginName, firstName, lastName, enPassword, email, role)
-	VALUES (2, 'client','Cliente','Indiana', 'INVkUdk2OCk4Y', 'dos@dos.gal', 'CLIENT');
+	VALUES (2, 'client','Cliente','Indiana', 'FIQ0M9AfvviS2', 'dos@dos.gal', 'CLIENT');
 
 -- Purchases (purchaseId, usrId, sessionId, creditCardNumber, creditCardExpiration, locationCount, purchaseState, date)
 INSERT INTO Purchases (purchaseId, usrId, sessionId, creditCardNumber, creditCardExpiration, locationCount, purchaseState, date)
 	VALUES (1, 2, 33, "1234567AB", TIMESTAMPADD(DAY, 7, NOW()), 3, 'PENDING', TIMESTAMPADD(HOUR, 4, NOW()));
+INSERT INTO Purchases (purchaseId, usrId, sessionId, creditCardNumber, creditCardExpiration, locationCount, purchaseState, date)
+	VALUES (2, 2, 32, "1234567AB", TIMESTAMPADD(DAY, 7, NOW()), 3, 'PENDING', TIMESTAMPADD(HOUR, 4, NOW()));
+INSERT INTO Purchases (purchaseId, usrId, sessionId, creditCardNumber, creditCardExpiration, locationCount, purchaseState, date)
+	VALUES (3, 2, 31, "1234567AB", TIMESTAMPADD(DAY, 7, NOW()), 3, 'PENDING', TIMESTAMPADD(HOUR, 4, NOW()));
+INSERT INTO Purchases (purchaseId, usrId, sessionId, creditCardNumber, creditCardExpiration, locationCount, purchaseState, date)
+	VALUES (4, 2, 30, "1234567AB", TIMESTAMPADD(DAY, 7, NOW()), 3, 'PENDING', TIMESTAMPADD(HOUR, 4, NOW()));
+INSERT INTO Purchases (purchaseId, usrId, sessionId, creditCardNumber, creditCardExpiration, locationCount, purchaseState, date)
+	VALUES (5, 2, 29, "1234567AB", TIMESTAMPADD(DAY, 7, NOW()), 3, 'PENDING', TIMESTAMPADD(HOUR, 4, NOW()));
+INSERT INTO Purchases (purchaseId, usrId, sessionId, creditCardNumber, creditCardExpiration, locationCount, purchaseState, date)
+	VALUES (6, 2, 28, "1234567AB", TIMESTAMPADD(DAY, 7, NOW()), 3, 'PENDING', TIMESTAMPADD(HOUR, 4, NOW()));
+INSERT INTO Purchases (purchaseId, usrId, sessionId, creditCardNumber, creditCardExpiration, locationCount, purchaseState, date)
+	VALUES (7, 2, 27, "1234567AB", TIMESTAMPADD(DAY, 7, NOW()), 3, 'PENDING', TIMESTAMPADD(HOUR, 4, NOW()));
+INSERT INTO Purchases (purchaseId, usrId, sessionId, creditCardNumber, creditCardExpiration, locationCount, purchaseState, date)
+	VALUES (8, 2, 26, "1234567AB", TIMESTAMPADD(DAY, 7, NOW()), 3, 'PENDING', TIMESTAMPADD(HOUR, 4, NOW()));
+INSERT INTO Purchases (purchaseId, usrId, sessionId, creditCardNumber, creditCardExpiration, locationCount, purchaseState, date)
+	VALUES (9, 2, 25, "1234567AB", TIMESTAMPADD(DAY, 7, NOW()), 3, 'PENDING', TIMESTAMPADD(HOUR, 4, NOW()));
+INSERT INTO Purchases (purchaseId, usrId, sessionId, creditCardNumber, creditCardExpiration, locationCount, purchaseState, date)
+	VALUES (10, 2, 24, "1234567AB", TIMESTAMPADD(DAY, 7, NOW()), 3, 'PENDING', TIMESTAMPADD(HOUR, 4, NOW()));
+INSERT INTO Purchases (purchaseId, usrId, sessionId, creditCardNumber, creditCardExpiration, locationCount, purchaseState, date)
+	VALUES (11, 2, 23, "1234567AB", TIMESTAMPADD(DAY, 7, NOW()), 3, 'PENDING', TIMESTAMPADD(HOUR, 4, NOW()));
+INSERT INTO Purchases (purchaseId, usrId, sessionId, creditCardNumber, creditCardExpiration, locationCount, purchaseState, date)
+	VALUES (12, 2, 22, "1234567AB", TIMESTAMPADD(DAY, 7, NOW()), 3, 'PENDING', TIMESTAMPADD(HOUR, 4, NOW()));
+INSERT INTO Purchases (purchaseId, usrId, sessionId, creditCardNumber, creditCardExpiration, locationCount, purchaseState, date)
+	VALUES (13, 2, 21, "1234567AB", TIMESTAMPADD(DAY, 7, NOW()), 3, 'PENDING', TIMESTAMPADD(HOUR, 4, NOW()));
+INSERT INTO Purchases (purchaseId, usrId, sessionId, creditCardNumber, creditCardExpiration, locationCount, purchaseState, date)
+	VALUES (14, 2, 20, "1234567AB", TIMESTAMPADD(DAY, 7, NOW()), 3, 'PENDING', TIMESTAMPADD(HOUR, 4, NOW()));
+INSERT INTO Purchases (purchaseId, usrId, sessionId, creditCardNumber, creditCardExpiration, locationCount, purchaseState, date)
+	VALUES (15, 2, 19, "1234567AB", TIMESTAMPADD(DAY, 7, NOW()), 3, 'PENDING', TIMESTAMPADD(HOUR, 4, NOW()));
+INSERT INTO Purchases (purchaseId, usrId, sessionId, creditCardNumber, creditCardExpiration, locationCount, purchaseState, date)
+	VALUES (16, 2, 18, "1234567AB", TIMESTAMPADD(DAY, 7, NOW()), 3, 'PENDING', TIMESTAMPADD(HOUR, 4, NOW()));
+INSERT INTO Purchases (purchaseId, usrId, sessionId, creditCardNumber, creditCardExpiration, locationCount, purchaseState, date)
+	VALUES (17, 2, 17, "1234567AB", TIMESTAMPADD(DAY, 7, NOW()), 3, 'PENDING', TIMESTAMPADD(HOUR, 4, NOW()));
+INSERT INTO Purchases (purchaseId, usrId, sessionId, creditCardNumber, creditCardExpiration, locationCount, purchaseState, date)
+	VALUES (18, 2, 16, "1234567AB", TIMESTAMPADD(DAY, 7, NOW()), 3, 'PENDING', TIMESTAMPADD(HOUR, 4, NOW()));
+INSERT INTO Purchases (purchaseId, usrId, sessionId, creditCardNumber, creditCardExpiration, locationCount, purchaseState, date)
+	VALUES (19, 2, 15, "1234567AB", TIMESTAMPADD(DAY, 7, NOW()), 3, 'PENDING', TIMESTAMPADD(HOUR, 4, NOW()));
+INSERT INTO Purchases (purchaseId, usrId, sessionId, creditCardNumber, creditCardExpiration, locationCount, purchaseState, date)
+	VALUES (20, 2, 14, "1234567AB", TIMESTAMPADD(DAY, 7, NOW()), 3, 'PENDING', TIMESTAMPADD(HOUR, 4, NOW()));
+INSERT INTO Purchases (purchaseId, usrId, sessionId, creditCardNumber, creditCardExpiration, locationCount, purchaseState, date)
+	VALUES (21, 2, 13, "1234567AB", TIMESTAMPADD(DAY, 7, NOW()), 3, 'PENDING', TIMESTAMPADD(HOUR, 4, NOW()));

@@ -24,6 +24,7 @@ import es.udc.pojo.modelutil.data.Block;
 public class UserPurchases {
 	
 	private final static int PURCHASES_PER_PAGE = 10;
+	
 	private Long userId;
 	private int startIndex = 0;
 	private Purchase purchase;

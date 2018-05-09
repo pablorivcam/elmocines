@@ -241,9 +241,9 @@ public class CinemaServiceTest {
 
 		Session s = createSession(getTomorrow(), new BigDecimal(10), movie, room);
 		Session s2 = createSession(getTomorrow(), new BigDecimal(10), movie2, room2);
-		Session s3 = createSession(getTomorrow(), new BigDecimal(10), movie2, room3);
-		Session s4 = createSession(afterTomorrow, new BigDecimal(10), movie2, room2);
-		Session s5 = createSession(beforeToday, new BigDecimal(10), movie2, room2);
+		createSession(getTomorrow(), new BigDecimal(10), movie2, room3);
+		createSession(afterTomorrow, new BigDecimal(10), movie2, room2);
+		createSession(beforeToday, new BigDecimal(10), movie2, room2);
 
 		createSession(getTomorrow(), new BigDecimal(10), movie, room3);
 

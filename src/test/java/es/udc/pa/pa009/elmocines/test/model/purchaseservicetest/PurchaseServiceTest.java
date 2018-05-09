@@ -2,7 +2,7 @@ package es.udc.pa.pa009.elmocines.test.model.purchaseservicetest;
 
 import static es.udc.pa.pa009.elmocines.model.util.GlobalNames.SPRING_CONFIG_FILE;
 import static es.udc.pa.pa009.elmocines.test.util.GlobalNames.SPRING_CONFIG_TEST_FILE;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -367,7 +367,7 @@ public class PurchaseServiceTest {
 		
 		assertEquals(10,purchases.getItems().size());
 		assertEquals(expected_purchases, purchases.getItems());
-
+		assertTrue(purchases.getExistMoreItems());
 	}
 
 	@Test(expected = InstanceNotFoundException.class)

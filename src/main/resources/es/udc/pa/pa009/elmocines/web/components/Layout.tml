@@ -82,6 +82,7 @@
               			<a href="#" class="dropdown-toggle" data-toggle="dropdown">${userSession.firstName} <span class="caret"></span></a>
               				<ul class="dropdown-menu" role="menu">
               					<li><a href="#" t:type="PageLink" t:page="purchase/userpurchases">${message:userPurchases}</a></li>
+                				<li><a href="#" t:type="PageLink" t:page="purchase/purchasesearch">${message:purchaseSearch}</a></li>
                 				<li><a href="#" t:type="PageLink" t:page="user/updateprofile">${message:updateProfile}</a></li>
                 				<li><a href="#" t:type="PageLink" t:page="user/changepassword">${message:changePassword}</a></li>
                 				<li class="divider"></li>
