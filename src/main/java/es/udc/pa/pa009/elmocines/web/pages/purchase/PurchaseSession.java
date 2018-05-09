@@ -31,8 +31,7 @@ import es.udc.pa.pa009.elmocines.model.purchaseservice.ExpiredDateException;
 import es.udc.pa.pa009.elmocines.model.purchaseservice.PurchaseService;
 import es.udc.pa.pa009.elmocines.model.purchaseservice.TooManyLocationsException;
 
-
-@AuthenticationPolicy(AuthenticationPolicyType.AUTHENTICATED_USERS)
+@AuthenticationPolicy(AuthenticationPolicyType.CLIENT_USERS)
 public class PurchaseSession {
 	
 	private Long sessionId;

@@ -20,8 +20,11 @@ import es.udc.pa.pa009.elmocines.model.purchaseservice.PurchaseService;
 import es.udc.pa.pa009.elmocines.model.purchaseservice.TicketsAlreadyCollectedException;
 import es.udc.pa.pa009.elmocines.model.room.Room;
 import es.udc.pa.pa009.elmocines.model.session.Session;
+import es.udc.pa.pa009.elmocines.web.services.AuthenticationPolicy;
+import es.udc.pa.pa009.elmocines.web.services.AuthenticationPolicyType;
 import es.udc.pojo.modelutil.exceptions.InstanceNotFoundException;
 
+@AuthenticationPolicy(AuthenticationPolicyType.WORKER_USERS)
 public class PurchaseDetails {
 
 		private Long purchaseId;

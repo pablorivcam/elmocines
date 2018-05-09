@@ -20,7 +20,7 @@ import es.udc.pojo.modelutil.exceptions.InstanceNotFoundException;
 import es.udc.pa.pa009.elmocines.model.cinemaservice.InputValidationException;
 import es.udc.pojo.modelutil.data.Block;
 
-@AuthenticationPolicy(AuthenticationPolicyType.AUTHENTICATED_USERS)
+@AuthenticationPolicy(AuthenticationPolicyType.CLIENT_USERS)
 public class UserPurchases {
 	
 	private final static int PURCHASES_PER_PAGE = 10;
