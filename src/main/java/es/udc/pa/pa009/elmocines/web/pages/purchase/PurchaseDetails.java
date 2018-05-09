@@ -4,8 +4,12 @@ import java.text.DateFormat;
 import java.text.Format;
 import java.util.Locale;
 
+import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.corelib.components.Form;
+import org.apache.tapestry5.corelib.components.TextField;
+import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import es.udc.pa.pa009.elmocines.model.cinema.Cinema;
@@ -21,6 +25,11 @@ import es.udc.pojo.modelutil.exceptions.InstanceNotFoundException;
 public class PurchaseDetails {
 
 		private Long purchaseId;
+		
+		private Purchase purchaseSearch;
+
+		@Property
+		private Long searchPurchaseId;
 		
 		@Property
 		private Purchase purchase;
@@ -41,6 +50,15 @@ public class PurchaseDetails {
 		private PurchaseService purchaseService;
 
 		@Inject
+		private Messages messages;
+		
+		@Component(id="searchPurchaseId")
+		private TextField purchaseIdField;
+		
+		@Component
+		private Form searchForm;
+		
+		@Inject
 		private Locale locale;
 		
 		@InjectPage
@@ -54,8 +72,8 @@ public class PurchaseDetails {
 			return purchaseId;
 		}
 
-		Object onSuccessFromPurchaseIdBox(){
-			purchaseDetails.setPurchaseId(purchaseId);
+		Object onSuccess(){
+			purchaseDetails.setPurchaseId(purchaseSearch.getPurchaseId());
 			return purchaseDetails;
 		}
 		
@@ -69,6 +87,19 @@ public class PurchaseDetails {
 			} catch (InstanceNotFoundException e) {
 				e.printStackTrace();
 			}
+		}
+		
+		void onValidateFromSearchForm(){
+			if (!searchForm.isValid()){
+				return;
+			}
+			
+			try {
+				purchaseSearch = purchaseService.getPurchase(searchPurchaseId);
+			} catch (InstanceNotFoundException e){
+				searchForm.recordError(purchaseIdField, messages.get("error-invalidPurchaseId"));				
+			}
+			
 		}
 		
 		public void onDeliverTickets(Long purchaseId){
