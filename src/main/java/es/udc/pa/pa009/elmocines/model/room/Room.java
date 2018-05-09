@@ -20,9 +20,6 @@ import es.udc.pa.pa009.elmocines.model.cinema.Cinema;
 public class Room {
 
 	/** The room id. */
-	@Id
-	@SequenceGenerator(name = "roomIdGenerator", sequenceName = "roomSeq")
-	@GeneratedValue(generator = "roomIdGenerator", strategy = GenerationType.AUTO)
 	private Long roomId;
 
 	/** The name. */
@@ -32,8 +29,6 @@ public class Room {
 	private Integer capacity;
 
 	/** The cinema. */
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "cinemaId")
 	private Cinema cinema;
 
 	/**
@@ -64,8 +59,15 @@ public class Room {
 	 *
 	 * @return the room id
 	 */
+	@Id
+	@SequenceGenerator(name = "roomIdGenerator", sequenceName = "roomSeq")
+	@GeneratedValue(generator = "roomIdGenerator", strategy = GenerationType.AUTO)
 	public Long getRoomId() {
 		return roomId;
+	}
+
+	public void setRoomId(Long roomId) {
+		this.roomId = roomId;
 	}
 
 	/**
@@ -111,6 +113,8 @@ public class Room {
 	 *
 	 * @return the cinema
 	 */
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "cinemaId")
 	public Cinema getCinema() {
 		return cinema;
 	}

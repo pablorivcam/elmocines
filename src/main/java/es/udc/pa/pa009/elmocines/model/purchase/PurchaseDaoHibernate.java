@@ -11,12 +11,13 @@ public class PurchaseDaoHibernate extends GenericDaoHibernate<Purchase, Long> im
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Purchase> findPurchasesByUserId(Long userId) {
+	public List<Purchase> findPurchasesByUserId(Long userId, int startIndex, int count) {
 
 		List<Purchase> purchases = null;
 
-		purchases = getSession().createQuery("SELECT p FROM Purchase p WHERE p.user.userProfileId = :userId ORDER BY p.purchaseId")
-				.setParameter("userId", userId).getResultList();
+		purchases = getSession()
+				.createQuery("SELECT p FROM Purchase p WHERE p.user.userProfileId = :userId ORDER BY p.purchaseId")
+				.setParameter("userId", userId).setFirstResult(startIndex).setMaxResults(count).getResultList();
 
 		return purchases;
 	}

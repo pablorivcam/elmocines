@@ -4,13 +4,12 @@
       xmlns:p="tapestry:parameter">
 <head>
     <meta charset="utf-8" />
-    <title>${title} - MiniPortal</title>
+    <title>${title} - Elmocines</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+    <link rel="shortcut icon" type="image/png" href="${context:images/favicon.png}" />
     <style type="text/css">
         body {
             padding-top: 60px;
-            padding-bottom: 40px;
         }
     </style>
 
@@ -18,6 +17,7 @@
     <!--[if lt IE 9]>
       <script src="../assets/js/html5shiv.js"></script>
     <![endif]-->
+    <link rel="stylesheet" type="text/css" href="${context:css/bootstrap.css}" />
 
 </head>
 
@@ -34,7 +34,45 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#" t:type="PageLink" t:page="index">MiniPortal</a>
+            <a class="navbar-brand" href="#" t:type="PageLink" t:page="index">
+            	<img src="${context:images/logo.png}" width="100px" alt="Elmo cines"/>
+            	
+            </a>
+            
+            <!-- Formulario de búsqueda de cines -->
+            
+            <form t:type="Form" class="form-inline" t:id="findSessionsForm" role="form">
+            <t:errors />  
+            
+			    <div class="form-group mx-sm-3">
+			    
+			    	<label for="provinceId" class="sr-only">${message:province}</label>
+					<t:select t:id="provinceId" model="provincesSelect" zone="cinemaSelectorZone"
+						 blankOption="never" />			    
+			    </div>
+			    
+			    <div class="form-group mx-sm-3">
+			    
+			    	<label for="cinemaId" class="sr-only">${message:cinema}</label>
+			    	
+    		   		<t:zone t:id="cinemaSelectorZone" id="cinemaSelectorZone">
+						<t:select t:id="cinemaId" model="cinemasSelect"
+							 blankOption="never" />	
+					</t:zone>	
+						    
+			    </div>
+			         			         
+         		<div class="form-group mx-sm-3">
+					<button type="submit" class="btn btn-info">
+						<span class="glyphicon glyphicon-search"></span> ${message:searchBillboard}
+					</button>
+				</div>
+			         
+			            
+            </form>
+            
+            <!-- Fin de formulario de búsqueda de cines -->
+            
         </div>
         
         <div class="navbar-collapse collapse">
@@ -43,6 +81,12 @@
             		<li class="dropdown">
               			<a href="#" class="dropdown-toggle" data-toggle="dropdown">${userSession.firstName} <span class="caret"></span></a>
               				<ul class="dropdown-menu" role="menu">
+              					<t:if test="client">              				
+              						<li><a href="#" t:type="PageLink" t:page="purchase/userpurchases">${message:userPurchases}</a></li>
+              					</t:if>
+              					<t:if test="worker">
+                					<li><a href="#" t:type="PageLink" t:page="purchase/purchasesearch">${message:purchaseSearch}</a></li>
+								</t:if>
                 				<li><a href="#" t:type="PageLink" t:page="user/updateprofile">${message:updateProfile}</a></li>
                 				<li><a href="#" t:type="PageLink" t:page="user/changepassword">${message:changePassword}</a></li>
                 				<li class="divider"></li>
@@ -72,12 +116,12 @@
 
     <hr/>
 
+
+
+</div>
     <footer>
         <p class="text-center">${message:footer}</p>
     </footer>
-
-</div>
-
 </body>
 
 </html>

@@ -1,0 +1,47 @@
+<html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
+	t:type="Layout" t:title="title" showTitleInBody="false">
+		
+	<style>
+		.buyTicketsForm{
+			margin-top:2em; 
+			background-color:#EEEEEE; 
+			padding:1em; 
+			margin-left: 20em;
+			padding-left:11em
+		}
+	</style>
+		
+	<h1 class="p-3 mb-2 bg-primary text-white container-fluid">
+		${message:buyTicketsFor} ${session.movie.title}
+	</h1>
+	
+	<table id="sessionDetailsTable" class="table table-striped" align="center">
+		<tr>
+			<td width="180">
+				<img src="${context:images/movies}/${session.movie.movieId}.png" width="180" height="300"/>		
+			</td>
+			<td>
+				<h4>${message:cinema}:</h4>
+				<p>${session.room.cinema.name}</p>
+				<h4>${message:room}:</h4>
+				<p>${session.room.name}</p>
+				<h4>${message:session}:</h4>
+				<p><t:output format="format" value="session.date.time"/> - <t:output format="literal:HH:mm " value="session.date.time"/></p>
+				<h4>${message:length}:</h4>
+				<p>${session.movie.lenght} min.</p>
+			</td>
+			<td>
+				<h4>${message:price}:</h4>
+				<p>${session.price}€</p>
+				<h4>${message:freeLocationsCount}:</h4>
+				<p>${session.freeLocationsCount}</p>
+				<div class="form-group mx-sm-3" style="margin-left:1em">
+					<t:eventlink t:event="NextPage" t:context="${session.sessionId}" class="btn btn-info">
+            		${message:buyTickets}<span class="glyphicon glyphicon-chevron-right"></span> 
+        			</t:eventlink>
+				</div>	
+			</td>
+		</tr>	
+	</table>
+	
+</html>

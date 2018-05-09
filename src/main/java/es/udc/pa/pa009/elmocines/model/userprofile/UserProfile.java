@@ -107,6 +107,7 @@ public class UserProfile {
 				+ encryptedPassword + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + "]";
 	}
 
+	@Enumerated(EnumType.STRING)
 	public Role getRole() {
 		return role;
 	}

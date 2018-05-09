@@ -1,4 +1,4 @@
-package es.udc.pa.pa009.elmocines.model.cinemaservice;
+package es.udc.pa.pa009.elmocines.model.purchaseservice;
 
 public class TooManyLocationsException extends Exception {
 	

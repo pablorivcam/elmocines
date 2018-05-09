@@ -1,0 +1,75 @@
+<html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
+	t:type="Layout" t:title="title" showTitleInBody="false">
+		
+	<style>
+		.buyTicketsForm{
+			margin-top:2em; 
+			background-color:#EEEEEE; 
+			padding:1em; 
+			margin-left: 20em;
+			padding-left:11em
+		}
+	</style>
+	
+	<h1 class="p-3 mb-2 bg-primary text-white container-fluid">
+		${message:buyTicketsFor} ${session.movie.title}
+	</h1>
+	
+	<table id="sessionDetailsTable" class="table table-striped" align="center">
+	
+		<tr>
+			<td width="150">
+				<img src="${context:images/movies}/${session.movie.movieId}.png" width="150" height="250"/>			
+			</td>
+			<td style="padding-left:2em; padding-top:2em">
+				<p><b>${message:cinema}: </b>${session.room.cinema.name}</p>
+				<p><b>${message:room}: </b>${session.room.name}</p>
+				<p><b>${message:date}: </b><t:output format="format" value="session.date.time"/> - <t:output format="literal:HH:mm " value="session.date.time"/></p>
+				<p><b>${message:lenght}: </b>${session.movie.lenght} min.</p>
+				<p><b>${message:price}: </b>${session.price}€</p>
+				<p><b>${message:freeLocationsCount}: </b>${session.freeLocationsCount}</p>
+        	</td>
+        	
+        	<td>       		
+				<form t:type="Form" class="form-horizontal" t:id="purchaseForm">
+	
+	   				<t:errors/>
+	   
+	   				<div class="form-group">        
+	        			<t:label for="CreditCardNumber" class="col-md-offset-3 col-md-2"/>
+	        				<div class="col-md-3">
+	            				<input t:id="creditCardNumber" t:type="TextField"
+				       			t:validate="required" maxlength="30" />
+	        				</div>
+	   				</div>
+	    
+	   				<div class="form-group" >        
+	        			<t:label for="cardExpiredDate" class="col-md-offset-3 col-md-2"/>
+	        				<div class="col-md-3">
+	            				<input t:id="cardExpiredDate" t:type="TextField"
+				      			 t:validate="required" maxlength="20"/>
+	       					 </div>
+	    			</div>
+	    
+	   				<div class="form-group">        
+	       				<t:label for="locationsAmount" class="col-md-offset-3 col-md-2"/>
+	        				<div class="col-md-3">
+	           				 <input t:id="locationsAmount" t:type="TextField"
+				      		 t:validate="required" maxlength="2" />
+	       			 	</div>
+	   				</div>
+	    
+	   
+	    			<div class="form-group">
+	    				<div class="col-md-offset-5 col-md-1">
+        					<button type="submit" class="btn btn-primary">${message:submit}</button>
+        				</div>
+        			</div>
+	    
+					</form>
+			</td>
+		</tr>
+	
+	</table>
+
+</html>

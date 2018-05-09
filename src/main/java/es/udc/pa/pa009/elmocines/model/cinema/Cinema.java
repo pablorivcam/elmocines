@@ -24,21 +24,15 @@ import es.udc.pa.pa009.elmocines.model.room.Room;
 public class Cinema {
 
 	/** The cinema id. */
-	@Id
-	@SequenceGenerator(name = "cinemaSeqGenerator", sequenceName = "cinemaSeq")
-	@GeneratedValue(generator = "cinemaSeqGenerator", strategy = GenerationType.AUTO)
 	private Long cinemaId;
 
 	/** The name. */
 	private String name;
 
 	/** The province. */
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "provinceId")
 	private Province province;
 
 	/** The room. */
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cinema")
 	private List<Room> rooms;
 
 	/**
@@ -64,11 +58,18 @@ public class Cinema {
 		this.rooms = rooms;
 	}
 
+	public void setCinemaId(Long cinemaId) {
+		this.cinemaId = cinemaId;
+	}
+
 	/**
 	 * Gets the cinema id.
 	 *
 	 * @return the cinema id
 	 */
+	@Id
+	@SequenceGenerator(name = "cinemaSeqGenerator", sequenceName = "cinemaSeq")
+	@GeneratedValue(generator = "cinemaSeqGenerator", strategy = GenerationType.AUTO)
 	public Long getCinemaId() {
 		return cinemaId;
 	}
@@ -97,6 +98,8 @@ public class Cinema {
 	 *
 	 * @return the province
 	 */
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "provinceId")
 	public Province getProvince() {
 		return province;
 	}
@@ -116,6 +119,7 @@ public class Cinema {
 	 *
 	 * @return the rooms
 	 */
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cinema")
 	public List<Room> getRooms() {
 		return rooms;
 	}

@@ -21,16 +21,12 @@ import es.udc.pa.pa009.elmocines.model.cinema.Cinema;
 public class Province {
 
 	/** The province id. */
-	@Id
-	@SequenceGenerator(name = "provinceIdGenerator", sequenceName = "provinceSeq")
-	@GeneratedValue(generator = "provinceIdGenerator", strategy = GenerationType.AUTO)
 	private Long provinceId;
 
 	/** The name. */
 	private String name;
 
 	/** The cinema. */
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "province")
 	private List<Cinema> cinemas;
 
 	/**
@@ -58,8 +54,15 @@ public class Province {
 	 *
 	 * @return the province id
 	 */
+	@Id
+	@SequenceGenerator(name = "provinceIdGenerator", sequenceName = "provinceSeq")
+	@GeneratedValue(generator = "provinceIdGenerator", strategy = GenerationType.AUTO)
 	public Long getProvinceId() {
 		return provinceId;
+	}
+
+	public void setProvinceId(Long provinceId) {
+		this.provinceId = provinceId;
 	}
 
 	/**
@@ -86,6 +89,7 @@ public class Province {
 	 *
 	 * @return the cinemas
 	 */
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "province")
 	public List<Cinema> getCinemas() {
 		return cinemas;
 	}
