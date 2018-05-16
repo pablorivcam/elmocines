@@ -78,6 +78,30 @@
                 <hibernate.dialect>org.hibernate.dialect.MySQLDialect</hibernate.dialect>
             </properties>
         </profile>
+        
+        <profile>
+			<id>webtest</id>
+        	<properties>
+                <!-- JDBC driver properties -->         	
+    	        <jdbcDriver.groupId>mysql</jdbcDriver.groupId>
+                <jdbcDriver.artifactId>mysql-connector-java</jdbcDriver.artifactId>
+                <jdbcDriver.version>5.1.39</jdbcDriver.version>
+                <jdbcDriver.className>com.mysql.jdbc.Driver</jdbcDriver.className>
+
+                <!--  Data source properties -->
+                <dataSource.baseUrl>jdbc:mysql://localhost/pojowebtest</dataSource.baseUrl>
+                <dataSource.url>${dataSource.baseUrl}?useSSL=false</dataSource.url>
+                <testDataSource.url>${dataSource.baseUrl}?useSSL=false</testDataSource.url>
+                <dataSource.createTablesScript>1-MySQLCreateTables.sql</dataSource.createTablesScript>
+                <dataSource.createDataScript>2-MySQLCreateData.sql</dataSource.createDataScript>
+                                
+                <!-- Hibernate properties -->
+                <hibernate.dialect>org.hibernate.dialect.MySQLDialect</hibernate.dialect>                
+                
+        	    <exclude>**/*ServiceTest.java</exclude>
+        	</properties>
+        </profile>
+        
     </profiles>
 
     <!-- ========================================================== -->
@@ -179,6 +203,35 @@
             <artifactId>pojo-modelutil</artifactId>
             <version>${pojo-modelutil.version}</version>
         </dependency>
+
+		<!-- Selenium -->
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>3.7.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-firefox-driver</artifactId>
+			<version>3.7.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-support</artifactId>
+			<version>3.7.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-remote-driver</artifactId>
+			<version>3.7.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-api</artifactId>
+			<version>3.7.1</version>
+		</dependency>
+
+
     </dependencies>
 
     <build>

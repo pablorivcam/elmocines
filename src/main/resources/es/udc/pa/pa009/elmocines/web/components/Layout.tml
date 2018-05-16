@@ -63,7 +63,7 @@
 			    </div>
 			         			         
          		<div class="form-group mx-sm-3">
-					<button type="submit" class="btn btn-info">
+					<button type="submit" class="btn btn-info" id="searchBillboardBtn">
 						<span class="glyphicon glyphicon-search"></span> ${message:searchBillboard}
 					</button>
 				</div>
@@ -79,7 +79,7 @@
             <ul class="nav navbar-nav navbar-right">
             	<t:if test="userSession">
             		<li class="dropdown">
-              			<a href="#" class="dropdown-toggle" data-toggle="dropdown">${userSession.firstName} <span class="caret"></span></a>
+              			<a href="#" class="dropdown-toggle" data-toggle="dropdown">${userSession.firstName}<span class="caret"></span></a>
               				<ul class="dropdown-menu" role="menu">
               					<t:if test="client">              				
               						<li><a href="#" t:type="PageLink" t:page="purchase/userpurchases">${message:userPurchases}</a></li>
@@ -94,7 +94,7 @@
               				</ul>
             		</li>
             		<p:else>
-				    	<li><a href="#" t:type="PageLink" t:page="user/login">${message:authenticate}</a></li>
+				    	<li><a href="#" t:type="PageLink" t:page="user/login" id="authentication_link">${message:authenticate}</a></li>
 			        </p:else>
             	</t:if>
             </ul>
