@@ -14,8 +14,6 @@ import es.udc.pa.pa009.elmocines.model.cinemaservice.CinemaService;
 import es.udc.pa.pa009.elmocines.model.session.Session;
 import es.udc.pa.pa009.elmocines.web.pages.purchase.PurchaseSession;
 import es.udc.pa.pa009.elmocines.web.pages.user.Login;
-import es.udc.pa.pa009.elmocines.web.services.AuthenticationPolicy;
-import es.udc.pa.pa009.elmocines.web.services.AuthenticationPolicyType;
 import es.udc.pa.pa009.elmocines.web.util.UserSession;
 import es.udc.pojo.modelutil.exceptions.InstanceNotFoundException;
 

@@ -2,7 +2,7 @@
 	t:type="Layout" t:title="title">
 	
 	<p class="text-center">
-		<a href="#" t:type="PageLink" t:page="user/register">${message:register}</a>	       
+		<a href="#" t:type="PageLink" t:context="${sessionId}" t:page="user/register">${message:register}</a>	       
 	</p>
 	
 	<br/>
