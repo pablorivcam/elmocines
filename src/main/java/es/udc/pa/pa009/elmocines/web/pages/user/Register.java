@@ -15,7 +15,7 @@ import es.udc.pa.pa009.elmocines.model.userprofile.UserProfile.Role;
 import es.udc.pa.pa009.elmocines.model.userservice.UserProfileDetails;
 import es.udc.pa.pa009.elmocines.model.userservice.UserService;
 import es.udc.pa.pa009.elmocines.web.pages.Index;
-import es.udc.pa.pa009.elmocines.web.pages.purchase.PurchaseSession;
+import es.udc.pa.pa009.elmocines.web.pages.cinema.SessionDetails;
 import es.udc.pa.pa009.elmocines.web.services.AuthenticationPolicy;
 import es.udc.pa.pa009.elmocines.web.services.AuthenticationPolicyType;
 import es.udc.pa.pa009.elmocines.web.util.UserSession;
@@ -26,7 +26,7 @@ public class Register {
 	
 	private Long sessionId;
 	@InjectPage
-	private PurchaseSession purchaseSession;
+	private SessionDetails sessionDetails;
 
 	@Property
 	private String loginName;
@@ -112,8 +112,8 @@ public class Register {
 		userSession.setRole(Role.CLIENT);
 		
 		if (sessionId != null) {
-			purchaseSession.setSessionId(sessionId);
-			return purchaseSession;
+			sessionDetails.setSessionId(sessionId);
+			return sessionDetails;
 		} else {
 			return Index.class;
 		}

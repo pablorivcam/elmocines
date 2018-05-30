@@ -2,17 +2,30 @@ package es.udc.pa.pa009.elmocines.web.pages.cinema;
 
 import java.text.DateFormat;
 import java.text.Format;
+import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Locale;
 
+import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SessionState;
+import org.apache.tapestry5.corelib.components.Form;
+import org.apache.tapestry5.corelib.components.TextField;
+import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
 import es.udc.pa.pa009.elmocines.model.cinemaservice.CinemaService;
+import es.udc.pa.pa009.elmocines.model.cinemaservice.InputValidationException;
+import es.udc.pa.pa009.elmocines.model.purchase.Purchase;
+import es.udc.pa.pa009.elmocines.model.purchaseservice.ExpiredDateException;
+import es.udc.pa.pa009.elmocines.model.purchaseservice.PurchaseService;
+import es.udc.pa.pa009.elmocines.model.purchaseservice.TooManyLocationsException;
 import es.udc.pa.pa009.elmocines.model.session.Session;
-import es.udc.pa.pa009.elmocines.web.pages.purchase.PurchaseSession;
+import es.udc.pa.pa009.elmocines.model.userprofile.UserProfile.Role;
+import es.udc.pa.pa009.elmocines.model.userservice.UserService;
+import es.udc.pa.pa009.elmocines.web.pages.purchase.SuccessfulPurchase;
 import es.udc.pa.pa009.elmocines.web.pages.user.Login;
 import es.udc.pa.pa009.elmocines.web.util.UserSession;
 import es.udc.pojo.modelutil.exceptions.InstanceNotFoundException;
@@ -20,9 +33,40 @@ import es.udc.pojo.modelutil.exceptions.InstanceNotFoundException;
 public class SessionDetails {
 
 	private Long sessionId;
+	private Purchase purchase;
+	
+	@Property
+	private String creditCardNumber;
+
+	@Property
+	private int locationsAmount;
+
+	@Property
+	private String cardExpiredDate;
+
+	@Inject
+	private UserService userService;
+	
+	@Inject
+	private PurchaseService purchaseService;
+	
+	@Component(id = "creditCardNumber")
+	private TextField creditCardField;
+	
+	@Component(id = "cardExpiredDate")
+	private TextField expiredDateField;
+	
+	@Component(id = "locationsAmount")
+	private TextField locationsAmountField;
+	
+	@Inject
+	private Messages messages;
+	
+	@Component
+	private Form purchaseForm;
 	
 	@InjectPage
-	private PurchaseSession purchaseSession;
+	private SuccessfulPurchase successfulPurchase;
 	
 	@InjectPage
 	private Login login;
@@ -42,8 +86,17 @@ public class SessionDetails {
 	@Inject
 	private Request request;
 	
+	@Property
 	@SessionState(create=false)
     private UserSession userSession;
+	
+	public Long getSessionId() {
+		return sessionId;
+	}
+
+	public void setSessionId(Long sessionId) {
+		this.sessionId = sessionId;
+	}
 
 	void onActivate(Long sessionId) {
 		this.sessionId = sessionId;
@@ -54,37 +107,54 @@ public class SessionDetails {
 	}
 
 	void onPrepareForRender() {
-
 		try {
 			session = cinemaService.findSessionBySessionId(sessionId);
 		} catch (InstanceNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
+	
+	void onValidateFromPurchaseForm() throws InstanceNotFoundException, InputValidationException, ExpiredDateException{
 
-	public Long getSessionId() {
-		return sessionId;
-	}
+		if (!purchaseForm.isValid()) {
+			return;
+		}
+		
+		Calendar cal = Calendar.getInstance();
+		DateFormat df =DateFormat.getDateInstance(DateFormat.DEFAULT,locale);
+	
+		if ((locationsAmount>10) || (locationsAmount==0)){
+			purchaseForm.recordError(locationsAmountField, messages.get("error-locationsAmountNotAllowed"));
+		} else {
+			try {
+				cal.setTime(df.parse(cardExpiredDate));
+				if(cal.before(Calendar.getInstance())){
+					purchaseForm.recordError(expiredDateField, messages.get("error-expiredCard"));
+				}
+				else{
+				purchase=purchaseService.purchaseTickets(userSession.getUserProfileId(),
+					creditCardNumber,cal,sessionId,locationsAmount);
+				}
+			} catch (TooManyLocationsException e) {
+				purchaseForm.recordError(locationsAmountField, messages.get("error-freeLocationsPurchased"));
+			} catch (ParseException e) {
+				purchaseForm.recordError(expiredDateField, messages.get("error-expiredDateFormat"));
+			}
+		}
 
-	public void setSessionId(Long sessionId) {
-		this.sessionId = sessionId;
 	}
 
 	public Format getFormat() {
 		return DateFormat.getDateInstance(DateFormat.DEFAULT, locale);
 	}
 	
-	Object onNextPage(long sessionId){
-		
-		if(userSession==null){
-			login.setSessionId(sessionId);
-			return login;
-		}
-		else{
-			purchaseSession.setSessionId(sessionId);
-			return purchaseSession;
-		}
-		
+	public boolean isClient() {
+		return userSession.getRole().equals(Role.CLIENT);
+	}
+	
+	Object onSuccess() {
+		successfulPurchase.setPurchaseId(purchase.getPurchaseId());
+		return successfulPurchase;
 	}
 
 }
