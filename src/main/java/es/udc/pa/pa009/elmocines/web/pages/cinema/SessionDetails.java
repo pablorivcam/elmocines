@@ -100,19 +100,16 @@ public class SessionDetails {
 
 	void onActivate(Long sessionId) {
 		this.sessionId = sessionId;
+		try {
+			session = cinemaService.findSessionBySessionId(sessionId);
+		} catch (InstanceNotFoundException e) {
+		}
 	}
 
 	Long onPassivate() {
 		return sessionId;
 	}
 
-	void onPrepareForRender() {
-		try {
-			session = cinemaService.findSessionBySessionId(sessionId);
-		} catch (InstanceNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
 	
 	void onValidateFromPurchaseForm() throws InstanceNotFoundException, InputValidationException, ExpiredDateException{
 

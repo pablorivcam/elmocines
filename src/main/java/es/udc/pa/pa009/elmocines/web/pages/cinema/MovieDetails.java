@@ -19,18 +19,14 @@ public class MovieDetails {
 
 	void onActivate(Long movieId) {
 		this.movieId = movieId;
+		try {
+			movie = cinemaService.findMovieById(movieId);
+		} catch (InstanceNotFoundException e) {
+		}
 	}
 
 	Object onPassivate() {
 		return movieId;
-	}
-
-	void onPrepareForRender() {
-		try {
-			movie = cinemaService.findMovieById(movieId);
-		} catch (InstanceNotFoundException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public Long getMovieId() {

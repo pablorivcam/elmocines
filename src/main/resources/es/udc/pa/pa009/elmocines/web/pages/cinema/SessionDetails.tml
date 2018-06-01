@@ -11,10 +11,13 @@
 			padding-left:11em
 		}
 	</style>
-		
+	
+	<t:if test="session">
+	
 	<h1 class="p-3 mb-2 bg-primary text-white container-fluid">
 		${message:buyTicketsFor} ${session.movie.title}
 	</h1>
+		
 	
 	<table id="sessionDetailsTable" class="table table-striped" align="center">
 		<tr>
@@ -91,5 +94,11 @@
 			</td>
 		</tr>	
 	</table>
+	
+	<p:else>	
+		<h4 class="alert alert-danger text-center">${message:noSession}</h4>		
+	</p:else>	
+	
+	</t:if>	
 	
 </html>

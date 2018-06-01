@@ -19,7 +19,7 @@ public class SuccessfulPurchase {
 	
 	@Property
 	private Purchase purchase;
-
+	
 	@Inject
 	private PurchaseService purchaseService;
 	
@@ -33,18 +33,14 @@ public class SuccessfulPurchase {
 	
 	void onActivate(Long purchaseId) {
 		this.purchaseId = purchaseId;
+		try {
+			purchase = purchaseService.getPurchase(purchaseId);
+		} catch (InstanceNotFoundException e) {
+		}
 	}
 
 	Object onPassivate() {
 		return purchaseId;
-	}
-	
-	void onPrepareForRender() {
-		try {
-			purchase = purchaseService.getPurchase(purchaseId);
-		} catch (InstanceNotFoundException e) {
-			e.printStackTrace();
-		}
 	}
 	
 }

@@ -1,6 +1,8 @@
 <html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter"
 	t:type="Layout" t:title="title" showTitleInBody="false">
 
+	<t:if test="cinema">
+	
 	<h1 class="p-3 mb-2 bg-primary text-white container-fluid">
 		<span class="glyphicon glyphicon-info-sign"/>
 		${message:sessionsFor} ${cinema.name}
@@ -85,5 +87,11 @@
 	    
 		</table>
 	</t:zone>
+	
+	<p:else>	
+		<h4 class="alert alert-danger text-center">${message:noCinemas}</h4>
+	</p:else>
+	
+	</t:if>
 
 </html>
