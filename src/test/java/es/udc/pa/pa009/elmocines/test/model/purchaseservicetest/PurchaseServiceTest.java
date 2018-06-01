@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import es.udc.pa.pa009.elmocines.model.cinema.Cinema;
 import es.udc.pa.pa009.elmocines.model.cinema.CinemaDao;
+import es.udc.pa.pa009.elmocines.model.cinemaservice.CinemaService;
 import es.udc.pa.pa009.elmocines.model.cinemaservice.InputValidationException;
 import es.udc.pa.pa009.elmocines.model.purchaseservice.ExpiredDateException;
 import es.udc.pa.pa009.elmocines.model.purchaseservice.PurchaseService;
@@ -61,6 +62,9 @@ public class PurchaseServiceTest {
 
 	@Autowired
 	private PurchaseService purchaseService;
+	
+	@Autowired
+	private CinemaService cinemaService;
 
 	@Autowired
 	private UserService userService;
@@ -166,11 +170,13 @@ public class PurchaseServiceTest {
 		UserProfile user = registerUser(USER_TEST_NAME, PASSWORD_TEST);
 		Purchase expected = new Purchase();
 		Purchase purchase = new Purchase();
+		Session sessionTest = new Session();
 
 		try {
 			expected = purchaseService.purchaseTickets(user.getUserProfileId(), CREDIT_CARD_TEST_NUMBER,
 					Calendar.getInstance(), session.getSessionId(), 7);
 			purchase = purchaseService.getPurchase(expected.getPurchaseId());
+			sessionTest = cinemaService.findSessionBySessionId(session.getSessionId());
 
 		} catch (TooManyLocationsException e) {
 			e.printStackTrace();
@@ -187,7 +193,7 @@ public class PurchaseServiceTest {
 		assertEquals(purchase.getSession(), expected.getSession());
 		assertEquals(purchase.getCreditCardNumber(), expected.getCreditCardNumber());
 		assertEquals(purchase.getDate(), expected.getDate());
-		assertEquals(room.getCapacity()- expected.getLocationCount(),session.getFreeLocationsCount());
+		assertEquals(room.getCapacity()- expected.getLocationCount(),sessionTest.getFreeLocationsCount());
 
 	}
 
