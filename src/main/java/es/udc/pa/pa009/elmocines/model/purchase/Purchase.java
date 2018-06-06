@@ -68,7 +68,7 @@ public class Purchase {
 	public Purchase() {
 
 	}
-	
+
 	/**
 	 * Instantiates a new purchase.
 	 *
@@ -83,8 +83,8 @@ public class Purchase {
 	 * @param session
 	 *            the session
 	 */
-	public Purchase(String creditCardNumber, Calendar creditCardExpirationDate, Integer locationCount,
-			 Calendar date, Session session, UserProfile user) {
+	public Purchase(String creditCardNumber, Calendar creditCardExpirationDate, Integer locationCount, Calendar date,
+			Session session, UserProfile user) {
 		this.creditCardNumber = creditCardNumber;
 		this.creditCardExpirationDate = creditCardExpirationDate;
 		this.locationCount = locationCount;
@@ -93,11 +93,7 @@ public class Purchase {
 		this.session = session;
 		this.user = user;
 
-		// FIXME: deberíamos resetear más cosas. Recordar que expiration date es solo
-		// una fecha.
-		date.set(Calendar.MILLISECOND, 0);
 	}
-	
 
 	/**
 	 * Instantiates a new purchase.
@@ -124,10 +120,6 @@ public class Purchase {
 		this.date = date;
 		this.session = session;
 		this.user = user;
-
-		// FIXME: deberíamos resetear más cosas. Recordar que expiration date es solo
-		// una fecha.
-		date.set(Calendar.MILLISECOND, 0);
 	}
 
 	/**

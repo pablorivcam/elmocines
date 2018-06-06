@@ -4,7 +4,7 @@
 	
 	<t:if test="purchase">
 		<h4 class="alert alert-success text-center">${message:successfulPurchase}</h4>
-		<h4 class="alert alert-success text-center">${message:idPurchase}:${purchase.purchaseId}</h4>   
+		<h4 id="purchase_info" class="alert alert-success text-center">${message:idPurchase}: ${purchase.purchaseId}</h4>   
 		<h4 class="alert alert-success text-center">${message:info}</h4> 
 		
 		<p:else>	

@@ -31,7 +31,7 @@
 				<p>${session.room.name}</p>
 				<h4>${message:session}:</h4>
 				<p><t:output format="format" value="session.date.time"/> - <t:output format="literal:HH:mm " value="session.date.time"/></p>
-				<h4>${message:length}:</h4>
+				<h4 id="lenght_label">${message:length}:</h4>
 				<p>${session.movie.lenght} min.</p>
 			</td>
 			<td>
@@ -73,7 +73,7 @@
 	   
 	    			<div class="form-group">
 	    				<div class="col-md-offset-5 col-md-1">
-        					<button type="submit" class="btn btn-primary">${message:submit}</button>
+        					<button id="submit_purchase_button" type="submit" class="btn btn-primary">${message:submit}</button>
         				</div>
         			</div>
 	    
@@ -83,7 +83,7 @@
 					<p:else>	
 						<h4 class="alert text-center">${message:noUser}</h4>
 						<div class="form-group" style="float: right; margin-right:17em;">
-							<div t:type="PageLink" t:page="user/login" 
+							<div id="authentication_link_from_session" t:type="PageLink" t:page="user/login" 
 										 t:context="${session.sessionId}" class="btn btn-primary text-center">
 										${message:auth}
 							</div>

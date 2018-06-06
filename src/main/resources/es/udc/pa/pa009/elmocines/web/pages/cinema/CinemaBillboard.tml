@@ -11,7 +11,7 @@
 	<t:zone t:id="favoriteCinemaZone" id="favoriteCinemaZone">
 
 		<t:eventLink event="setFavouriteCinema">
-			<div style="font-size: 2em" >
+			<div style="font-size: 2em" id="favourite_cinema_link">
 			
 				<t:if test="favouriteCinemaId">
 					<p style="color:#ff9900"><spam class="glyphicon glyphicon-star"/> ${message:favouriteCinema}</p>

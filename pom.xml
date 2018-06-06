@@ -78,9 +78,9 @@
                 <hibernate.dialect>org.hibernate.dialect.MySQLDialect</hibernate.dialect>
             </properties>
             
-        	<!-- Añadido para excluir los test de la interfaz web -->
    			<build>
 				<plugins>
+		        	<!-- Añadido para excluir los test de la interfaz web -->
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-surefire-plugin</artifactId>
@@ -91,6 +91,7 @@
 					        </excludes>								
 						</configuration>
 					</plugin>
+				
 				</plugins>
 			</build> 
             
@@ -130,7 +131,41 @@
 					        </excludes>								
 						</configuration>
 					</plugin>
+
+		        	<!-- Añadido para que se ejecuten los scripts en el test -->
+					<plugin>
+				        <groupId>org.codehaus.mojo</groupId>
+				        <artifactId>sql-maven-plugin</artifactId>
+		                <version>${sqlMavenPlugin.version}</version>
+		                <executions>
+		                    <execution>
+                                <id>create-data-for-testing</id>
+		                    
+		                        <phase>process-test-resources</phase>
+		                        <goals>
+		                            <goal>execute</goal>
+		                        </goals>
+		                        <configuration>
+		                            <driver>${jdbcDriver.className}</driver>
+		                            <url>${testDataSource.url}</url>
+		                            <username>${testDataSource.user}</username>
+		                            <password>${testDataSource.password}</password>
+		                            <autocommit>true</autocommit>
+		                            <onError>continue</onError>
+		                            <fileset>
+		                                <basedir>${basedir}</basedir>
+		                                <includes>
+		                                    <include>src/sql/${dataSource.createDataScript}</include>
+		                                </includes>
+		                            </fileset>
+		                        </configuration>
+		                    </execution>
+		                    
+		                </executions>
+			    	</plugin>
+			    	
 				</plugins>
+				
 			</build>
 			
         </profile>
