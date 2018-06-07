@@ -75,17 +75,18 @@ public class CinemaServiceImpl implements CinemaService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<MovieSessionsDto> findSessionsByCinemaIdAndDate(Long cinemaId, Calendar initDate, Calendar finalDate)
+	public List<MovieSessionsDto> findSessionsByCinemaIdAndDate(Long cinemaId, Calendar initDate)
 			throws InputValidationException, InstanceNotFoundException {
 
 		// Miramos si el cine existe
 		cinemaDao.find(cinemaId);
 
-		if (initDate.after(finalDate)) {
-			throw new InputValidationException("Init date cannot be after final date.");
-		}
-
 		Calendar now = Calendar.getInstance();
+
+		Calendar finalDate = Calendar.getInstance();
+		finalDate.setTime(initDate.getTime());
+		finalDate.set(Calendar.HOUR_OF_DAY, 23);
+		finalDate.set(Calendar.MINUTE, 59);
 
 		if (initDate.getTimeInMillis() < now.getTimeInMillis() - 30) {
 			throw new InputValidationException("Init date cannot be before actual's date.");

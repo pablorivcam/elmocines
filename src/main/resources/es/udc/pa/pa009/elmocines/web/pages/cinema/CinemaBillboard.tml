@@ -14,7 +14,7 @@
 			<div style="font-size: 2em" id="favourite_cinema_link">
 			
 				<t:if test="favouriteCinemaId">
-					<p style="color:#ff9900"><spam class="glyphicon glyphicon-star"/> ${message:favouriteCinema}</p>
+					<p style="color:#ff9900"><spam class="glyphicon glyphicon-star" id="favourite_cinema_setted"/> ${message:favouriteCinema}</p>
 					<p:else>
 						<p style="color:#aaaaaa"><spam class="glyphicon glyphicon glyphicon-star-empty"/> ${message:favouriteCinema}</p>
 					</p:else>

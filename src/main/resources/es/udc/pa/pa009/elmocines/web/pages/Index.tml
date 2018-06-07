@@ -40,7 +40,7 @@
 
 <!-- Vemos la cartelera -->
 <t:if test="favouriteCinemaId">
-	<h1 class="p-3 mb-2 bg-primary text-white container-fluid">
+	<h1 id="cinema_name" class="p-3 mb-2 bg-primary text-white container-fluid">
 		<span class="glyphicon glyphicon-info-sign"/>
 		${message:sessionsFor} ${cinema.name}
 	</h1>
@@ -92,7 +92,7 @@
 			    			<td>
 			    				<!-- LOOP para las sesiones --> 
 								<t:loop source="movieSession.sessions" value="session">
-									<div t:type="PageLink" t:page="cinema/SessionDetails" 
+									<div t:type="PageLink" t:page="cinema/SessionDetails" id="sessionLink${session.sessionId}"
 										 t:context="${session.sessionId}" class="sessionLink bg-gradient-dark">
 										<t:output format="literal:HH:mm " value="session.date.time"/>
 									</div>

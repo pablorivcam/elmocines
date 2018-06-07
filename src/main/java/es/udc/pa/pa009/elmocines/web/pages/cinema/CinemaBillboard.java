@@ -110,12 +110,8 @@ public class CinemaBillboard {
 
 		// Obtnemos la cartelera del cine
 
-		Calendar finalDate = Calendar.getInstance();
-		finalDate.set(Calendar.HOUR_OF_DAY, 23);
-		finalDate.set(Calendar.MINUTE, 59);
-
 		try {
-			sessions = cinemaService.findSessionsByCinemaIdAndDate(cinemaId, date, finalDate);
+			sessions = cinemaService.findSessionsByCinemaIdAndDate(cinemaId, date);
 		} catch (InstanceNotFoundException e) {
 			e.printStackTrace();
 		} catch (InputValidationException e) {
@@ -130,7 +126,6 @@ public class CinemaBillboard {
 	void onValueChangedFromDateSelected(String dateSelected) {
 
 		Calendar now = Calendar.getInstance();
-		Calendar finalDate = Calendar.getInstance();
 
 		date = calendarFromString(dateSelected);
 
@@ -140,12 +135,8 @@ public class CinemaBillboard {
 			date.setTimeInMillis(now.getTimeInMillis());
 		}
 
-		finalDate = calendarFromString(dateSelected);
-		finalDate.set(Calendar.HOUR_OF_DAY, 23);
-		finalDate.set(Calendar.MINUTE, 59);
-
 		try {
-			sessions = cinemaService.findSessionsByCinemaIdAndDate(cinemaId, date, finalDate);
+			sessions = cinemaService.findSessionsByCinemaIdAndDate(cinemaId, date);
 		} catch (InstanceNotFoundException e) {
 			e.printStackTrace();
 		} catch (InputValidationException e) {

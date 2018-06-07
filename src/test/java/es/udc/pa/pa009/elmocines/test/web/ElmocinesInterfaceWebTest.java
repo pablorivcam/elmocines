@@ -148,11 +148,18 @@ public class ElmocinesInterfaceWebTest {
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("favourite_cinema_link")));
 
 		executor.executeScript("document.getElementById('favourite_cinema_link').click();");
+
+		wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("favourite_cinema_setted")));
+
 		executor.executeScript("document.getElementById('index_page').click();");
 
 		// Página principal
 		wait = new WebDriverWait(driver, 10);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("sessionLink1")));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("cinema_name")));
+
+		assertTrue(driver.findElement(By.id("cinema_name")).getText().contains("Espacio Coruña"));
+
 		executor.executeScript("document.getElementById('sessionLink1').click();");
 
 		// Página de sesión

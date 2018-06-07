@@ -94,12 +94,8 @@ public class Index {
 
 			// Obtnemos la cartelera del cine
 
-			Calendar finalDate = Calendar.getInstance();
-			finalDate.set(Calendar.HOUR_OF_DAY, 23);
-			finalDate.set(Calendar.MINUTE, 59);
-
 			try {
-				sessions = cinemaService.findSessionsByCinemaIdAndDate(favouriteCinemaId, date, finalDate);
+				sessions = cinemaService.findSessionsByCinemaIdAndDate(favouriteCinemaId, date);
 			} catch (InstanceNotFoundException e) {
 				e.printStackTrace();
 			} catch (InputValidationException e) {
@@ -127,7 +123,6 @@ public class Index {
 					+ favouriteCinemaId + "\n\n\n");
 
 			Calendar now = Calendar.getInstance();
-			Calendar finalDate = Calendar.getInstance();
 
 			date = calendarFromString(dateSelected);
 
@@ -137,12 +132,8 @@ public class Index {
 				date.setTimeInMillis(now.getTimeInMillis());
 			}
 
-			finalDate = calendarFromString(dateSelected);
-			finalDate.set(Calendar.HOUR_OF_DAY, 23);
-			finalDate.set(Calendar.MINUTE, 59);
-
 			try {
-				sessions = cinemaService.findSessionsByCinemaIdAndDate(favouriteCinemaId, date, finalDate);
+				sessions = cinemaService.findSessionsByCinemaIdAndDate(favouriteCinemaId, date);
 			} catch (InstanceNotFoundException e) {
 				e.printStackTrace();
 			} catch (InputValidationException e) {
