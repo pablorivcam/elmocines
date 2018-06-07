@@ -28,6 +28,12 @@ public class ElmocinesInterfaceWebTest {
 	public static final String TEST_USER_PASSWORD = "admin";
 	public static final String TEST_USER_NAME = "Cliente";
 
+	public static final String TEST_USER_LOGIN2 = "testClient";
+	public static final String TEST_USER_PASSWORD2 = "testPass";
+	public static final String TEST_USER_NAME2 = "Test";
+	public static final String TEST_EMAIL_NAME2 = "testclient@udc.es";
+	public static final String TEST_USER_LAST_NAME2 = "Cliente";
+
 	public static final String TEST_CREDIT_CARD_NUMBER = "1234567";
 	public static final String TEST_CREDIT_CARD_EXPIRATION_DATE = "Jun 6, 2025";
 	public static final String TEST_LOCATIONS_AMMOUNT = "2";
@@ -81,6 +87,56 @@ public class ElmocinesInterfaceWebTest {
 	}
 
 	@Test
+	public void authenticationWithRegisterTest() {
+		driver.get(baseUrl);
+
+		// Página principal
+		executor.executeScript("document.getElementById('authentication_link').click();");
+
+		// Página de Login
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("loginName")));
+
+		executor.executeScript("document.getElementById('registerLink').click();");
+
+		// Página de Registro
+		wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("email")));
+
+		WebElement loginName = driver.findElement(By.id("loginName"));
+		loginName.clear();
+		loginName.sendKeys(TEST_USER_LOGIN2);
+
+		WebElement password = driver.findElement(By.id("password"));
+		password.clear();
+		password.sendKeys(TEST_USER_PASSWORD2);
+
+		WebElement retypePassword = driver.findElement(By.id("retypePassword"));
+		retypePassword.clear();
+		retypePassword.sendKeys(TEST_USER_PASSWORD2);
+
+		WebElement firstName = driver.findElement(By.id("firstName"));
+		firstName.clear();
+		firstName.sendKeys(TEST_USER_NAME2);
+
+		WebElement lastName = driver.findElement(By.id("lastName"));
+		lastName.clear();
+		lastName.sendKeys(TEST_USER_LAST_NAME2);
+
+		WebElement email = driver.findElement(By.id("email"));
+		email.clear();
+		email.sendKeys(TEST_EMAIL_NAME2);
+
+		driver.findElement(By.id("submit")).click();
+
+		// Página Principal
+		wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("dropdown-toggle")));
+
+		assertTrue(driver.findElement(By.className("dropdown-toggle")).getText().contains(TEST_USER_NAME2));
+	}
+
+	@Test
 	public void purchaseTicketTest() {
 		driver.get(baseUrl);
 
@@ -92,6 +148,11 @@ public class ElmocinesInterfaceWebTest {
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("favourite_cinema_link")));
 
 		executor.executeScript("document.getElementById('favourite_cinema_link').click();");
+		executor.executeScript("document.getElementById('index_page').click();");
+
+		// Página principal
+		wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("sessionLink1")));
 		executor.executeScript("document.getElementById('sessionLink1').click();");
 
 		// Página de sesión

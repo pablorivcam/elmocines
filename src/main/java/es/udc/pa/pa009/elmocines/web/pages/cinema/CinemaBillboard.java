@@ -160,7 +160,6 @@ public class CinemaBillboard {
 	void onSetFavouriteCinema() {
 
 		if (favouriteCinemaId == null || favouriteCinemaId != cinemaId) {
-			System.out.println("\n\n\n\nDONT RESET ME " + favouriteCinemaId + " -> " + cinemaId + "\n\n\n");
 			cookies.getBuilder(FAVOURITE_CINEMA_COOKIE, cinemaId.toString()).setMaxAge(FAVOURITE_CINEMA_COOKIE_AGE)
 					.write();
 			favouriteCinemaId = cinemaId;

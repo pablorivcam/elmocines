@@ -64,10 +64,22 @@
 	    			</div>	    	
 	   				<div class="form-group">        
 	       				<t:label for="locationsAmount" class="col-md-offset-3 col-md-2"/>
-	        				<div class="col-md-3">
-	           				 <input t:id="locationsAmount" t:type="TextField"
-				      		 t:validate="required" maxlength="2" />
-	       			 	</div>
+		        				 	
+	        				 	<div class="col-sm-1" t:type="eventLink" event="minusLocation" zone="locationsZone">
+	        				 		<spam style="color:#aa0000; margin-top: 0.5em" class="glyphicon glyphicon-minus-sign red"/>
+	   							</div>
+	   							
+		        				<div class="col-sm-2">
+									<t:zone t:id="locationsZone" id="locationsZone">
+			           				 		<input t:id="locationsAmount" t:type="TextField"
+						      		 			t:validate="required" maxlength="2" />
+		        				 	</t:zone>
+	        				 	</div>
+	        				 	
+	        			    	<div class="col-sm-1" t:type="eventLink" event="plusLocation" zone="locationsZone">
+	        				 		<spam style="color:#aa0000; margin-top: 0.5em" class="glyphicon glyphicon-plus-sign red"/>
+	        				 	</div>
+
 	   				</div>
 	    
 	   
