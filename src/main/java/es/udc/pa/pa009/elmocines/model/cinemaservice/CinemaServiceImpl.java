@@ -93,29 +93,19 @@ public class CinemaServiceImpl implements CinemaService {
 		}
 
 		List<Session> sessions = sessionDao.findSessionsByCinemaId(cinemaId, initDate, finalDate);
-		List<Movie> movies = new ArrayList<>();
 		List<MovieSessionsDto> movieSessions = new ArrayList<>();
 
 		MovieSessionsDto movieSession = null;
+		Movie movie = null;
 
-		// FIXME: no me fio yo de esta implementación
 		for (Session s : sessions) {
-			if (!movies.contains(s.getMovie())) {
-				movies.add(s.getMovie());
-				movieSession = new MovieSessionsDto(s.getMovie(), new ArrayList<>());
+			if (s.getMovie() != movie) {
+				movie = s.getMovie();
+				movieSession = new MovieSessionsDto(movie, new ArrayList<>());
 				movieSessions.add(movieSession);
-			} else {
-				if (movieSession.getMovie() != s.getMovie()) {
-					for (MovieSessionsDto m : movieSessions) {
-						if (m.getMovie().equals(s.getMovie())) {
-							movieSession = m;
-						}
-					}
-				}
 			}
 			movieSession.getSessions().add(s);
 		}
-
 		return movieSessions;
 	}
 
