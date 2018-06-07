@@ -21,7 +21,7 @@
 		<tbody>			
 			<tr t:type="Loop" t:source="purchases" t:value="purchase">
 				<td><t:output format="format" value="purchase.date.time"/></td>
-				<td><b>${purchase.session.movie.title} </b></td>
+				<td><b><spam id="movie_title${purchase.purchaseId}">${purchase.session.movie.title}</spam> </b></td>
 				<td><b>${purchase.session.room.cinema.name} </b></td>
 				<td><b>${purchase.locationCount} </b></td>
 				<td><b>${purchase.session.price} </b></td>
@@ -45,7 +45,7 @@
 
 		<t:if test="nextLinkContext">
 			<li>
-				<a href="#" t:type="PageLink" t:page="purchase/userpurchases"
+				<a id="next_link" href="#" t:type="PageLink" t:page="purchase/userpurchases"
 		   			t:context="nextLinkContext">${message:link-next} &rarr;</a>
 			</li>
 		</t:if>

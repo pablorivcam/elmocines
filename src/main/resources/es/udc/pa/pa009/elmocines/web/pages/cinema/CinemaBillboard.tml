@@ -5,7 +5,7 @@
 	
 	<h1 class="p-3 mb-2 bg-primary text-white container-fluid">
 		<span class="glyphicon glyphicon-info-sign"/>
-		${message:sessionsFor} ${cinema.name}
+		${message:sessionsFor} <spam id="cinema_billboard_name">${cinema.name}</spam>
 	</h1>
 	
 	<t:zone t:id="favoriteCinemaZone" id="favoriteCinemaZone">

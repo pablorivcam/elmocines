@@ -152,13 +152,15 @@ public class ElmocinesInterfaceWebTest {
 		wait = new WebDriverWait(driver, 10);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("favourite_cinema_setted")));
 
+		String cinemaName = driver.findElement(By.id("cinema_billboard_name")).getText();
+
 		executor.executeScript("document.getElementById('index_page').click();");
 
 		// Página principal
 		wait = new WebDriverWait(driver, 10);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("cinema_name")));
 
-		assertTrue(driver.findElement(By.id("cinema_name")).getText().contains("Espacio Coruña"));
+		assertTrue(driver.findElement(By.id("cinema_name")).getText().contains(cinemaName));
 
 		executor.executeScript("document.getElementById('sessionLink1').click();");
 
@@ -186,6 +188,8 @@ public class ElmocinesInterfaceWebTest {
 		wait = new WebDriverWait(driver, 10);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("creditCardNumber")));
 
+		String movie_title = driver.findElement(By.id("movie_title")).getText();
+
 		WebElement creditCardNumber = driver.findElement(By.id("creditCardNumber"));
 		creditCardNumber.clear();
 		creditCardNumber.sendKeys(TEST_CREDIT_CARD_NUMBER);
@@ -204,7 +208,24 @@ public class ElmocinesInterfaceWebTest {
 		wait = new WebDriverWait(driver, 10);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("purchase_info")));
 
-		assertTrue(driver.findElement(By.id("purchase_info")).getText().contains("22"));
+		executor.executeScript("document.getElementById('dropdown_link').click();");
+		wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("user_purchases_link")));
+		executor.executeScript("document.getElementById('user_purchases_link').click();");
+
+		// Página de mis compras
+		wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("next_link")));
+		executor.executeScript("document.getElementById('next_link').click();");
+
+		wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("movie_title11")));
+		executor.executeScript("document.getElementById('next_link').click();");
+
+		wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("movie_title22")));
+
+		assertTrue(driver.findElement(By.id("movie_title22")).getText().contains(movie_title));
 
 	}
 
