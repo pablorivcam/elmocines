@@ -1,4 +1,5 @@
 <html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
+	xmlns:p="tapestry:parameter"
 	t:type="Layout" t:title="title" showTitleInBody="false">
 		
 	<style>
@@ -10,10 +11,13 @@
 			padding-left:11em
 		}
 	</style>
-		
+	
+	<t:if test="session">
+	
 	<h1 class="p-3 mb-2 bg-primary text-white container-fluid">
-		${message:buyTicketsFor} ${session.movie.title}
+		${message:buyTicketsFor} <spam id="movie_title">${session.movie.title}</spam>
 	</h1>
+		
 	
 	<table id="sessionDetailsTable" class="table table-striped" align="center">
 		<tr>
@@ -27,7 +31,7 @@
 				<p>${session.room.name}</p>
 				<h4>${message:session}:</h4>
 				<p><t:output format="format" value="session.date.time"/> - <t:output format="literal:HH:mm " value="session.date.time"/></p>
-				<h4>${message:length}:</h4>
+				<h4 id="lenght_label">${message:length}:</h4>
 				<p>${session.movie.lenght} min.</p>
 			</td>
 			<td>
@@ -35,13 +39,78 @@
 				<p>${session.price}€</p>
 				<h4>${message:freeLocationsCount}:</h4>
 				<p>${session.freeLocationsCount}</p>
-				<div class="form-group mx-sm-3" style="margin-left:1em">
-					<t:eventlink t:event="NextPage" t:context="${session.sessionId}" class="btn btn-info">
-            		${message:buyTickets}<span class="glyphicon glyphicon-chevron-right"></span> 
-        			</t:eventlink>
-				</div>	
+			</td>
+			<td>       		
+				<t:if test="userSession">	
+				<t:if test="client">	
+					<form t:type="Form" class="form-horizontal" t:id="purchaseForm">
+	
+	   				<t:errors/>
+	   
+	   				<div class="form-group">        
+	        			<t:label for="CreditCardNumber" class="col-md-offset-3 col-md-2"/>
+	        				<div class="col-md-3">
+	            				<input t:id="creditCardNumber" t:type="TextField"
+				       			t:validate="required" maxlength="30" />
+	        				</div>
+	   				</div>
+	    
+	   				<div class="form-group" >        
+	        			<t:label for="cardExpiredDate" class="col-md-offset-3 col-md-2"/>
+	        				<div class="col-md-3">
+	            				<input t:id="cardExpiredDate" t:type="TextField"
+				      			 t:validate="required" maxlength="20"/>
+	       					 </div>
+	    			</div>	    	
+	   				<div class="form-group">        
+	       				<t:label for="locationsAmount" class="col-md-offset-3 col-md-2"/>
+		        				 	
+	        				 	<div class="col-sm-1" t:type="eventLink" event="minusLocation" zone="locationsZone">
+	        				 		<spam style="color:#aa0000; margin-top: 0.5em" class="glyphicon glyphicon-minus-sign red"/>
+	   							</div>
+	   							
+		        				<div class="col-sm-2">
+									<t:zone t:id="locationsZone" id="locationsZone">
+			           				 		<input t:id="locationsAmount" t:type="TextField"
+						      		 			t:validate="required" maxlength="2" />
+		        				 	</t:zone>
+	        				 	</div>
+	        				 	
+	        			    	<div class="col-sm-1" t:type="eventLink" event="plusLocation" zone="locationsZone">
+	        				 		<spam style="color:#aa0000; margin-top: 0.5em" class="glyphicon glyphicon-plus-sign red"/>
+	        				 	</div>
+
+	   				</div>
+	    
+	   
+	    			<div class="form-group">
+	    				<div class="col-md-offset-5 col-md-1">
+        					<button id="submit_purchase_button" type="submit" class="btn btn-primary">${message:submit}</button>
+        				</div>
+        			</div>
+	    
+					</form>
+					
+				</t:if>	
+					<p:else>	
+						<h4 class="alert text-center">${message:noUser}</h4>
+						<div class="form-group" style="float: right; margin-right:17em;">
+							<div id="authentication_link_from_session" t:type="PageLink" t:page="user/login" 
+										 t:context="${session.sessionId}" class="btn btn-primary text-center">
+										${message:auth}
+							</div>
+						</div>
+					</p:else>				
+
+				</t:if>	
 			</td>
 		</tr>	
 	</table>
+	
+	<p:else>	
+		<h4 class="alert alert-danger text-center">${message:noSession}</h4>		
+	</p:else>	
+	
+	</t:if>	
 	
 </html>

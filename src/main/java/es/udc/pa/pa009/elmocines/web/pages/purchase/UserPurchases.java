@@ -88,9 +88,7 @@ public class UserPurchases {
 		 try {
 				purchaseBlock = purchaseService.getPurchases(userId,startIndex,PURCHASES_PER_PAGE);
 			} catch (InstanceNotFoundException e) {
-				e.printStackTrace();
 			} catch (InputValidationException e) {
-				e.printStackTrace();
 			}
 	}
     

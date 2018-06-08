@@ -1,18 +1,20 @@
 <html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter"
 	t:type="Layout" t:title="title" showTitleInBody="false">
 
+	<t:if test="cinema">
+	
 	<h1 class="p-3 mb-2 bg-primary text-white container-fluid">
 		<span class="glyphicon glyphicon-info-sign"/>
-		${message:sessionsFor} ${cinema.name}
+		${message:sessionsFor} <spam id="cinema_billboard_name">${cinema.name}</spam>
 	</h1>
 	
 	<t:zone t:id="favoriteCinemaZone" id="favoriteCinemaZone">
 
-		<t:eventLink event="setFavouriteCinema">
-			<div style="font-size: 2em" >
+		<t:eventLink event="setFavouriteCinema" zone="favoriteCinemaZone">
+			<div style="font-size: 2em" id="favourite_cinema_link">
 			
 				<t:if test="favouriteCinemaId">
-					<p style="color:#ff9900"><spam class="glyphicon glyphicon-star"/> ${message:favouriteCinema}</p>
+					<p style="color:#ff9900"><spam class="glyphicon glyphicon-star" id="favourite_cinema_setted"/> ${message:favouriteCinema}</p>
 					<p:else>
 						<p style="color:#aaaaaa"><spam class="glyphicon glyphicon glyphicon-star-empty"/> ${message:favouriteCinema}</p>
 					</p:else>
@@ -54,13 +56,13 @@
 			    		<tr>
 			    		
 			    			<td rowspan="2" width="180">
-								<a t:type="PageLink" t:page="cinema/MovieDetails" t:context="${movieSession.movie.movieId}">
+								<a t:type="PageLink" id="movieLink${movieSession.movie.movieId}" t:page="cinema/MovieDetails" t:context="${movieSession.movie.movieId}">
 									<img src="${context:images/movies}/${movieSession.movie.movieId}.png" width="180" height="300"/>
 								</a>
 							</td>	
 							
 			    			<td>
-								<a t:type="PageLink" t:page="cinema/MovieDetails" t:context="${movieSession.movie.movieId}">		    			
+								<a t:type="PageLink" t:page="cinema/MovieDetails" id="movieLink${movieSession.movie.movieId}2" t:context="${movieSession.movie.movieId}">		    			
 				    				<h2>${movieSession.movie.title}</h2>
 			    				</a>
 			    			</td>
@@ -70,7 +72,7 @@
 			    			<td>
 			    				<!-- LOOP para las sesiones --> 
 								<t:loop source="movieSession.sessions" value="session">
-									<div t:type="PageLink" t:page="cinema/SessionDetails" 
+									<div t:type="PageLink" t:page="cinema/SessionDetails" id="sessionLink${session.sessionId}"
 										 t:context="${session.sessionId}" class="sessionLink bg-gradient-dark">
 										<t:output format="literal:HH:mm " value="session.date.time"/>
 									</div>
@@ -85,5 +87,11 @@
 	    
 		</table>
 	</t:zone>
+	
+	<p:else>	
+		<h4 class="alert alert-danger text-center">${message:noCinemas}</h4>
+	</p:else>
+	
+	</t:if>
 
 </html>

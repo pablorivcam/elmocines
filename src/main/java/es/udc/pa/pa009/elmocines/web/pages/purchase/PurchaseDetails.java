@@ -70,6 +70,14 @@ public class PurchaseDetails {
 		
 		void onActivate(Long purchaseId) {
 			this.purchaseId = purchaseId;
+			try {
+				purchase = purchaseService.getPurchase(purchaseId);
+				session = purchase.getSession();
+				movie = session.getMovie();
+				room = session.getRoom();
+				cinema = room.getCinema();
+			} catch (InstanceNotFoundException e) {
+			}
 		}
 
 		Object onPassivate() {
@@ -79,18 +87,6 @@ public class PurchaseDetails {
 		Object onSuccess(){
 			purchaseDetails.setPurchaseId(purchaseSearch.getPurchaseId());
 			return purchaseDetails;
-		}
-		
-		void onPrepareForRender() {
-			try {
-				purchase = purchaseService.getPurchase(purchaseId);
-				session = purchase.getSession();
-				movie = session.getMovie();
-				room = session.getRoom();
-				cinema = room.getCinema();
-			} catch (InstanceNotFoundException e) {
-				e.printStackTrace();
-			}
 		}
 		
 		void onValidateFromSearchForm(){

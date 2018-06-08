@@ -39,15 +39,13 @@ public interface CinemaService {
 	 *            the cinema id
 	 * @param initDate
 	 *            the init date
-	 * @param finalDate
-	 *            the final date
 	 * @return the list of sessions
 	 * @throws InputValidationException
 	 *             the input validation exception
 	 * @throws InstanceNotFoundException
 	 *             the instance not found exception
 	 */
-	public List<MovieSessionsDto> findSessionsByCinemaIdAndDate(Long cinemaId, Calendar date, Calendar finalDate)
+	public List<MovieSessionsDto> findSessionsByCinemaIdAndDate(Long cinemaId, Calendar date)
 			throws InputValidationException, InstanceNotFoundException;
 
 	/**

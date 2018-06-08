@@ -1,6 +1,7 @@
 package es.udc.pa.pa009.elmocines.web.pages.user;
 
 import org.apache.tapestry5.annotations.Component;
+import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SessionState;
 import org.apache.tapestry5.corelib.components.Form;
@@ -14,6 +15,7 @@ import es.udc.pa.pa009.elmocines.model.userprofile.UserProfile.Role;
 import es.udc.pa.pa009.elmocines.model.userservice.UserProfileDetails;
 import es.udc.pa.pa009.elmocines.model.userservice.UserService;
 import es.udc.pa.pa009.elmocines.web.pages.Index;
+import es.udc.pa.pa009.elmocines.web.pages.cinema.SessionDetails;
 import es.udc.pa.pa009.elmocines.web.services.AuthenticationPolicy;
 import es.udc.pa.pa009.elmocines.web.services.AuthenticationPolicyType;
 import es.udc.pa.pa009.elmocines.web.util.UserSession;
@@ -21,6 +23,10 @@ import es.udc.pojo.modelutil.exceptions.DuplicateInstanceException;
 
 @AuthenticationPolicy(AuthenticationPolicyType.NON_AUTHENTICATED_USERS)
 public class Register {
+	
+	private Long sessionId;
+	@InjectPage
+	private SessionDetails sessionDetails;
 
 	@Property
 	private String loginName;
@@ -59,6 +65,22 @@ public class Register {
 	private Messages messages;
 
 	private Long userProfileId;
+	
+	public Long getSessionId() {
+		return sessionId;
+	}
+
+	public void setSessionId(Long sessionId) {
+		this.sessionId = sessionId;
+	}
+
+	void onActivate(Long sessionId) {
+		this.sessionId = sessionId;
+	}
+
+	Long onPassivate() {
+		return sessionId;
+	}
 
 	void onValidateFromRegistrationForm() {
 
@@ -88,8 +110,13 @@ public class Register {
 		userSession.setUserProfileId(userProfileId);
 		userSession.setFirstName(firstName);
 		userSession.setRole(Role.CLIENT);
-
-		return Index.class;
+		
+		if (sessionId != null) {
+			sessionDetails.setSessionId(sessionId);
+			return sessionDetails;
+		} else {
+			return Index.class;
+		}
 
 	}
 

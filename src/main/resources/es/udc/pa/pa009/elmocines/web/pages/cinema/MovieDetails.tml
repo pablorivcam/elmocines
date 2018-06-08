@@ -1,5 +1,8 @@
 <html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
+	xmlns:p="tapestry:parameter"
 	t:type="Layout" t:title="title" showTitleInBody="false">
+	
+	<t:if test="movie">
 	
 	<h1 class="p-3 mb-2 bg-primary text-white container-fluid">
 		${movie.title}
@@ -19,5 +22,11 @@
 		</tr>
 	
 	</table>
+	
+	<p:else>	
+		<h4 class="alert alert-danger text-center">${message:noMovie}</h4>
+	</p:else>
+	
+	</t:if>
 	
 </html>

@@ -2,7 +2,7 @@
 	t:type="Layout" t:title="title">
 	
 	<p class="text-center">
-		<a href="#" t:type="PageLink" t:page="user/register">${message:register}</a>	       
+		<a id="registerLink" href="#" t:type="PageLink" t:context="${sessionId}" t:page="user/register">${message:register}</a>	       
 	</p>
 	
 	<br/>
@@ -40,7 +40,7 @@
 	    
 	    <div class="form-group">
 	    	<div class="col-md-offset-5 col-md-1">
-        		<button type="submit" class="btn btn-primary">${message:submit}</button>
+        		<button type="submit" class="btn btn-primary" id="submit">${message:submit}</button>
         	</div>
         </div> 
 	    

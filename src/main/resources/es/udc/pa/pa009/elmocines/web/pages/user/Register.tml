@@ -55,7 +55,7 @@
 	    
 	    <div class="form-group">
 	    	<div class="col-md-offset-5 col-md-1">
-        		<button type="submit" class="btn btn-primary">${message:submit}</button>
+        		<button type="submit" class="btn btn-primary" id="submit">${message:submit}</button>
         	</div>
         </div>
 	    

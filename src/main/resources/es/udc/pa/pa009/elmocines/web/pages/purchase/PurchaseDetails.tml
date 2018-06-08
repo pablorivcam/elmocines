@@ -1,4 +1,5 @@
 <html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
+	xmlns:p="tapestry:parameter"
 	t:type="Layout" t:title="title" showTitleInBody="false">
 	
 
@@ -25,6 +26,8 @@
 		<h1 class="p-3 mb-2 bg-primary text-white container-fluid">
 			${message:title} 
 		</h1>
+		
+		<t:if test="purchase">
 	
 		<table id="purchaseDetailsTable" class="table table-striped" align="center">
 		
@@ -61,5 +64,9 @@
 					</t:if>	
 				</td>
 			</tr>
-		</table>
+			</table>
+			<p:else>	
+				<h4 class="alert alert-danger text-center">${message:noPurchases}</h4>
+			</p:else>
+		</t:if>	
 </html>

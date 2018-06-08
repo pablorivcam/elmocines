@@ -51,7 +51,7 @@ INSERT INTO Movies VALUES (7,'La luz es mi fuerza','Un plan sólido','95','2018-
 
 -- Sesiones Espacio Coruña
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
-	VALUES (1,8,1,TIMESTAMPADD(HOUR, 4, NOW()),7.5,10);
+	VALUES (1,8,1,TIMESTAMPADD(HOUR, 1, NOW()),7.5,10);
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
 	VALUES (2,9,2,TIMESTAMPADD(HOUR, 4, NOW()),7.0,100);
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
@@ -124,6 +124,7 @@ INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCoun
 	VALUES (33,6,7,TIMESTAMPADD(HOUR, 7, TIMESTAMPADD(DAY, 1, NOW())),7.0,25);
 INSERT INTO SessionMovies (sessionId,roomId,movieId,date,price,freeLocationsCount) 
 	VALUES (34,6,7,TIMESTAMPADD(HOUR, -1, TIMESTAMPADD(DAY, 1, NOW())),7.0,25);		
+	
 	
 	-- TIMESTAMPADD(HOUR, 7, TIMESTAMPADD(DAY, 1, CURDATE()))
 	

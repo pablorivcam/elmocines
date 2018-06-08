@@ -13,7 +13,7 @@ import es.udc.pa.pa009.elmocines.model.userprofile.UserProfile;
 import es.udc.pa.pa009.elmocines.model.userservice.IncorrectPasswordException;
 import es.udc.pa.pa009.elmocines.model.userservice.UserService;
 import es.udc.pa.pa009.elmocines.web.pages.Index;
-import es.udc.pa.pa009.elmocines.web.pages.purchase.PurchaseSession;
+import es.udc.pa.pa009.elmocines.web.pages.cinema.SessionDetails;
 import es.udc.pa.pa009.elmocines.web.services.AuthenticationPolicy;
 import es.udc.pa.pa009.elmocines.web.services.AuthenticationPolicyType;
 import es.udc.pa.pa009.elmocines.web.util.CookiesManager;
@@ -24,8 +24,9 @@ import es.udc.pojo.modelutil.exceptions.InstanceNotFoundException;
 public class Login {
 
 	private Long sessionId;
+	
 	@InjectPage
-	private PurchaseSession purchaseSession;
+	private SessionDetails sessionDetails;
 
 	@Property
 	private String loginName;
@@ -97,8 +98,8 @@ public class Login {
 		}
 
 		if (sessionId != null) {
-			purchaseSession.setSessionId(sessionId);
-			return purchaseSession;
+			sessionDetails.setSessionId(sessionId);
+			return sessionDetails;
 		} else {
 			return Index.class;
 		}

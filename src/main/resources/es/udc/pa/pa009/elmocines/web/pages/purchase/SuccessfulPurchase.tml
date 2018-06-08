@@ -1,7 +1,15 @@
 <html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
+	xmlns:p="tapestry:parameter"
 	t:type="Layout" t:title="title" showTitleInBody="false">
 	
-	<h4 class="alert alert-success text-center">${message:successfulPurchase}</h4>
-	<h4 class="alert alert-success text-center">${message:idPurchase}:${purchase.purchaseId}</h4>   
-	<h4 class="alert alert-success text-center">${message:info}</h4> 
+	<t:if test="purchase">
+		<h4 class="alert alert-success text-center">${message:successfulPurchase}</h4>
+		<h4 id="purchase_info" class="alert alert-success text-center">${message:idPurchase}: ${purchase.purchaseId}</h4>   
+		<h4 class="alert alert-success text-center">${message:info}</h4> 
+		
+		<p:else>	
+			<h4 class="alert alert-danger text-center">${message:noPurchase}</h4>
+		</p:else>
+		
+	</t:if>
 </html>
