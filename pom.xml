@@ -37,7 +37,7 @@
         <javassist.version>3.21.0-GA</javassist.version>
         <cglib.version>3.2.3</cglib.version>
         <hibernate.version>5.2.7.Final</hibernate.version>
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
         <spring.version>4.3.6.RELEASE</spring.version>
         <servletApi.version>2.5</servletApi.version>
         <tapestry.version>5.4.1</tapestry.version>
